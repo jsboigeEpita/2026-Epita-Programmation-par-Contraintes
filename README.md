@@ -1499,7 +1499,7 @@ Le portefeuille Mean-Variance de Markowitz (1952) est un classique de la finance
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Knapsack, cardinalite |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Knapsack, cardinalite |
 | App-10 Portfolio | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Baseline Markowitz + GA |
 | QC-Py-10 Risk Portfolio | [QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb) | Sizing, Kelly, stop-loss |
 | QC-Py-14 Portfolio Construction | [QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb) | Rebalance Lean framework |
@@ -1532,8 +1532,8 @@ La replication d'un ETF (SPY, CAC40, EuroStoxx) avec un nombre reduit K << N de 
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Cardinalite, Knapsack |
-| Search-9 Linear Programming | [Search/Part1-Foundations/Search-9-LinearProgramming-Python.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming-Python.ipynb) | Simplex, LP |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Cardinalite, Knapsack |
+| Search-9 Linear Programming | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | Simplex, LP |
 | QC-Py-05 Universe Selection | [QuantConnect/Python/QC-Py-05-Universe-Selection.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-05-Universe-Selection.ipynb) | Manual universe, S&P 500 |
 | QC-Py-14 Portfolio Construction | [QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb) | Rebalance, execution |
 
@@ -1563,8 +1563,8 @@ Le **statistical arbitrage par paires** (Gatev et al. 2006) consiste a trader de
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Matching, optimisation |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Matching, optimisation |
 | QC-Py-08 Multi-Asset | [QuantConnect/Python/QC-Py-08-Multi-Asset-Strategies.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-08-Multi-Asset-Strategies.ipynb) | Pairs, correlations |
 | QC-Py-13 Alpha Models | [QuantConnect/Python/QC-Py-13-Alpha-Models.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-13-Alpha-Models.ipynb) | Alpha frameworks |
 
@@ -1595,7 +1595,7 @@ L'**execution optimale** (Almgren-Chriss 2000) consiste a fractionner un grand o
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, Cumulative |
-| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShop.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShop.ipynb) | Scheduling discret |
+| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShopScheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShopScheduling.ipynb) | Scheduling discret |
 | QC-Py-09 Order Types | [QuantConnect/Python/QC-Py-09-Order-Types.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-09-Order-Types.ipynb) | Orders, execution |
 | QC-Py-14 Portfolio Construction | [QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb) | Execution models |
 
@@ -1626,7 +1626,7 @@ La strategie **Risk Parity** (ou Equal Risk Contribution, ERC, Maillard 2010) eg
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | App-10 Portfolio | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Markowitz baseline |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Cardinalite |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Cardinalite |
 | QC-Py-10 Risk-Portfolio | [QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb) | Risk sizing |
 | QC-Py-21 Portfolio-Optimization-ML | [QuantConnect/Python/QC-Py-21-Portfolio-Optimization-ML.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-21-Portfolio-Optimization-ML.ipynb) | ML + optimisation |
 
@@ -1655,7 +1655,7 @@ Sur un exchange crypto (Binance, Kraken), 8 cryptos majeurs (BTC, ETH, BNB, USDT
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
 | App-13 TSP | [Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb) | Cycles, Circuit constraint |
 | QC-Py-07 Futures/Forex | [QuantConnect/Python/QC-Py-07-Futures-Forex.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-07-Futures-Forex.ipynb) | Crypto feeds, leverage |
 
