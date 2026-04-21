@@ -160,10 +160,10 @@ Le Kidney Exchange Problem (KEP) consiste a trouver des cycles d'echanges de rei
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP de base |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Knapsack, allocation sous contraintes |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP de base |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Knapsack, allocation sous contraintes |
 | GameTheory - Cooperative | [GameTheory/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/GameTheory) | Shapley Value, allocation equitable |
-| Search-1 StateSpace | [Search/Part1-Foundations/Search-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1.ipynb) | Graphes d'etat, parcours |
+| Search-1 StateSpace | [Search/Part1-Foundations/Search-1-StateSpace.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1-StateSpace.ipynb) | Graphes d'etat, parcours |
 
 ### References externes
 - Abraham, D.J., Blum, A., & Sandholm, T. (2007). "Clearing Algorithms for Barter Exchange Markets: Enabling Nationwide Kidney Exchanges." *EC'07*. [ACM DL](https://dl.acm.org/doi/10.1145/1250910.1250933)
@@ -191,10 +191,10 @@ Le Diet Problem est un classique de la recherche operationnelle : determiner la 
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Knapsack, Bin Packing, optimisation |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Penalites, preferences, compromis |
-| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9.ipynb) | PLNE, simplex, dualite |
-| App-10 Portfolio Optimization | [Search/Applications/Hybrid/App-10.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10.ipynb) | Optimisation sous contraintes de budget |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Knapsack, Bin Packing, optimisation |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Penalites, preferences, compromis |
+| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | PLNE, simplex, dualite |
+| App-10 Portfolio Optimization | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Optimisation sous contraintes de budget |
 
 ### References externes
 - Stigler, G.J. (1945). "The Cost of Subsistence." *Journal of Farm Economics*, 27(2), 303-314. [JSTOR](https://www.jstor.org/stable/1231810)
@@ -222,10 +222,10 @@ L'ordonnancement des blocs operatoires est un probleme de scheduling complexe ou
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, NoOverlap, Cumulative |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Penalites, preferences |
-| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4.ipynb) | Job-shop CP-SAT |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation multi-objectif |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, NoOverlap, Cumulative |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Penalites, preferences |
+| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShopScheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShopScheduling.ipynb) | Job-shop CP-SAT |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation multi-objectif |
 
 ### References externes
 - Cardoen, B., Demeulemeester, E., & Belien, J. (2010). "Operating Room Planning and Scheduling: A Literature Review." *European Journal of Operational Research*, 201(3), 921-932. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221709003070)
@@ -252,9 +252,9 @@ L'optimisation des protocoles de traitement pharmaceutique (en particulier en on
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, contraintes temporelles |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation sous contraintes |
-| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11.ipynb) | Optimisation stochastique |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, contraintes temporelles |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation sous contraintes |
+| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11-Metaheuristics.ipynb) | Optimisation stochastique |
 | Probas/ (Infer.NET) | [Probas/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/Probas) | Programmation probabiliste |
 
 ### References externes
@@ -282,10 +282,10 @@ Le Simple Assembly Line Balancing Problem (SALBP) consiste a repartir un ensembl
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, NoOverlap, scheduling |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Bin Packing, optimisation |
-| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4.ipynb) | Job-shop, affectation de taches |
-| Search-1 StateSpace | [Search/Part1-Foundations/Search-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1.ipynb) | Graphes, parcours |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, NoOverlap, scheduling |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Bin Packing, optimisation |
+| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShopScheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShopScheduling.ipynb) | Job-shop, affectation de taches |
+| Search-1 StateSpace | [Search/Part1-Foundations/Search-1-StateSpace.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1-StateSpace.ipynb) | Graphes, parcours |
 
 ### References externes
 - Scholl, A. (1999). "Balancing and Sequencing of Assembly Lines." *Physica-Verlag*. [Springer](https://link.springer.com/book/10.1007/978-3-642-58355-8)
@@ -312,10 +312,10 @@ Le Supply Chain Network Design consiste a determiner l'emplacement optimal d'ent
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Knapsack, Bin Packing, allocation |
-| CSP-9 Distributed CSP | [Search/Part2-CSP/CSP-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-9.ipynb) | Multi-agent, supply chains |
-| App-17 VRP Logistics | [Search/Applications/CSP/App-17.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-17.ipynb) | VRP, logistique |
-| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9.ipynb) | PLNE, localisation |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Knapsack, Bin Packing, allocation |
+| CSP-9 Distributed CSP | [Search/Part2-CSP/CSP-9-Distributed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-9-Distributed.ipynb) | Multi-agent, supply chains |
+| App-17 VRP Logistics | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | VRP, logistique |
+| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | PLNE, localisation |
 
 ### References externes
 - Melo, M.T., Nickel, S., & Saldanha-da-Gama, F. (2009). "Facility Location and Supply Chain Management - A Literature Review." *European Journal of Operational Research*, 196(2), 401-412. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221708003614)
@@ -342,10 +342,10 @@ Le Bin Packing 3D consiste a optimiser le chargement d'un ensemble d'objets para
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Bin Packing, Knapsack |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| App-10 Portfolio | [Search/Applications/Hybrid/App-10.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10.ipynb) | Optimisation combinatoire |
-| Search-4 Local Search | [Search/Part1-Foundations/Search-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4.ipynb) | Heuristiques locales |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Bin Packing, Knapsack |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| App-10 Portfolio | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Optimisation combinatoire |
+| Search-4 Local Search | [Search/Part1-Foundations/Search-4-LocalSearch.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4-LocalSearch.ipynb) | Heuristiques locales |
 
 ### References externes
 - Martello, S., Pisinger, D., & Vigo, D. (2000). "The Three-Dimensional Bin Packing Problem." *Operations Research*, 48(2), 256-267. [INFORMS](https://pubsonline.informs.org/doi/abs/10.1287/opre.48.2.256.12386)
@@ -372,10 +372,10 @@ Le Resource-Constrained Project Scheduling Problem (RCPSP) est le probleme de re
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, NoOverlap, Cumulative |
-| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4.ipynb) | Job-shop CP-SAT |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation, objectifs multiples |
-| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11.ipynb) | GA, SA pour grands problemes |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, NoOverlap, Cumulative |
+| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShopScheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShopScheduling.ipynb) | Job-shop CP-SAT |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation, objectifs multiples |
+| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11-Metaheuristics.ipynb) | GA, SA pour grands problemes |
 
 ### References externes
 - Hartmann, S., & Briskorn, D. (2010). "A Survey of Variants and Extensions of the Resource-Constrained Project Scheduling Problem." *European Journal of Operational Research*, 207(1), 1-14. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221709017878)
@@ -402,10 +402,10 @@ Le Electric Vehicle Routing Problem (EVRP) etend le Vehicle Routing Problem clas
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| App-17 VRP Logistics | [Search/Applications/CSP/App-17.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-17.ipynb) | VRP CP-SAT |
-| App-17 VRP Hybrid | [Search/Applications/Hybrid/App-17.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17.ipynb) | VRP avec SA, GA, ACO |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Knapsack, capacite |
-| App-13 TSP Metaheuristics | [Search/Applications/Hybrid/App-13.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-13.ipynb) | TSP, tournees |
+| App-17 VRP Logistics | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | VRP CP-SAT |
+| App-17 VRP Hybrid | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | VRP avec SA, GA, ACO |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Knapsack, capacite |
+| App-13 TSP Metaheuristics | [Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb) | TSP, tournees |
 
 ### References externes
 - Schneider, M., Stenger, A., & Goeke, D. (2014). "The Electric Vehicle-Routing Problem with Time Windows and Recharging Stations." *Transportation Science*, 48(4), 500-520. [INFORMS](https://pubsonline.informs.org/doi/abs/10.1287/trsc.2013.0490)
@@ -432,10 +432,10 @@ Le Railway Timetabling Problem consiste a planifier les passages de trains sur u
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, NoOverlap, Cumulative |
-| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4.ipynb) | Job-shop, ressources partagees |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation multi-objectif |
-| Planners-7 Temporal Planning | [SymbolicAI/Planners/03-Advanced/Planners-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7.ipynb) | Planification temporelle |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, NoOverlap, Cumulative |
+| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShopScheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShopScheduling.ipynb) | Job-shop, ressources partagees |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation multi-objectif |
+| Planners-7 Temporal Planning | [SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb) | Planification temporelle |
 
 ### References externes
 - Serafini, P., & Ukovich, W. (1989). "A Mathematical Model for Periodic Scheduling Problems." *SIAM Journal on Discrete Mathematics*, 2(4), 550-581. [SIAM](https://epubs.siam.org/doi/abs/10.1137/0402049)
@@ -462,10 +462,10 @@ Le Drone Delivery Routing Problem consiste a planifier les tournees d'une flotte
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| App-17 VRP Logistics | [Search/Applications/CSP/App-17.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-17.ipynb) | VRP CP-SAT |
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | Scheduling, ressources |
-| App-13 TSP Metaheuristics | [Search/Applications/Hybrid/App-13.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-13.ipynb) | TSP, heuristiques |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation combinatoire |
+| App-17 VRP Logistics | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | VRP CP-SAT |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | Scheduling, ressources |
+| App-13 TSP Metaheuristics | [Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb) | TSP, heuristiques |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation combinatoire |
 
 ### References externes
 - Murray, C.C., & Chu, A.G. (2015). "The Flying Sidekick Traveling Salesman Problem: Optimization of Drone-Assisted Parcel Delivery." *Transportation Research Part C*, 54, 86-109. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0968090X15001333)
@@ -492,10 +492,10 @@ L'assemblage orbital de satellites consiste a planifier les manoeuvres de rendez
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, NoOverlap, Cumulative |
-| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4.ipynb) | Precedences, makespan |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation sous contraintes |
-| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11.ipynb) | Metaheuristiques |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, NoOverlap, Cumulative |
+| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShopScheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShopScheduling.ipynb) | Precedences, makespan |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation sous contraintes |
+| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11-Metaheuristics.ipynb) | Metaheuristiques |
 
 ### References externes
 - Flury, W. (1992). "Rendezvous in Space." *Acta Astronautica*, 27, 195-205. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/009457659290075P)
@@ -522,10 +522,10 @@ Le VM Scheduling Problem consiste a allouer des machines virtuelles (VMs) avec d
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Bin Packing, Knapsack |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9.ipynb) | PLNE, relaxation |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Preferences, penalites |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Bin Packing, Knapsack |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | PLNE, relaxation |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Preferences, penalites |
 
 ### References externes
 - Mann, Z.A. (2015). "Allocation of Virtual Machines in Cloud Data Centers - A Survey." *European Journal of Operational Research*, 246(3), 779-798. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221715003633)
@@ -552,10 +552,10 @@ L'optimisation energetique des centres de donnees consiste a minimiser la consom
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, scheduling |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Bin Packing, consolidation |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Soft constraints, compromis |
-| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11.ipynb) | Optimisation globale |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, scheduling |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Bin Packing, consolidation |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Soft constraints, compromis |
+| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11-Metaheuristics.ipynb) | Optimisation globale |
 
 ### References externes
 - Beloglazov, A., et al. (2012). "Energy-Aware Resource Allocation Heuristics for Efficient Management of Data Centers." *Future Generation Computer Systems*, 28(5), 755-768. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0167739X11000689)
@@ -582,10 +582,10 @@ Le placement de services en edge computing consiste a determiner sur quels noeud
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Allocation, Knapsack |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| Search-1 StateSpace | [Search/Part1-Foundations/Search-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1.ipynb) | Graphes, parcours |
-| CSP-9 Distributed CSP | [Search/Part2-CSP/CSP-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-9.ipynb) | Multi-agent, distribution |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Allocation, Knapsack |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| Search-1 StateSpace | [Search/Part1-Foundations/Search-1-StateSpace.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1-StateSpace.ipynb) | Graphes, parcours |
+| CSP-9 Distributed CSP | [Search/Part2-CSP/CSP-9-Distributed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-9-Distributed.ipynb) | Multi-agent, distribution |
 
 ### References externes
 - Mao, Y., et al. (2017). "A Survey on Mobile Edge Computing: The Communication Perspective." *IEEE Communications Surveys & Tutorials*, 19(4), 2322-2358. [IEEE](https://ieeexplore.ieee.org/document/7932343)
@@ -612,10 +612,10 @@ Le dispatch economique (Economic Dispatch) consiste a determiner la production o
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9.ipynb) | PLNE, simplex, optimisation lineaire |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation sous contraintes |
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, scheduling temporel |
-| App-10 Portfolio | [Search/Applications/Hybrid/App-10.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10.ipynb) | Optimisation sous contraintes de budget |
+| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | PLNE, simplex, optimisation lineaire |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation sous contraintes |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, scheduling temporel |
+| App-10 Portfolio | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Optimisation sous contraintes de budget |
 
 ### References externes
 - Wood, A.J., & Wollenberg, B.F. (2012). "Power Generation, Operation, and Control." *Wiley*. [Wiley](https://www.wiley.com/en-us/Power+Generation%2C+Operation%2C+and+Control%2C+3rd+Edition-p-9780471790556)
@@ -642,10 +642,10 @@ La super-optimisation de smart contracts Ethereum consiste a trouver automatique
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| SC-14 Formal Verification | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14.ipynb) | Verification formelle Solidity |
+| SC-14 Formal Verification | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14-Formal-Verification.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14-Formal-Verification.ipynb) | Verification formelle Solidity |
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | Z3 SMT Solver |
-| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb) | Tests et verification |
-| SC-7 Solidity Advanced | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7.ipynb) | EVM, gas, opcodes |
+| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb) | Tests et verification |
+| SC-7 Solidity Advanced | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb) | EVM, gas, opcodes |
 
 ### References externes
 - Permenev, A., et al. (2020). "xEVM: A Safer and More Ecosystem-Friendly Virtual Machine." *IEEE S&P*. [IEEE](https://ieeexplore.ieee.org/document/9152689)
@@ -673,10 +673,10 @@ L'ordonnancement des transactions dans un bloc blockchain est un probleme d'opti
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| SC-7 Solidity Advanced | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7.ipynb) | Gas, transactions |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Knapsack, selection |
+| SC-7 Solidity Advanced | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb) | Gas, transactions |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Knapsack, selection |
 | GameTheory/ | [GameTheory/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/GameTheory) | Encheres, strategies |
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | Ordonnancement |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | Ordonnancement |
 
 ### References externes
 - Daian, P., et al. (2020). "Flash Boys 2.0: Frontrunning in Decentralized Exchanges, Miner Extractable Value, and Consensus Instability." *IEEE S&P*. [IEEE](https://ieeexplore.ieee.org/document/9152675)
@@ -703,10 +703,10 @@ La synthese de circuits Zero-Knowledge (ZK circuits) consiste a compiler un prog
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| SC-15 Cryptography ZKP | [SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15.ipynb) | Zero-Knowledge Proofs |
-| SC-16 Homomorphic Encryption | [SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-16.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-16.ipynb) | Cryptographie avancee |
+| SC-15 Cryptography ZKP | [SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15-Zero-Knowledge-Proofs.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15-Zero-Knowledge-Proofs.ipynb) | Zero-Knowledge Proofs |
+| SC-16 Homomorphic Encryption | [SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-16-Homomorphic-Encryption.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-16-Homomorphic-Encryption.ipynb) | Cryptographie avancee |
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | SMT solving |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
 
 ### References externes
 - Ben-Sasson, E., et al. (2018). "Scalable, Transparent, and Post-Quantum Secure Computational Integrity." *IACR Cryptology ePrint Archive*. [ePrint](https://eprint.iacr.org/2018/046)
@@ -733,10 +733,10 @@ Dans un blockchain Proof-of-Stake (comme Ethereum 2.0), les validateurs sont aff
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Bin Packing, allocation |
-| SC-0 Blockchain Foundations | [SymbolicAI/SmartContracts/00-Foundations/SC-0.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/00-Foundations/SC-0.ipynb) | Blockchain, consensus |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Bin Packing, allocation |
+| SC-0 Blockchain Foundations | [SymbolicAI/SmartContracts/00-Foundations/SC-0-Cypherpunk-Origins.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/00-Foundations/SC-0-Cypherpunk-Origins.ipynb) | Blockchain, consensus |
 | GameTheory/ | [GameTheory/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/GameTheory) | Coalitions, equilibre |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Equilibre, penalites |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Equilibre, penalites |
 
 ### References externes
 - Buterin, V., & Griffith, V. (2017). "Casper the Friendly Finality Gadget." *arXiv*. [arXiv](https://arxiv.org/abs/1710.09437)
@@ -763,10 +763,10 @@ La verification formelle des smart contracts consiste a prouver mathematiquement
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| SC-14 Formal Verification | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14.ipynb) | Verification formelle |
-| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb) | Tests, proprietes |
+| SC-14 Formal Verification | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14-Formal-Verification.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14-Formal-Verification.ipynb) | Verification formelle |
+| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb) | Tests, proprietes |
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | Z3 SMT Solver |
-| SC-7 Solidity Advanced | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7.ipynb) | Vulnerabilites, securite |
+| SC-7 Solidity Advanced | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb) | Vulnerabilites, securite |
 
 ### References externes
 - Feist, J., et al. (2019). "Slither: A Static Analysis Framework for Smart Contracts." *IEEE/WIC/ACM WI*. [GitHub](https://github.com/crytic/slither)
@@ -794,9 +794,9 @@ Le model checking materiel consiste a verifier formellement qu'un circuit numeri
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | Z3, SAT/SMT solving |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation par contraintes |
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | SAT encoding, hybridation |
-| Search-3 A* | [Search/Part1-Foundations/Search-3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3.ipynb) | Exploration d'espaces d'etats |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation par contraintes |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | SAT encoding, hybridation |
+| Search-3 A* | [Search/Part1-Foundations/Search-3-Informed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3-Informed.ipynb) | Exploration d'espaces d'etats |
 
 ### References externes
 - Bradley, A.R. (2011). "SAT-Based Model Checking without Unrolling." *VMCAI*. [Springer](https://link.springer.com/chapter/10.1007/978-3-642-18275-4_6)
@@ -825,9 +825,9 @@ La cryptanalyse differentielle est une technique qui etudie comment les differen
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | SAT/SMT solving |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | SAT encoding |
-| SC-15 Cryptography ZKP | [SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15.ipynb) | Cryptographie |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | SAT encoding |
+| SC-15 Cryptography ZKP | [SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15-Zero-Knowledge-Proofs.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15-Zero-Knowledge-Proofs.ipynb) | Cryptographie |
 
 ### References externes
 - Biere, A. (2021). "CaDiCaL, Kissat MAB and Mate at the SAT Competition 2021." *SAT Competition*. [dblp](https://dblp.org/rec/conf/sat/BiereF21)
@@ -855,9 +855,9 @@ Le Bounded Model Checking (BMC) consiste a verifier qu'un programme C ne viole p
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | Z3, SMT solving |
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | SAT encoding |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation |
-| Search-3 A* | [Search/Part1-Foundations/Search-3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3.ipynb) | Exploration |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | SAT encoding |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation |
+| Search-3 A* | [Search/Part1-Foundations/Search-3-Informed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3-Informed.ipynb) | Exploration |
 
 ### References externes
 - Clarke, E., et al. (2001). "Bounded Model Checking Using Satisfiability Solving." *Formal Methods in System Design*, 19(1), 7-34. [Springer](https://link.springer.com/article/10.1023/A:1012796211709)
@@ -885,9 +885,9 @@ Le compiler fuzzing consiste a generer automatiquement des programmes d'entree p
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | Z3, contraintes |
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | Generation sous contraintes |
-| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb) | Fuzzing, tests |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | Generation sous contraintes |
+| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb) | Fuzzing, tests |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation |
 
 ### References externes
 - Yang, X., et al. (2011). "Finding and Understanding Bugs in C Compilers." *PLDI*. [ACM](https://dl.acm.org/doi/10.1145/1993498.1993532)
@@ -915,8 +915,8 @@ Les reseaux de regulation genetique (Gene Regulatory Networks) modelisent les in
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | Z3, SMT solving |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation par contraintes |
-| Search-1 StateSpace | [Search/Part1-Foundations/Search-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1.ipynb) | Espaces d'etats |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation par contraintes |
+| Search-1 StateSpace | [Search/Part1-Foundations/Search-1-StateSpace.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1-StateSpace.ipynb) | Espaces d'etats |
 | Probas/ (Infer.NET) | [Probas/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/Probas) | Programmation probabiliste |
 
 ### References externes
@@ -944,10 +944,10 @@ La planification temporelle etend la planification classique (PDDL) en ajoutant 
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| Planners-7 Temporal Planning | [SymbolicAI/Planners/03-Advanced/Planners-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7.ipynb) | PDDL temporel |
-| Planners-1 Foundation | [SymbolicAI/Planners/01-Foundation/Planners-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/01-Foundation/Planners-1.ipynb) | PDDL, planification |
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, Cumulative |
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | Hybridation solveurs |
+| Planners-7 Temporal Planning | [SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb) | PDDL temporel |
+| Planners-1 Foundation | [SymbolicAI/Planners/01-Foundation/Planners-1-Introduction.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/01-Foundation/Planners-1-Introduction.ipynb) | PDDL, planification |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, Cumulative |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | Hybridation solveurs |
 
 ### References externes
 - Fox, M., & Long, D. (2003). "PDDL2.1: An Extension to PDDL for Expressing Temporal Planning Domains." *Journal of Artificial Intelligence Research*, 20, 61-124. [JAIR](https://www.jair.org/index.php/jair/article/view/10352)
@@ -974,10 +974,10 @@ La planification HTN (Hierarchical Task Network) decompose recursivement une tac
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| Planners-9 HTN Planning | [SymbolicAI/Planners/03-Advanced/Planners-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-9.ipynb) | HTN, decomposition |
-| Planners-1 Foundation | [SymbolicAI/Planners/01-Foundation/Planners-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/01-Foundation/Planners-1.ipynb) | Planification classique |
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | Contraintes temporelles |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
+| Planners-9 HTN Planning | [SymbolicAI/Planners/03-Advanced/Planners-9-HTN.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-9-HTN.ipynb) | HTN, decomposition |
+| Planners-1 Foundation | [SymbolicAI/Planners/01-Foundation/Planners-1-Introduction.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/01-Foundation/Planners-1-Introduction.ipynb) | Planification classique |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | Contraintes temporelles |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
 
 ### References externes
 - Erol, K., et al. (1994). "HTN Planning: Complexity and Expressivity." *AAAI*. [AAAI](https://www.aaai.org/Library/AAAI/1994/aaai94-050.php)
@@ -1004,10 +1004,10 @@ Le Multi-Agent Path Finding (MAPF) consiste a calculer les trajectoires optimale
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| Search-3 A* | [Search/Part1-Foundations/Search-3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3.ipynb) | A*, heuristiques |
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, conflits |
-| CSP-9 Distributed CSP | [Search/Part2-CSP/CSP-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-9.ipynb) | Multi-agent, coordination |
-| Search-1 StateSpace | [Search/Part1-Foundations/Search-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1.ipynb) | Espaces d'etats |
+| Search-3 A* | [Search/Part1-Foundations/Search-3-Informed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3-Informed.ipynb) | A*, heuristiques |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, conflits |
+| CSP-9 Distributed CSP | [Search/Part2-CSP/CSP-9-Distributed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-9-Distributed.ipynb) | Multi-agent, coordination |
+| Search-1 StateSpace | [Search/Part1-Foundations/Search-1-StateSpace.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1-StateSpace.ipynb) | Espaces d'etats |
 
 ### References externes
 - Stern, R., et al. (2019). "Multi-Agent Pathfinding: Definitions, Variants, and Benchmarks." *Symposium on Combinatorial Search (SoCS)*. [arXiv](https://arxiv.org/abs/1906.08291)
@@ -1034,10 +1034,10 @@ L'apprentissage d'heuristiques (Learning to Search) consiste a entrainer un mode
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | Solveurs, heuristiques |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Propagation, branchement |
-| Search-3 A* | [Search/Part1-Foundations/Search-3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3.ipynb) | Heuristiques |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation, benchmarks |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | Solveurs, heuristiques |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Propagation, branchement |
+| Search-3 A* | [Search/Part1-Foundations/Search-3-Informed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3-Informed.ipynb) | Heuristiques |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation, benchmarks |
 
 ### References externes
 - Bengio, Y., et al. (2021). "Machine Learning for Combinatorial Optimization: A Methodological Tour d'Horizon." *European Journal of Operational Research*, 290(2), 405-421. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221720306901)
@@ -1064,10 +1064,10 @@ La composition musicale assistee par contraintes consiste a generer des partitio
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Preferences, penalites |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation |
-| Search-4 Local Search | [Search/Part1-Foundations/Search-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4.ipynb) | Recherche locale |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Preferences, penalites |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation |
+| Search-4 Local Search | [Search/Part1-Foundations/Search-4-LocalSearch.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4-LocalSearch.ipynb) | Recherche locale |
 
 ### References externes
 - Anders, T. (2009). "Composing Music by Composing Rules: Computer-Assisted Composition Using Constraint Programming." *PhD Thesis, Queen Mary University of London*. [QMUL](https://ethos.bl.uk/OrderDetails.do?uin=uk.bl.ethos.509680)
@@ -1094,10 +1094,10 @@ La generation procedurale de niveaux par Wave Function Collapse (WFC) consiste a
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Propagation de contraintes |
-| Search-4 Local Search | [Search/Part1-Foundations/Search-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4.ipynb) | Recherche locale |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Preferences |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Propagation de contraintes |
+| Search-4 Local Search | [Search/Part1-Foundations/Search-4-LocalSearch.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4-LocalSearch.ipynb) | Recherche locale |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Preferences |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation |
 
 ### References externes
 - Karth, I., & Smith, A.M. (2017). "WaveFunctionCollapse is Constraint Solving in the Wild." *PCG Workshop at FDG*. [arXiv](https://arxiv.org/abs/2105.13960)
@@ -1124,10 +1124,10 @@ La cryptanalyse par contraintes consiste a utiliser la programmation par contrai
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
 | Sudoku-12 Z3 Python | [Sudoku/Sudoku-12-Z3-Python.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Sudoku/Sudoku-12-Z3-Python.ipynb) | Resolution par contraintes |
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | Z3, raisonnement |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation |
 
 ### References externes
 - Biondi, P., et al. (2022). "Crypyographic Constraint Solving with CryptoMiniSat." *SAC*. [ACM](https://dl.acm.org/doi/10.1145/3471999)
@@ -1154,10 +1154,10 @@ Les Covering Arrays (CA) sont des matrices N x k ou chaque colonne represente un
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation combinatoire |
-| Search-4 Local Search | [Search/Part1-Foundations/Search-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4.ipynb) | Heuristiques |
-| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13.ipynb) | Generation de tests |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation combinatoire |
+| Search-4 Local Search | [Search/Part1-Foundations/Search-4-LocalSearch.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4-LocalSearch.ipynb) | Heuristiques |
+| SC-13 Fuzz Testing | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-13-Fuzz-Invariants.ipynb) | Generation de tests |
 
 ### References externes
 - Hartman, A., & Raskin, L. (2004). "Problems and Algorithms for Covering Arrays." *Discrete Mathematics*, 284(1-3), 149-156. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0012365X04000980)
@@ -1184,10 +1184,10 @@ Un assistant de planification conversationnel combine un modele de langage (LLM)
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | LLM+CSP, hybridation |
-| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4.ipynb) | IntervalVar, planning |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Preferences, compromis |
-| App-17 VRP Logistics | [Search/Applications/CSP/App-17.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-17.ipynb) | Planning, optimisation |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | LLM+CSP, hybridation |
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, planning |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Preferences, compromis |
+| App-17 VRP Logistics | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | Planning, optimisation |
 
 ### References externes
 - Ahmetovic, D., et al. (2023). "LLM as a Cognitive Assistant for Constraint Modeling." *CP Conference*. [Springer](https://link.springer.com/chapter/10.1007/978-3-031-47361-5_2)
@@ -1214,10 +1214,10 @@ L'explication de solutions CP consiste a generer des explications en langage nat
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | LLM+CSP |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation, solutions |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Compromis, marges |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimalite |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | LLM+CSP |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation, solutions |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Compromis, marges |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimalite |
 
 ### References externes
 - Cyras, K., et al. (2021). "Explainable Constraint-Driven Scheduling." *AAAI*. [AAAI](https://ojs.aaai.org/index.php/AAAI/article/view/16677)
@@ -1244,10 +1244,10 @@ La modelisation CP assistee par LLM consiste a utiliser un modele de langage pou
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | LLM+CSP |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation |
-| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9.ipynb) | Formulation mathematique |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | LLM+CSP |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation |
+| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | Formulation mathematique |
 
 ### References externes
 - Ahmetovic, D., et al. (2023). "LLM as a Cognitive Assistant for Constraint Modeling." *CP Conference*. [Springer](https://link.springer.com/chapter/10.1007/978-3-031-47361-5_2)
@@ -1275,9 +1275,9 @@ L'allocation multicritere de candidats consiste a affecter des candidats a des p
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | GameTheory/ | [GameTheory/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/GameTheory) | Stable Marriage, Shapley Value |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Affectation, optimisation |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Preferences, penalites |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Affectation, optimisation |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Preferences, penalites |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
 
 ### References externes
 - Gale, D., & Shapley, L.S. (1962). "College Admissions and the Stability of Marriage." *American Mathematical Monthly*, 69(1), 9-15. [JSTOR](https://www.jstor.org/stable/2312726)
@@ -1305,9 +1305,9 @@ L'enchere combinatoire permet aux soumissionnaires de placer des offres sur des 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | GameTheory/ | [GameTheory/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/GameTheory) | Encheres, Mechanism Design |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Set Packing, Knapsack |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation |
-| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9.ipynb) | PLNE, relaxation |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Set Packing, Knapsack |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation |
+| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | PLNE, relaxation |
 
 ### References externes
 - Cramton, P., et al. (2006). "Combinatorial Auctions." *MIT Press*. [MIT Press](https://mitpress.mit.edu/9780262033428/combinatorial-auctions/)
@@ -1335,9 +1335,9 @@ L'allocation de ressources par mecanisme incitatif (Mechanism Design) consiste a
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
 | GameTheory/ | [GameTheory/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/GameTheory) | Mechanism Design, Nash |
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Allocation, optimisation |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Compromis, equite |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Allocation, optimisation |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Compromis, equite |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation |
 
 ### References externes
 - Nisan, N., & Ronen, A. (2001). "Algorithmic Mechanism Design." *Games and Economic Behavior*, 35(1-2), 166-196. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0899825600908669)
@@ -1364,10 +1364,10 @@ La planification urbaine sous contraintes consiste a determiner l'emplacement op
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Allocation, localisation |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
-| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9.ipynb) | PLNE, localisation |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Equite, preferences |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Allocation, localisation |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation CSP |
+| Search-9 Programmation lineaire | [Search/Part1-Foundations/Search-9-LinearProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming.ipynb) | PLNE, localisation |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Equite, preferences |
 
 ### References externes
 - Church, R., & ReVelle, C. (1974). "The Maximal Covering Location Problem." *Papers of the Regional Science Association*, 32, 101-118. [Springer](https://link.springer.com/chapter/10.1007/978-3-642-51081-8_6)
@@ -1394,10 +1394,10 @@ L'allocation de frequences radio (Frequency Assignment Problem, FAP) consiste a 
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Coloration, CSP |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Minimisation violations |
-| Search-4 Local Search | [Search/Part1-Foundations/Search-4.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4.ipynb) | Heuristiques de coloration |
-| App-8 MiniZinc | [Search/Applications/CSP/App-8.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-8.ipynb) | Modelisation MiniZinc |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Coloration, CSP |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Minimisation violations |
+| Search-4 Local Search | [Search/Part1-Foundations/Search-4-LocalSearch.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-4-LocalSearch.ipynb) | Heuristiques de coloration |
+| App-8 MiniZinc | [Search/Applications/CSP/App-8-MiniZinc.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-8-MiniZinc.ipynb) | Modelisation MiniZinc |
 
 ### References externes
 - Aardal, K.I., et al. (2007). "Models and Solution Techniques for Frequency Assignment Problems." *4OR*, 5(4), 261-317. [Springer](https://link.springer.com/article/10.1007/s10288-007-0048-4)
@@ -1424,10 +1424,10 @@ L'optimisation multiobjectif sous contraintes consiste a optimiser simultanement
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Optimisation, objectifs multiples |
-| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7.ipynb) | Compromis, penalites |
-| App-10 Portfolio | [Search/Applications/Hybrid/App-10.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10.ipynb) | Optimisation multiobjectif (rendement/risque) |
-| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11.ipynb) | NSGA-II, metaheuristiques |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation, objectifs multiples |
+| CSP-7 Soft Constraints | [Search/Part2-CSP/CSP-7-Soft.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-7-Soft.ipynb) | Compromis, penalites |
+| App-10 Portfolio | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Optimisation multiobjectif (rendement/risque) |
+| Search-11 Metaheuristiques | [Search/Part1-Foundations/Search-11-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-11-Metaheuristics.ipynb) | NSGA-II, metaheuristiques |
 
 ### References externes
 - Deb, K., et al. (2002). "A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II." *IEEE Transactions on Evolutionary Computation*, 6(2), 182-197. [IEEE](https://ieeexplore.ieee.org/document/996017)
@@ -1454,9 +1454,9 @@ Ce meta-sujet consiste a participer a une competition academique de programmatio
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6.ipynb) | Solveurs, encodage |
-| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation |
-| App-8 MiniZinc | [Search/Applications/CSP/App-8.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-8.ipynb) | MiniZinc, benchmarks |
+| CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | Solveurs, encodage |
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1-Fundamentals.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1-Fundamentals.ipynb) | Modelisation |
+| App-8 MiniZinc | [Search/Applications/CSP/App-8-MiniZinc.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-8-MiniZinc.ipynb) | MiniZinc, benchmarks |
 | Linq2Z3 | [SymbolicAI/Linq2Z3.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Linq2Z3.ipynb) | SMT solving |
 
 ### References externes
