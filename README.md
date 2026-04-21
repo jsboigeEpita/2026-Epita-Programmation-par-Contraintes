@@ -149,9 +149,10 @@ Les notebooks suivants sont disponibles dans le depot CoursIA ([jsboige/CoursIA]
 |---|-------|------------|
 | [M1](#m1---portefeuille-parcimonieux-sous-contraintes-de-cardinalite-sparse-markowitz) | Portefeuille parcimonieux sous contraintes de cardinalite (Sparse Markowitz) | 3/5 |
 | [M2](#m2---replication-dindice-sous-contraintes-sparse-index-tracking) | Replication d'indice sous contraintes (Sparse Index Tracking) | 3/5 |
-| [M3](#m3---rebalancement-multi-periode-sous-couts-de-transaction-et-fiscalite) | Rebalancement multi-periode sous couts de transaction et fiscalite | 4/5 |
+| [M3](#m3---selection-de-paires-pour-stat-arb-par-enumeration-de-cliques-cp) | Selection de paires pour stat-arb par enumeration de cliques (CP) | 4/5 |
 | [M4](#m4---execution-optimale-dordres-twapvwap-avec-impact-de-marche) | Execution optimale d'ordres (TWAP/VWAP avec impact de marche) | 4/5 |
-| [M5](#m5---allocation-robuste-de-strategies-meta-portefeuille) | Allocation robuste de strategies (Meta-portefeuille) | 4/5 |
+| [M5](#m5---allocation-risk-parity-sous-contraintes-de-cardinalite) | Allocation Risk-Parity sous contraintes de cardinalite | 4/5 |
+| [M6](#m6---arbitrage-triangulaire-crypto-par-detection-de-cycles-cp--bellman-ford) | Arbitrage triangulaire crypto par detection de cycles (CP + Bellman-Ford) | 3/5 |
 
 > **Note** : Les sujets de la categorie M sont **specifiquement orientes vers la programmation par contraintes** appliquee au trading algorithmique. Ils exigent une modelisation CP-SAT / MiniZinc / CPMpy ou Z3 OMT (pas seulement du ML ou du backtesting pur). Chaque projet **doit** etre valide par un backtest sur la plateforme [QuantConnect Lean](https://www.quantconnect.com/) grace au partenariat educatif sponsorise par Jared Broad (CEO QC). Les etudiants ayant rejoint l'organisation QuantConnect sponsorisee sont encourages a choisir en priorite ces sujets.
 >
@@ -1507,7 +1508,7 @@ Le portefeuille Mean-Variance de Markowitz (1952) est un classique de la finance
 
 ### References externes
 - Markowitz, H. (1952). "Portfolio Selection." *Journal of Finance*, 7(1), 77-91. [JSTOR](https://www.jstor.org/stable/2975974)
-- Bertsimas, D. & Shioda, R. (2009). "Algorithms for cardinality-constrained quadratic optimization." *Operations Research*. [INFORMS](https://pubsonline.informs.org/doi/10.1287/opre.2013.1170)
+- Bertsimas, D. & Shioda, R. (2009). "Algorithm for cardinality-constrained quadratic optimization." *Computational Optimization and Applications*, 43(1), 1-25. [Springer](https://link.springer.com/article/10.1007/s10589-007-9123-2)
 - Bonami, P., Lodi, A., Tramontani, A., Wiese, S. (2018). "On mathematical programming with indicator constraints." *Annals of OR*. [Springer](https://link.springer.com/article/10.1007/s10479-017-2447-x)
 - skfolio. "Mixed-Integer Cardinality Constraints." [skfolio.org](https://skfolio.org/auto_examples/mean_risk/plot_15_mip_cardinality_constraints.html)
 - Cornuejols, G., & Tutuncu, R. (2006). "Optimization Methods in Finance." Cambridge. [CMU](http://web.math.ku.dk/~rolf/CT_FinOpt.pdf)
@@ -1571,7 +1572,7 @@ Le **statistical arbitrage par paires** (Gatev et al. 2006) consiste a trader de
 ### References externes
 - Gatev, E., Goetzmann, W.N., Rouwenhorst, K.G. (2006). "Pairs Trading: Performance of a Relative-Value Arbitrage Rule." *Rev. Fin. Studies*, 19(3). [Oxford](https://academic.oup.com/rfs/article/19/3/797/1593737)
 - Caldeira, J., Moura, G. (2013). "Selection of a Portfolio of Pairs Based on Cointegration." *Brazilian Review of Finance*. [RePEc](https://ideas.repec.org/a/brf/journl/v11y2013i1p49-80.html)
-- Monteiro, C., et al. (2024). "Statistical arbitrage in multi-pair trading strategy based on graph clustering algorithms in US equities market." *arxiv:2406.10695*. [arXiv](https://arxiv.org/abs/2406.10695)
+- Korniejczuk, A. & Slepaczuk, R. (2024). "Statistical arbitrage in multi-pair trading strategy based on graph clustering algorithms in US equities market." *arxiv:2406.10695*. [arXiv](https://arxiv.org/abs/2406.10695)
 - Edmonds, J. (1965). "Paths, Trees, and Flowers." *Canadian J. Math*, 17, 449-467. [Cambridge](https://www.cambridge.org/core/journals/canadian-journal-of-mathematics/article/paths-trees-and-flowers/08B492B72322C4130AE800C0610E0E21)
 - QuantConnect. "Pairs Trading Tutorial." [quantconnect.com](https://www.quantconnect.com/learning/articles/introduction-to-options/pairs-trading)
 
@@ -1661,7 +1662,7 @@ Sur un exchange crypto (Binance, Kraken), 8 cryptos majeurs (BTC, ETH, BNB, USDT
 
 ### References externes
 - Xu, Y., Livshits, B. (2019). "The anatomy of a cryptocurrency pumping-and-dumping scheme." *USENIX Security*. [USENIX](https://www.usenix.org/conference/usenixsecurity19/presentation/xu-yiming)
-- Chen, X., et al. (2025). "Efficient Triangular Arbitrage Detection via GNN." *arxiv:2502.03194*. [arXiv](https://arxiv.org/abs/2502.03194)
+- Makarov, I. & Schoar, A. (2020). "Trading and Arbitrage in Cryptocurrency Markets." *Journal of Financial Economics*, 135(2), 293-319. [ScienceDirect](https://doi.org/10.1016/j.jfineco.2019.07.001)
 - Angeris, G., Chitra, T. (2020). "Improved Price Oracles: Constant Function Market Makers." *AFT'20*. [arXiv](https://arxiv.org/abs/2003.10001)
 - Bellman, R. (1958). "On a routing problem." *Quarterly of Applied Math*, 16(1). [AMS](https://www.ams.org/journals/qam/1958-16-01/S0033-569X-1958-0102435-2/)
 - Binance API Docs. [binance-docs.github.io](https://binance-docs.github.io/apidocs/spot/en/)
