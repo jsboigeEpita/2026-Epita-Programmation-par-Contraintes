@@ -450,7 +450,7 @@ Le Railway Timetabling Problem consiste a planifier les passages de trains sur u
 | CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, NoOverlap, Cumulative |
 | App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShopScheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShopScheduling.ipynb) | Job-shop, ressources partagees |
 | CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation multi-objectif |
-| Planners-7 Temporal Planning | [SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb) | Planification temporelle |
+| Planners-7 OR-Tools | [SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb) | Planification temporelle avec IntervalVar |
 
 ### References externes
 - Serafini, P., & Ukovich, W. (1989). "A Mathematical Model for Periodic Scheduling Problems." *SIAM Journal on Discrete Mathematics*, 2(4), 550-581. [SIAM](https://epubs.siam.org/doi/abs/10.1137/0402049)
@@ -959,7 +959,7 @@ La planification temporelle etend la planification classique (PDDL) en ajoutant 
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| Planners-7 Temporal Planning | [SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb) | PDDL temporel |
+| Planners-7 OR-Tools | [SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/03-Advanced/Planners-7-OR-Tools.ipynb) | PDDL temporel |
 | Planners-1 Foundation | [SymbolicAI/Planners/01-Foundation/Planners-1-Introduction.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Planners/01-Foundation/Planners-1-Introduction.ipynb) | PDDL, planification |
 | CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, Cumulative |
 | CSP-6 Hybridation CP+SAT | [Search/Part2-CSP/CSP-6-Hybridization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-6-Hybridization.ipynb) | Hybridation solveurs |
@@ -1115,7 +1115,7 @@ La generation procedurale de niveaux par Wave Function Collapse (WFC) consiste a
 | CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Optimisation |
 
 ### References externes
-- Karth, I., & Smith, A.M. (2017). "WaveFunctionCollapse is Constraint Solving in the Wild." *PCG Workshop at FDG*. [arXiv](https://arxiv.org/abs/2105.13960)
+- Karth, I., & Smith, A.M. (2017). "WaveFunctionCollapse is Constraint Solving in the Wild." *PCG Workshop at FDG'17*. [ACM DL](https://dl.acm.org/doi/10.1145/3102071.3110566)
 - WaveFunctionCollapse (original implementation). [GitHub](https://github.com/mxgmn/WaveFunctionCollapse)
 - Tabor, J. (2022). "Constraint-Based Procedural Generation: A Survey." *IEEE Transactions on Games*. [IEEE](https://ieeexplore.ieee.org/document/9792255)
 - Smith, A.M., & Mateas, M. (2011). "Answer Set Programming for Procedural Content Generation." *IEEE T-CIAIG*. [IEEE](https://ieeexplore.ieee.org/document/5668232)
@@ -1207,7 +1207,7 @@ Un assistant de planification conversationnel combine un modele de langage (LLM)
 ### References externes
 - Ahmetovic, D., et al. (2023). "LLM as a Cognitive Assistant for Constraint Modeling." *CP Conference*. [Springer](https://link.springer.com/chapter/10.1007/978-3-031-47361-5_2)
 - OpenAI Function Calling Guide. [OpenAI](https://platform.openai.com/docs/guides/function-calling)
-- Fuscaldi, M., et al. (2024). "Conversational AI for Optimization Problem Solving." *arXiv*. [arXiv](https://arxiv.org/abs/2401.04720)
+- Google. "CP-SAT Solver Documentation." [developers.google.com](https://developers.google.com/optimization/cp/cp_solver)
 - Model Context Protocol (MCP) Specification. [MCP](https://modelcontextprotocol.io/)
 
 ### Difficulte : 3/5
@@ -1266,7 +1266,7 @@ La modelisation CP assistee par LLM consiste a utiliser un modele de langage pou
 
 ### References externes
 - Ahmetovic, D., et al. (2023). "LLM as a Cognitive Assistant for Constraint Modeling." *CP Conference*. [Springer](https://link.springer.com/chapter/10.1007/978-3-031-47361-5_2)
-- Michelioudakis, A., et al. (2024). "Constraint Modeling from Natural Language with LLMs." *arXiv*. [arXiv](https://arxiv.org/abs/2405.11707)
+- Nethercote, N., Stuckey, P.J., Becket, R., Brand, S., Duck, G.J., & Tack, G. (2007). "MiniZinc: Towards a Standard CP Modelling Language." *Principles and Practice of Constraint Programming (CP 2007)*. [Springer](https://link.springer.com/chapter/10.1007/978-3-540-74970-7_38)
 - Cappart, Q., et al. (2023). "A Survey on the Integration of Machine Learning and Constraint Programming." *Constraints*. [Springer](https://link.springer.com/article/10.1007/s10601-023-09348-7)
 - GCode: Generating Optimization Code from Natural Language. [GitHub](https://github.com/optsuite/gcode)
 
