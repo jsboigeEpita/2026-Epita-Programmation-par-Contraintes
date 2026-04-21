@@ -143,6 +143,20 @@ Les notebooks suivants sont disponibles dans le depot CoursIA ([jsboige/CoursIA]
 |---|-------|------------|
 | [L1](#l1---participation-a-une-competition-cpsatsmt) | Participation a une competition CP/SAT/SMT | Variable |
 
+### Categorie M : Finance Quantitative et Trading Algorithmique
+
+| # | Sujet | Difficulte |
+|---|-------|------------|
+| [M1](#m1---portefeuille-parcimonieux-sous-contraintes-de-cardinalite-sparse-markowitz) | Portefeuille parcimonieux sous contraintes de cardinalite (Sparse Markowitz) | 3/5 |
+| [M2](#m2---replication-dindice-sous-contraintes-sparse-index-tracking) | Replication d'indice sous contraintes (Sparse Index Tracking) | 3/5 |
+| [M3](#m3---rebalancement-multi-periode-sous-couts-de-transaction-et-fiscalite) | Rebalancement multi-periode sous couts de transaction et fiscalite | 4/5 |
+| [M4](#m4---execution-optimale-dordres-twapvwap-avec-impact-de-marche) | Execution optimale d'ordres (TWAP/VWAP avec impact de marche) | 4/5 |
+| [M5](#m5---allocation-robuste-de-strategies-meta-portefeuille) | Allocation robuste de strategies (Meta-portefeuille) | 4/5 |
+
+> **Note** : Les sujets de la categorie M sont **specifiquement orientes vers la programmation par contraintes** appliquee au trading algorithmique. Ils exigent une modelisation CP-SAT / MiniZinc / CPMpy ou Z3 OMT (pas seulement du ML ou du backtesting pur). Chaque projet **doit** etre valide par un backtest sur la plateforme [QuantConnect Lean](https://www.quantconnect.com/) grace au partenariat educatif sponsorise par Jared Broad (CEO QC). Les etudiants ayant rejoint l'organisation QuantConnect sponsorisee sont encourages a choisir en priorite ces sujets.
+>
+> **Attention** : La **Portfolio Optimization classique de Markowitz** est listee dans l'[annexe anti-plagiat](#annexe--sujets-interdits-anti-plagiat) (traitee en EPITA 2025). Les sujets M1-M5 sont des **extensions combinatoires** (cardinalite, lots entiers, scheduling, cout d'execution, robustesse) qui n'ont jamais ete couvertes auparavant.
+
 ---
 
 ## A1 - Echange de reins (Kidney Exchange)
@@ -1467,6 +1481,192 @@ Ce meta-sujet consiste a participer a une competition academique de programmatio
 - Biere, A., et al. (2021). "Handbook of Satisfiability." *IOS Press*, 2nd Edition. [IOS Press](https://iospress.nl/book/handbook-of-satisfiability-2/)
 
 ### Difficulte : Variable
+
+---
+
+## M1 - Portefeuille parcimonieux sous contraintes de cardinalite (Sparse Markowitz)
+
+Le portefeuille Mean-Variance de Markowitz (1952) est un classique de la finance quantitative mais souffre, dans sa forme continue, de produire des solutions avec des centaines de lignes de faible poids difficilement gerables en pratique. L'**extension sparse** ajoute une contrainte de cardinalite K (exactement K titres actifs parmi N candidats) qui transforme le probleme en un programme quadratique mixte entier (MIQP), non convexe et NP-difficile. Ce sujet explore sa modelisation en CP-SAT (linearisation SOS1), en MILP (Big-M), et la comparaison avec des heuristiques (genetique, greedy Sharpe) sur le S&P 500 ou le CAC 40. Au-dela du modele classique, les etudiants devront ajouter des contraintes realistes : lots entiers (100 actions par ligne), buy-in thresholds (`w_i = 0` ou `w_i >= w_min`), plafonds sectoriels, et limite de turnover au rebalancement.
+
+### Objectifs
+- Modeliser le probleme Sparse Markowitz avec cardinalite exacte K, lots entiers, et buy-in thresholds en CP-SAT (OR-Tools) et MILP (SCIP/Gurobi)
+- Linearisation de la variance quadratique via factorisation de Cholesky ou approximation SOS
+- Benchmarker CP-SAT, MILP, algo genetique (DEAP, PyGAD) sur front de Pareto risk-return (5 instances : 50, 100, 200, 500, 1000 actifs)
+- Analyser l'impact des symmetry breakings (ordre lexicographique sur les titres selectionnes)
+- Valider en Out-of-Sample sur 3 periodes distinctes via backtest QuantConnect Lean (Universe S&P 500, rebalance mensuel, commission realiste)
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Knapsack, cardinalite |
+| App-10 Portfolio | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Baseline Markowitz + GA |
+| QC-Py-10 Risk Portfolio | [QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb) | Sizing, Kelly, stop-loss |
+| QC-Py-14 Portfolio Construction | [QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb) | Rebalance Lean framework |
+| QC-Py-21 Portfolio-Optimization-ML | [QuantConnect/Python/QC-Py-21-Portfolio-Optimization-ML.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-21-Portfolio-Optimization-ML.ipynb) | ML + optimisation |
+
+### References externes
+- Markowitz, H. (1952). "Portfolio Selection." *Journal of Finance*, 7(1), 77-91. [JSTOR](https://www.jstor.org/stable/2975974)
+- Bertsimas, D. & Shioda, R. (2009). "Algorithms for cardinality-constrained quadratic optimization." *Operations Research*. [INFORMS](https://pubsonline.informs.org/doi/10.1287/opre.2013.1170)
+- Bonami, P., Lodi, A., Tramontani, A., Wiese, S. (2018). "On mathematical programming with indicator constraints." *Annals of OR*. [Springer](https://link.springer.com/article/10.1007/s10479-017-2447-x)
+- skfolio. "Mixed-Integer Cardinality Constraints." [skfolio.org](https://skfolio.org/auto_examples/mean_risk/plot_15_mip_cardinality_constraints.html)
+- Cornuejols, G., & Tutuncu, R. (2006). "Optimization Methods in Finance." Cambridge. [CMU](http://web.math.ku.dk/~rolf/CT_FinOpt.pdf)
+- OR-Tools CP-SAT Guide. [developers.google.com](https://developers.google.com/optimization/cp/cp_solver)
+
+### Difficulte : 3/5
+
+---
+
+## M2 - Replication d'indice sous contraintes (Sparse Index Tracking)
+
+La replication d'un ETF (SPY, CAC40, EuroStoxx) avec un nombre reduit K << N de titres est un probleme central de la gestion passive. Formellement, on cherche un portefeuille sparse `w` qui minimise la **tracking error** `|| R_p - R_benchmark ||` sur une fenetre historique, sous contraintes de cardinalite, de lots entiers, de sector caps, et de turnover au rebalancement periodique. Contrairement au Sparse Markowitz (M1) qui optimise un objectif risk-return, l'Index Tracking optimise une distance au benchmark : la formulation differe (L1 ou L2 tracking error, objectif lineaire ou quadratique). Les etudiants comparent MILP classique (Bertsimas 2015), CP-SAT avec `Element constraint`, et regression Lasso (baseline ML) sur 3 indices differents et 2 horizons (1 an, 5 ans). La validation se fait via backtest Lean avec benchmark = SPY et mesure du tracking error realise.
+
+### Objectifs
+- Formaliser la tracking error L1 et L2, et son equivalent integer lot (nombre d'actions au lieu de poids reels)
+- Modeliser le probleme en CP-SAT avec cardinalite K ∈ {20, 30, 50}, sector caps, lots de 100 actions, et turnover cap
+- Comparer au MILP classique (Gurobi, SCIP) et a la baseline Lasso (scikit-learn)
+- Analyser l'impact du K sur la tracking error out-of-sample (bias/variance tradeoff)
+- Backtest QuantConnect Lean : S&P 500 tracke par 30 actions, rebalance trimestriel 2019-2024, mesure tracking error realisee vs SPY
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Cardinalite, Knapsack |
+| Search-9 Linear Programming | [Search/Part1-Foundations/Search-9-LinearProgramming-Python.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-9-LinearProgramming-Python.ipynb) | Simplex, LP |
+| QC-Py-05 Universe Selection | [QuantConnect/Python/QC-Py-05-Universe-Selection.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-05-Universe-Selection.ipynb) | Manual universe, S&P 500 |
+| QC-Py-14 Portfolio Construction | [QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb) | Rebalance, execution |
+
+### References externes
+- Takeda, A., Niranjan, M., Gotoh, J., Kawahara, Y. (2015). "Simultaneous pursuit of out-of-sample performance and sparsity in index tracking portfolios." *arxiv:1506.05866*. [arXiv](https://arxiv.org/abs/1506.05866)
+- Benidis, K., Feng, Y., Palomar, D. (2018). "Sparse Portfolios for High-Dimensional Financial Index Tracking." *arxiv:1809.01989*. [arXiv](https://arxiv.org/abs/1809.01989)
+- Scozzari, A., Tardella, F., Paterlini, S., Krink, T. (2013). "Exact and heuristic approaches for the index tracking problem with UCITS constraints." *Annals of OR*. [Springer](https://link.springer.com/article/10.1007/s10479-012-1098-1)
+- Rosenberg, G., et al. (2016). "Solving the Optimal Trading Trajectory Problem Using a Quantum Annealer." *arxiv:1508.06182*. [arXiv](https://arxiv.org/abs/1508.06182)
+- Cornuejols, G., & Tutuncu, R. (2006). "Optimization Methods in Finance." Cambridge.
+
+### Difficulte : 3/5
+
+---
+
+## M3 - Selection de paires pour stat-arb par enumeration de cliques (CP)
+
+Le **statistical arbitrage par paires** (Gatev et al. 2006) consiste a trader des paires de titres cointegres : long l'un / short l'autre quand le spread s'ecarte de sa moyenne. Avec N=500 titres, il existe C(500,2)=124750 paires candidates ; apres filtre de cointegration (p-value < 0.05) on obtient typiquement quelques centaines d'edges dans un graphe. Le probleme combinatoire est : **selectionner un ensemble de K paires mutuellement disjointes** (chaque ticker dans au plus une paire) qui maximise le Sharpe esperé in-sample, sous contraintes de diversification sectorielle et de hedge-ratios entiers. C'est un probleme de **maximum weighted matching avec contraintes additionnelles**, qui se modelise nativement en CP-SAT avec `AtMostOne` par sommet et objectif lineaire pondere. Les etudiants comparent CP-SAT, MILP, et algorithmes de graphes classiques (Blossom de Edmonds) sur des donnees reelles US Equity.
+
+### Objectifs
+- Construire le graphe de cointegration : tester toutes les paires avec `statsmodels.tsa.stattools.coint`, filtrer a p < 0.05, ponderer par Sharpe in-sample
+- Modeliser le probleme de matching avec contraintes en CP-SAT : `AtMostOne(x_{ij} for j)` pour chaque ticker i, objectif `max sum(sharpe_{ij} * x_{ij})`
+- Comparer a MILP (Gurobi), a Blossom (networkx `max_weight_matching`), et une heuristique gloutonne
+- Etudier l'impact de K (20, 50, 100 paires) et des contraintes sectorielles sur le Sharpe realise
+- Backtest Lean : strategie long/short Z-score sur les paires retenues, commission realiste, 2019-2024
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Matching, optimisation |
+| QC-Py-08 Multi-Asset | [QuantConnect/Python/QC-Py-08-Multi-Asset-Strategies.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-08-Multi-Asset-Strategies.ipynb) | Pairs, correlations |
+| QC-Py-13 Alpha Models | [QuantConnect/Python/QC-Py-13-Alpha-Models.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-13-Alpha-Models.ipynb) | Alpha frameworks |
+
+### References externes
+- Gatev, E., Goetzmann, W.N., Rouwenhorst, K.G. (2006). "Pairs Trading: Performance of a Relative-Value Arbitrage Rule." *Rev. Fin. Studies*, 19(3). [Oxford](https://academic.oup.com/rfs/article/19/3/797/1593737)
+- Caldeira, J., Moura, G. (2013). "Selection of a Portfolio of Pairs Based on Cointegration." *Brazilian Review of Finance*. [RePEc](https://ideas.repec.org/a/brf/journl/v11y2013i1p49-80.html)
+- Monteiro, C., et al. (2024). "Statistical arbitrage in multi-pair trading strategy based on graph clustering algorithms in US equities market." *arxiv:2406.10695*. [arXiv](https://arxiv.org/abs/2406.10695)
+- Edmonds, J. (1965). "Paths, Trees, and Flowers." *Canadian J. Math*, 17, 449-467. [Cambridge](https://www.cambridge.org/core/journals/canadian-journal-of-mathematics/article/paths-trees-and-flowers/08B492B72322C4130AE800C0610E0E21)
+- QuantConnect. "Pairs Trading Tutorial." [quantconnect.com](https://www.quantconnect.com/learning/articles/introduction-to-options/pairs-trading)
+
+### Difficulte : 4/5
+
+---
+
+## M4 - Execution optimale d'ordres (TWAP/VWAP avec impact de marche)
+
+L'**execution optimale** (Almgren-Chriss 2000) consiste a fractionner un grand ordre (p.ex. acheter 1M actions AAPL) sur un horizon H (30 minutes, 1 jour) de maniere a minimiser le **cout total** = impact permanent + impact temporaire + variance d'execution. La version continue se resout analytiquement, mais la version **discrete** avec quantites entieres, participation rate max (10% d'ADV par slot), lots minimums, et contraintes d'ordre (on ne peut pas depasser sa taille cible) est NP-difficile et se modelise en CP-SAT avec `IntervalVar` et `Cumulative`. Les etudiants comparent la solution optimale continue (formule fermee Almgren-Chriss), la version CP-SAT discrete, un simulated annealing, et valide sur des donnees minute de QuantConnect. L'aspect combinatoire est crucial pour les marches illiquides (smallcaps, crypto).
+
+### Objectifs
+- Implementer la formule fermee Almgren-Chriss et verifier numeriquement qu'elle donne bien une trajectoire deterministe
+- Modeliser la version discrete en CP-SAT : variables entieres par slot, contrainte cumulative sur participation rate, contrainte d'integrite totale
+- Calibrer les parametres d'impact (permanent λ, temporaire η) sur donnees minute via regression (Obizhaeva-Wang 2013)
+- Comparer la qualite d'execution CP-SAT vs SA vs Almgren-Chriss continue sur 5 tickers (liquide + illiquide)
+- Backtest Lean : strategie qui genere des gros ordres (rebalance portfolio) et les execute via schedule CP ; comparer cost of execution vs Market-on-open naive
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| CSP-4 Scheduling | [Search/Part2-CSP/CSP-4-Scheduling.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-4-Scheduling.ipynb) | IntervalVar, Cumulative |
+| App-4 Job-Shop Scheduling | [Search/Applications/CSP/App-4-JobShop.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/CSP/App-4-JobShop.ipynb) | Scheduling discret |
+| QC-Py-09 Order Types | [QuantConnect/Python/QC-Py-09-Order-Types.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-09-Order-Types.ipynb) | Orders, execution |
+| QC-Py-14 Portfolio Construction | [QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-14-Portfolio-Construction-Execution.ipynb) | Execution models |
+
+### References externes
+- Almgren, R., Chriss, N. (2000). "Optimal Execution of Portfolio Transactions." *J. Risk*, 3(2), 5-39. [math.nyu.edu](https://www.math.nyu.edu/~almgren/papers/optliq.pdf)
+- Obizhaeva, A., Wang, J. (2013). "Optimal Trading Strategy and Supply/Demand Dynamics." *J. Fin. Markets*, 16(1). [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S1386418112000328)
+- Busseti, E., Boyd, S. (2015). "Volume Weighted Average Price Optimal Execution." *Stanford*. [Stanford](https://web.stanford.edu/~boyd/papers/pdf/vwap_opt_exec.pdf)
+- Rosenberg, G., et al. (2016). "Solving the Optimal Trading Trajectory Problem Using a Quantum Annealer." *arxiv:1508.06182*. [arXiv](https://arxiv.org/abs/1508.06182)
+- Cartea, A., Jaimungal, S., Penalva, J. (2015). "Algorithmic and High-Frequency Trading." Cambridge UP. [CUP](https://www.cambridge.org/core/books/algorithmic-and-highfrequency-trading/56AC5C3F20B7CD08D5A14D4D04089C75)
+
+### Difficulte : 4/5
+
+---
+
+## M5 - Allocation Risk-Parity sous contraintes de cardinalite
+
+La strategie **Risk Parity** (ou Equal Risk Contribution, ERC, Maillard 2010) egalise la contribution au risque de chaque actif `σ_i * w_i * (Σw)_i = c` pour tout i. C'est une alternative populaire au Markowitz (1/N weighting ameliore) utilisee par Bridgewater (All Weather). La version **classique** se resout par optimisation convexe sans contrainte de cardinalite. La version **cardinalite K**, utile quand on veut allouer sur peu de titres (strategie simple, bas cout), devient non-convexe et NP-difficile : c'est un QCQIP (Quadratic Constrained Quadratic Integer Program) rarement etudie. Anis & Kwon (2022) proposent une formulation MIQCP recente que les etudiants doivent comparer a une approche CP-SAT avec linearisation.
+
+### Objectifs
+- Formaliser la condition ERC et sa variante cardinalite K
+- Implementer la version classique (convexe) en cvxpy pour baseline
+- Modeliser la version cardinalite en MIQCP (Gurobi) et en CP-SAT (avec linearisation de la contrainte quadratique)
+- Analyser empiriquement : diversification effective (Effective Number of Bets), comparaison vs Sparse Markowitz (M1) et 1/K naif
+- Backtest Lean : allocation ERC sur 10 ETFs sectoriels (XLK, XLF, ...), rebalance mensuel, covariance rolling 252 jours
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| App-10 Portfolio | [Search/Applications/Hybrid/App-10-Portfolio.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-10-Portfolio.ipynb) | Markowitz baseline |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5.ipynb) | Cardinalite |
+| QC-Py-10 Risk-Portfolio | [QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-10-Risk-Portfolio-Management.ipynb) | Risk sizing |
+| QC-Py-21 Portfolio-Optimization-ML | [QuantConnect/Python/QC-Py-21-Portfolio-Optimization-ML.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-21-Portfolio-Optimization-ML.ipynb) | ML + optimisation |
+
+### References externes
+- Maillard, S., Roncalli, T., Teiletche, J. (2010). "The Properties of Equally Weighted Risk Contribution Portfolios." *JPM*, 36(4). [IIJ](https://jpm.pm-research.com/content/36/4/60)
+- Anis, H., Kwon, R. (2022). "Cardinality-constrained risk parity portfolios." *EJOR*, 302(1), 392-414. [ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0377221721011012)
+- Cesarone, F., Tardella, F. (2017). "Equal Risk Bounding is better than Risk Parity for Portfolio Selection." *J. Global Optim*, 68(2). [Springer](https://link.springer.com/article/10.1007/s10898-016-0477-6)
+- Roncalli, T. (2013). "Introduction to Risk Parity and Budgeting." CRC Press. [Routledge](https://www.routledge.com/Introduction-to-Risk-Parity-and-Budgeting/Roncalli/p/book/9781482207156)
+
+### Difficulte : 4/5
+
+---
+
+## M6 - Arbitrage triangulaire crypto par detection de cycles (CP + Bellman-Ford)
+
+Sur un exchange crypto (Binance, Kraken), 8 cryptos majeurs (BTC, ETH, BNB, USDT, USDC, SOL, ADA, XRP) forment un graphe complet de 28 paires de trading. Une opportunite d'**arbitrage triangulaire** (ou quadrilateral, jusqu'a 5 sauts) consiste en un cycle de conversions `A -> B -> C -> A` avec un profit net positif apres frais. Detecter un tel cycle = trouver un cycle negatif dans le graphe log-pondere (Bellman-Ford) ; mais la version **realiste** ajoute des contraintes : frais maker/taker 0.1%, slippage en fonction du depth-of-book, taille minimale d'ordre, contrainte d'execution simultanee (latence). Cela transforme la detection en probleme CP avec contraintes non triviales. Les etudiants comparent Bellman-Ford naïf vs CP-SAT avec `Circuit constraint` et contraintes supplementaires, sur un flux de marche Binance (WebSocket).
+
+### Objectifs
+- Implementer le pipeline de detection : flux orderbook Binance (WebSocket via `python-binance`), construction du graphe log-spread, detection cycles negatifs
+- Comparer 3 approches : Bellman-Ford classique, CP-SAT avec `Circuit`, heuristique greedy DFS
+- Ajouter les contraintes realistes : frais, slippage depth-based, tailles min d'ordre, rentabilite nette > threshold
+- Analyser la frequence d'apparition des opportunites en fonction du seuil de rentabilite net et de la profondeur de cycle (3-5 sauts)
+- Integration QuantConnect : implementer une strategie "monitoring only" qui detecte et logue les opportunites (sans exec reelle, car la latence depasse les capacites Lean) ; alternative : simulation batch sur historique Binance
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| CSP-1 Fondamentaux | [Search/Part2-CSP/CSP-1.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-1.ipynb) | Modelisation CSP |
+| App-13 TSP | [Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb) | Cycles, Circuit constraint |
+| QC-Py-07 Futures/Forex | [QuantConnect/Python/QC-Py-07-Futures-Forex.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/QuantConnect/Python/QC-Py-07-Futures-Forex.ipynb) | Crypto feeds, leverage |
+
+### References externes
+- Xu, Y., Livshits, B. (2019). "The anatomy of a cryptocurrency pumping-and-dumping scheme." *USENIX Security*. [USENIX](https://www.usenix.org/conference/usenixsecurity19/presentation/xu-yiming)
+- Chen, X., et al. (2025). "Efficient Triangular Arbitrage Detection via GNN." *arxiv:2502.03194*. [arXiv](https://arxiv.org/abs/2502.03194)
+- Angeris, G., Chitra, T. (2020). "Improved Price Oracles: Constant Function Market Makers." *AFT'20*. [arXiv](https://arxiv.org/abs/2003.10001)
+- Bellman, R. (1958). "On a routing problem." *Quarterly of Applied Math*, 16(1). [AMS](https://www.ams.org/journals/qam/1958-16-01/S0033-569X-1958-0102435-2/)
+- Binance API Docs. [binance-docs.github.io](https://binance-docs.github.io/apidocs/spot/en/)
+
+### Difficulte : 3/5
 
 ---
 
