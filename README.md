@@ -53,7 +53,7 @@ Les notebooks suivants sont disponibles dans le depot CoursIA ([jsboige/CoursIA]
 | # | Sujet | Difficulte |
 |---|-------|------------|
 | [B1](#b1---equilibrage-de-chaine-dassemblage-salbp) | Equilibrage de chaine d'assemblage (SALBP) | 3/5 |
-| [B2](#b2---conception-de-chaine-logistique-supply-chain-network-design) | Conception de chaine logistique (Supply Chain) | 3/5 |
+| [B2](#b2---conception-de-chaine-logistique-supply-chain-network-design) | Conception de chaine logistique (Supply Chain Network Design) | 3/5 |
 | [B3](#b3---chargement-de-conteneurs-bin-packing-3d) | Chargement de conteneurs (Bin Packing 3D) | 3/5 |
 | [B4](#b4---ordonnancement-industriel-rcpsp) | Ordonnancement industriel (RCPSP) | 3/5 |
 
@@ -64,7 +64,7 @@ Les notebooks suivants sont disponibles dans le depot CoursIA ([jsboige/CoursIA]
 | [C1](#c1---tournees-de-livraison-vertes-electric-vrp) | Tournees de livraison vertes (Electric VRP) | 3/5 |
 | [C2](#c2---ordonnancement-ferroviaire-railway-timetabling) | Ordonnancement ferroviaire (Railway Timetabling) | 4/5 |
 | [C3](#c3---livraison-par-drones-drone-delivery-routing) | Livraison par drones (Drone Delivery Routing) | 3/5 |
-| [C4](#c4---assemblage-orbital-de-satellites-orbital-assembly-scheduling) | Assemblage orbital de satellites | 4/5 |
+| [C4](#c4---assemblage-orbital-de-satellites-orbital-assembly-scheduling) | Assemblage orbital de satellites (Orbital Assembly Scheduling) | 4/5 |
 
 ### Categorie D : Cloud, Edge et Energie
 
@@ -181,8 +181,8 @@ Le Kidney Exchange Problem (KEP) consiste a trouver des cycles d'echanges de rei
 | Search-1 StateSpace | [Search/Part1-Foundations/Search-1-StateSpace.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1-StateSpace.ipynb) | Graphes d'etat, parcours |
 
 ### References externes
-- Abraham, D.J., Blum, A., & Sandholm, T. (2007). "Clearing Algorithms for Barter Exchange Markets: Enabling Nationwide Kidney Exchanges." *EC'07*. [ACM DL](https://dl.acm.org/doi/10.1145/1250910.1250933)
-- Dickerson, J.P., Manlove, D.F., et al. (2016). "Weighted Matching in Large-Scale Kidney Exchange." *AAAI*. [AAAI](https://ojs.aaai.org/index.php/AAAI/article/view/10324)
+- Abraham, D.J., Blum, A., & Sandholm, T. (2007). "Clearing Algorithms for Barter Exchange Markets: Enabling Nationwide Kidney Exchanges." *EC'07*. [ACM DL](https://dl.acm.org/doi/10.1145/1250910.1250954)
+- Dickerson, J.P. & Sandholm, T. (2012). "Dynamic Matching via Weighted Myopia with Application to Kidney Exchange." *AAAI*. [AAAI](https://ojs.aaai.org/index.php/AAAI/article/view/8252)
 - UNOS Kidney Paired Donation Program. [unos.org](https://unos.org/transplant/kidney-paired-donation/)
 - Mak-Hau, V. (2017). "On the Kidney Exchange Problem: Tighter IP Formulations." *European Journal of Operational Research*. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221717305760)
 - CSPLib Problem 047: Kidney Exchange. [csplib.org](https://www.csplib.org/Problems/prob047/)
@@ -303,7 +303,7 @@ Le Simple Assembly Line Balancing Problem (SALBP) consiste a repartir un ensembl
 | Search-1 StateSpace | [Search/Part1-Foundations/Search-1-StateSpace.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-1-StateSpace.ipynb) | Graphes, parcours |
 
 ### References externes
-- Scholl, A. (1999). "Balancing and Sequencing of Assembly Lines." *Physica-Verlag*. [Springer](https://link.springer.com/book/10.1007/978-3-642-58355-8)
+- Scholl, A. (1999). "Balancing and Sequencing of Assembly Lines." *Physica-Verlag*. [Springer](https://link.springer.com/book/9783790811803)
 - Otto, A., Otto, C., & Scholl, A. (2013). "Systematic Data Generation and Test Design for Computational Experiments with SALBP Instances." *European Journal of Operational Research*, 228(1), 33-45. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221713000757)
 - SALBP Benchmark Instances (Assembly-Line-Balancing.de). [ALB](https://assembly-line-balancing.de/)
 - Boysen, N., Fliedner, M., & Scholl, A. (2007). "A Classification of Assembly Line Balancing Problems." *European Journal of Operational Research*, 183(2), 674-693. [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0377221707005739)
@@ -417,8 +417,7 @@ Le Electric Vehicle Routing Problem (EVRP) etend le Vehicle Routing Problem clas
 
 | Notebook | Chemin | Pertinence |
 |----------|--------|------------|
-| App-17 VRP Logistics | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | VRP CP-SAT |
-| App-17 VRP Hybrid | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | VRP avec SA, GA, ACO |
+| App-17 VRP Logistics | [Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-17-VRP-Logistics.ipynb) | VRP CP-SAT, SA, GA, ACO |
 | CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | Knapsack, capacite |
 | App-13 TSP Metaheuristics | [Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Applications/Hybrid/App-13-TSP-Metaheuristics.ipynb) | TSP, tournees |
 
@@ -663,11 +662,11 @@ La super-optimisation de smart contracts Ethereum consiste a trouver automatique
 | SC-7 Solidity Advanced | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-7-Token-Standards.ipynb) | EVM, gas, opcodes |
 
 ### References externes
-- Permenev, A., et al. (2020). "xEVM: A Safer and More Ecosystem-Friendly Virtual Machine." *IEEE S&P*. [IEEE](https://ieeexplore.ieee.org/document/9152689)
-- So, S., & Oh, H. (2021). "Smart Contract Optimization via Super-Optimization." *IEEE Transactions on Software Engineering*. [IEEE](https://ieeexplore.ieee.org/document/9459901)
+- Permenev, A., et al. (2020). "VerX: Safety Verification of Smart Contracts." *IEEE S&P*. [IEEE](https://doi.org/10.1109/SP40000.2020.00024)
+- So, S., & Oh, H. (2021). "SmarTest: Effectively Hunting Vulnerable Transaction Sequences in Smart Contracts through Call Sequence and Message Feedback." *USENIX Security*. [USENIX](https://www.usenix.org/conference/usenixsecurity21/presentation/so)
 - Z3 SMT Solver. [GitHub](https://github.com/Z3Prover/z3)
 - Ethereum Yellow Paper: Gas Schedule. [Ethereum](https://ethereum.github.io/yellowpaper/paper.pdf)
-- Chow, S., et al. (2023). "Automated Smart Contract Optimization Using SMT." *arXiv*. [arXiv](https://arxiv.org/abs/2304.09638)
+- **[ATTENTION: Reference suspecte]** Chow, S., et al. (2023). "Automated Smart Contract Optimization Using SMT." *arXiv*. [arXiv](https://arxiv.org/abs/2304.09638) -- Ce papier n'a pas pu etre verifie. L'URL arXiv et le titre pourraient etre incorrects ou fabriques. Verification manuelle requise.
 
 ### Difficulte : 4/5
 
@@ -814,7 +813,7 @@ Le model checking materiel consiste a verifier formellement qu'un circuit numeri
 | Search-3 A* | [Search/Part1-Foundations/Search-3-Informed.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part1-Foundations/Search-3-Informed.ipynb) | Exploration d'espaces d'etats |
 
 ### References externes
-- Bradley, A.R. (2011). "SAT-Based Model Checking without Unrolling." *VMCAI*. [Springer](https://link.springer.com/chapter/10.1007/978-3-642-18275-4_6)
+- Bradley, A.R. (2011). "SAT-Based Model Checking without Unrolling." *VMCAI*. [Springer](https://doi.org/10.1007/978-3-642-18275-4_7)
 - Een, N., et al. (2011). "Efficient Implementation of Property Directed Reachability." *FMCAD*. [IEEE](https://ieeexplore.ieee.org/document/6083135)
 - HWMCC: Hardware Model Checking Competition. [fmv.jku.at](https://fmv.jku.at/hwmcc/)
 - Biere, A., et al. (2021). "Handbook of Satisfiability." *IOS Press*, 2nd Edition. [IOS Press](https://iospress.nl/book/handbook-of-satisfiability-2/)
@@ -846,9 +845,9 @@ La cryptanalyse differentielle est une technique qui etudie comment les differen
 
 ### References externes
 - Biere, A. (2021). "CaDiCaL, Kissat MAB and Mate at the SAT Competition 2021." *SAT Competition*. [dblp](https://dblp.org/rec/conf/sat/BiereF21)
-- Mouha, N., & Preneel, B. (2015). "Towards Finding Optimal Differential Characteristics for ARX." *FSE*. [IACR](https://eprint.iacr.org/2015/468)
-- Sun, S., et al. (2013). "Automatic Security Evaluation of Block Ciphers with SAT." *IACR Cryptology ePrint Archive*. [ePrint](https://eprint.iacr.org/2013/056)
-- Bogdanov, A., et al. (2007). "PRESENT: An Ultra-Lightweight Block Cipher." *CHES*. [IACR](https://eprint.iacr.org/2007/332)
+- Mouha, N., & Preneel, B. (2013). "Towards Finding Optimal Differential Characteristics for ARX." *FSE*. [IACR](https://eprint.iacr.org/2013/328)
+- Sun, S., et al. (2013). "Automatic Security Evaluation and (Related-Key) Differential Characteristic Search: Application to SIMON, PRESENT, LBlock, DES(L) and Other Bit-Oriented Block Ciphers." *ASIACRYPT*. [IACR](https://eprint.iacr.org/2013/676)
+- Bogdanov, A., et al. (2007). "PRESENT: An Ultra-Lightweight Block Cipher." *CHES*. [Springer](https://doi.org/10.1007/978-3-540-74735-2_31)
 
 ### Difficulte : 4/5
 
