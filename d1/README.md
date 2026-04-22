@@ -27,3 +27,13 @@ Le VM Scheduling Problem consiste a allouer des machines virtuelles (VMs) avec d
 - Salimian, A., et al. (2017). "A Survey of Energy-Aware Scheduling in Cloud Computing." *The Journal of Supercomputing*. [Springer](https://link.springer.com/article/10.1007/s11227-017-2190-3)
 
 ### Difficulte : 3/5
+
+## Défrichage
+
+- Une VM est définie par 4 grandeurs: CPU, RAM, Stockage, Bande passante
+- Un serveur est défini par 4 grandeurs: CPU, RAM, Stockage, Bande passante
+- La somme des grandeurs des VMs d'un serveur ne doit pas dépasser les grandeurs du dit serveur
+- Certaines VMs doivent être sur le même serveur
+- Certaines VMs ne doivent pas être sur le même serveur
+- On doit favoriser l'aggrégation des espaces libres restants pour économiser les ressources
+- Dans le cadre d'une situation initiale de VM active, trouver la solution optimale pour mettre les VMs en format optimal sans downtime

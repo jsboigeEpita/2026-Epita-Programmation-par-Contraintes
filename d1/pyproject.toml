@@ -9,7 +9,9 @@ authors = [
     { name = "mustapha.oumeziane", email = "mustapha.oumeziane@epita.fr" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "ortools>=9.15.6755",
+]
 
 [build-system]
 requires = ["setuptools>=61"]
