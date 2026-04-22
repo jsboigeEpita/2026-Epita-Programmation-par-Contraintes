@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>MAPF — Flat Viewer</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0f172a; color:#e2e8f0; font-family:system-ui; }
+  #hud { position:fixed; top:16px; left:16px; font-size:13px; color:#94a3b8; }
+  #controls { position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+              display:flex; gap:8px; }
+  button { padding:8px 20px; background:#1e3a5f; border:1px solid #2563eb;
+           color:#fff; border-radius:6px; cursor:pointer; font-size:13px; }
+  button:hover { background:#2563eb; }
+</style>
+</head>
+<body>
+<div id="hud">Loading...</div>
+<div id="controls">
+  <button id="btn-play">&#9654; Play</button>
+  <button id="btn-pause">&#9646;&#9646; Pause</button>
+  <button id="btn-reset">&#x21BA; Reset</button>
+</div>
+<canvas id="c"></canvas>
+
+<script>
+const COLORS = ['#3b82f6','#ef4444','#22c55e','#f59e0b','#a855f7',
+                '#06b6d4','#ec4899','#84cc16','#fb923c','#e11d48'];
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let solution = null, playing = false, frame = 0, animId = null;
+
+const PAYLOAD = {
+  grid: { rows: 8, cols: 8, alts: 1 },
+  drones: [
+    { id: 0, start: [0,0], goal: [7,7] },
+    { id: 1, start: [7,0], goal: [0,7] },
+    { id: 2, start: [0,7], goal: [7,0] },
+    { id: 3, start: [3,0], goal: [3,7] },
+  ],
+  nofly: [], buildings: [], time_limit_s: 15,
+};
+
+async function load() {
+  document.getElementById('hud').textContent = 'Solving...';
+  const r = await fetch('http://localhost:5050/solve', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(PAYLOAD),
+  });
+  solution = await r.json();
+  document.getElementById('hud').textContent =
+    `Status: ${solution.status} | Makespan: ${solution.makespan} | Solve: ${solution.solve_time_ms}ms`;
+  draw(0);
+}
+
+function cellSize() { return Math.min(canvas.width, canvas.height) / 10; }
+
+function draw(t) {
+  if (!solution) return;
+  const cs = cellSize();
+  const off = cs;
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const rows = PAYLOAD.grid.rows, cols = PAYLOAD.grid.cols;
+  ctx.strokeStyle = '#1e3a5f';
+  ctx.lineWidth = 0.5;
+  for (let r = 0; r <= rows; r++) {
+    ctx.beginPath(); ctx.moveTo(off, off + r*cs); ctx.lineTo(off + cols*cs, off + r*cs); ctx.stroke();
+  }
+  for (let c = 0; c <= cols; c++) {
+    ctx.beginPath(); ctx.moveTo(off + c*cs, off); ctx.lineTo(off + c*cs, off + rows*cs); ctx.stroke();
+  }
+
+  Object.entries(solution.paths).forEach(([id, path], i) => {
+    const pos = path[Math.min(t, path.length - 1)];
+    const x = off + pos[1] * cs + cs/2;
+    const y = off + pos[0] * cs + cs/2;
+    ctx.beginPath();
+    ctx.arc(x, y, cs * 0.3, 0, Math.PI * 2);
+    ctx.fillStyle = COLORS[i % COLORS.length];
+    ctx.fill();
+  });
+}
+
+let lastTime = 0;
+function loop(ts) {
+  if (!playing) return;
+  if (ts - lastTime > 400) {
+    lastTime = ts;
+    frame = Math.min(frame + 1, solution.makespan);
+    draw(frame);
+    if (frame >= solution.makespan) playing = false;
+  }
+  animId = requestAnimationFrame(loop);
+}
+
+document.getElementById('btn-play').onclick = () => { playing = true; requestAnimationFrame(loop); };
+document.getElementById('btn-pause').onclick = () => { playing = false; cancelAnimationFrame(animId); };
+document.getElementById('btn-reset').onclick = () => { playing = false; frame = 0; draw(0); };
+
+load();
+</script>
+</body>
+</html>
