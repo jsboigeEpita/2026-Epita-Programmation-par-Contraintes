@@ -171,6 +171,7 @@
 
   <button id="btn-clear">🗑 Tout effacer</button>
   <button id="btn-solve">Résoudre</button>
+  <button id="btn-animate" style="display:none; background:#22c55e; margin: 0 16px 14px; padding: 12px; border: none; border-radius: 8px; color: #fff; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s;">▶ Lancer l'animation</button>
 
   <div id="status-box"></div>
 
@@ -391,18 +392,117 @@ document.getElementById('btn-solve').addEventListener('click', async () => {
   btn.textContent = 'Résoudre';
 });
 
+let lastResults = null;
+let animating = false;
+let animatedMarkers = [];
+
+document.getElementById('btn-animate').addEventListener('click', () => {
+  if (animating) return;
+  animateDrones();
+});
+
+function animateDrones() {
+  if (!lastResults || !lastResults.routes) return;
+  animating = true;
+  document.getElementById('btn-animate').disabled = true;
+  document.getElementById('btn-animate').textContent = 'Animation en cours…';
+
+  animatedMarkers.forEach(m => map.removeLayer(m));
+  animatedMarkers = [];
+
+  const dp = depotMarker.getLatLng();
+  const refLat = dp.lat, refLng = dp.lng;
+
+  // Préparation des drones avec calcul de distance
+  const drones = lastResults.routes.map((route, idx) => {
+    const color = DRONE_COLORS[idx % DRONE_COLORS.length];
+    
+    let points = [];
+    let cumulativeDistances = [0];
+    let totalD = 0;
+
+    route.trips.forEach(trip => {
+      trip.geometry.forEach((p, i) => {
+        const latLng = xyToLatLng(p[0], p[1], refLat, refLng);
+        if (points.length > 0) {
+          const prevXY = points[points.length - 1].xy;
+          const d = Math.sqrt((p[0] - prevXY[0]) ** 2 + (p[1] - prevXY[1]) ** 2);
+          totalD += d;
+          cumulativeDistances.push(totalD);
+        }
+        points.push({ latLng, xy: p });
+      });
+    });
+
+    const marker = L.circleMarker(points[0].latLng, {
+      radius: 8, color: '#fff', fillColor: color, fillOpacity: 1, weight: 2, zIndexOffset: 1000
+    }).addTo(map);
+    marker.bindTooltip(`Drone ${route.drone_id}`, { permanent: true, direction: 'top', className: 'drone-tooltip' });
+    animatedMarkers.push(marker);
+
+    return { marker, points, cumulativeDistances, totalD, finished: false };
+  });
+
+  const speedKmPerSec = 1; // Vitesse de l'animation (km "réels" par seconde d'animation)
+  const startTime = performance.now();
+
+  function frame(now) {
+    const elapsedSec = (now - startTime) / 1000;
+    const distanceToCover = elapsedSec * speedKmPerSec;
+    
+    let allFinished = true;
+
+    drones.forEach(drone => {
+      if (distanceToCover >= drone.totalD) {
+        if (!drone.finished) {
+          drone.marker.setLatLng(drone.points[drone.points.length - 1].latLng);
+          drone.finished = true;
+        }
+        return;
+      }
+
+      allFinished = false;
+
+      // Trouver le segment correspondant à la distance actuelle
+      let i = 0;
+      while (i < drone.cumulativeDistances.length - 1 && drone.cumulativeDistances[i+1] < distanceToCover) {
+        i++;
+      }
+
+      const d1 = drone.cumulativeDistances[i];
+      const d2 = drone.cumulativeDistances[i+1];
+      const p1 = drone.points[i].latLng;
+      const p2 = drone.points[i+1].latLng;
+
+      const segmentProgress = (distanceToCover - d1) / (d2 - d1);
+      const lat = p1[0] + (p2[0] - p1[0]) * segmentProgress;
+      const lng = p1[1] + (p2[1] - p1[1]) * segmentProgress;
+      
+      drone.marker.setLatLng([lat, lng]);
+    });
+
+    if (allFinished) {
+      animating = false;
+      document.getElementById('btn-animate').disabled = false;
+      document.getElementById('btn-animate').textContent = '▶ Lancer l\'animation';
+    } else {
+      requestAnimationFrame(frame);
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+
+// Dans renderResult, on affiche le bouton et on stocke les résultats
 function renderResult(data, refLat, refLng) {
+  lastResults = data;
   const box = document.getElementById('status-box');
   box.style.display = 'block';
 
   const success = data.status === 'success' && data.routes.length > 0;
   box.className = success ? 'ok' : 'err';
-
-  box.innerHTML = `
-    <div class="stat-line"><span>Statut</span><span class="stat-val">${success ? 'RÉSOLU' : 'AUCUNE SOLUTION'}</span></div>
-    <div class="stat-line"><span>Drones actifs</span><span class="stat-val">${data.routes.length} / ${document.getElementById('drone-count').value}</span></div>
-    <div class="stat-line"><span>Clients assignés</span><span class="stat-val">${clientMarkers.length}</span></div>
-  `;
+  
+  document.getElementById('btn-animate').style.display = success ? 'block' : 'none';
 
   const routesList = document.getElementById('routes-list');
   routesList.innerHTML = '';
