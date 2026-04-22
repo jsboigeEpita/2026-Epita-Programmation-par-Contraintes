@@ -8,6 +8,7 @@ pkgs.mkShell {
       ortools
       shapely
       pydantic
+      numpy
     ]))
   ];
 

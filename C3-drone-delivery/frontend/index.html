@@ -8,80 +8,75 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; display: flex; height: 100vh; background: #0f1117; color: #e0e0e0; }
+    body { font-family: 'Segoe UI', sans-serif; display: flex; height: 100vh; background: #f0f2f5; color: #1a1a2e; }
 
     #sidebar {
-      width: 340px; min-width: 280px; background: #1a1d27;
+      width: 340px; min-width: 280px; background: #ffffff;
       display: flex; flex-direction: column; overflow-y: auto;
-      border-right: 1px solid #2e3148;
+      border-right: 1px solid #dde1ea;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.06);
     }
 
     #sidebar header {
       padding: 18px 20px 12px;
-      background: #13151f;
-      border-bottom: 1px solid #2e3148;
+      background: #f7f8fc;
+      border-bottom: 1px solid #dde1ea;
     }
-    #sidebar header h1 { font-size: 1.1rem; color: #7c83fd; letter-spacing: 0.5px; }
+    #sidebar header h1 { font-size: 1.1rem; color: #5c63d8; letter-spacing: 0.5px; }
     #sidebar header p { font-size: 0.75rem; color: #888; margin-top: 3px; }
 
-    .section { padding: 14px 16px; border-bottom: 1px solid #2e3148; }
-    .section h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: #7c83fd; margin-bottom: 10px; }
+    .section { padding: 14px 16px; border-bottom: 1px solid #dde1ea; }
+    .section h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: #5c63d8; margin-bottom: 10px; }
 
     .row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-    label { font-size: 0.78rem; color: #aaa; width: 120px; flex-shrink: 0; }
+    label { font-size: 0.78rem; color: #666; width: 120px; flex-shrink: 0; }
     input[type=number], input[type=range] {
-      flex: 1; background: #252839; border: 1px solid #3a3f5c;
-      border-radius: 6px; color: #e0e0e0; padding: 5px 8px; font-size: 0.82rem;
+      flex: 1; background: #f7f8fc; border: 1px solid #d0d5e0;
+      border-radius: 6px; color: #1a1a2e; padding: 5px 8px; font-size: 0.82rem;
     }
     input[type=range] { padding: 0; cursor: pointer; }
-    .val { font-size: 0.8rem; color: #7c83fd; width: 36px; text-align: right; }
+    .val { font-size: 0.8rem; color: #5c63d8; width: 36px; text-align: right; }
 
     .mode-btns { display: flex; gap: 6px; margin-bottom: 8px; }
     .mode-btn {
-      flex: 1; padding: 7px 4px; border: 1px solid #3a3f5c; border-radius: 6px;
-      background: #252839; color: #ccc; cursor: pointer; font-size: 0.78rem; text-align: center;
+      flex: 1; padding: 7px 4px; border: 1px solid #d0d5e0; border-radius: 6px;
+      background: #f7f8fc; color: #555; cursor: pointer; font-size: 0.78rem; text-align: center;
       transition: all 0.15s;
     }
-    .mode-btn.active { background: #7c83fd; border-color: #7c83fd; color: #fff; }
-    .mode-btn:hover:not(.active) { border-color: #7c83fd; color: #7c83fd; }
+    .mode-btn.active { background: #5c63d8; border-color: #5c63d8; color: #fff; }
+    .mode-btn:hover:not(.active) { border-color: #5c63d8; color: #5c63d8; }
 
     #btn-solve {
       margin: 14px 16px; padding: 12px;
-      background: #7c83fd; border: none; border-radius: 8px;
+      background: #5c63d8; border: none; border-radius: 8px;
       color: #fff; font-size: 0.95rem; font-weight: 600; cursor: pointer;
       transition: background 0.2s;
     }
-    #btn-solve:hover { background: #5c64e8; }
-    #btn-solve:disabled { background: #3a3f5c; cursor: not-allowed; }
-
-    #btn-generate {
-      margin: 0 16px 10px; padding: 8px;
-      background: transparent; border: 1px solid #3a3f5c; border-radius: 8px;
-      color: #aaa; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
-    }
-    #btn-generate:hover { border-color: #7c83fd; color: #7c83fd; }
+    #btn-solve:hover { background: #4850c4; }
+    #btn-solve:disabled { background: #b0b5d8; cursor: not-allowed; }
 
     #btn-clear {
       margin: 0 16px 14px; padding: 8px;
-      background: transparent; border: 1px solid #3a3f5c; border-radius: 8px;
-      color: #aaa; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+      background: transparent; border: 1px solid #d0d5e0; border-radius: 8px;
+      color: #888; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
     }
     #btn-clear:hover { border-color: #e05c5c; color: #e05c5c; }
 
     #status-box {
       margin: 0 16px 14px; padding: 10px 12px;
-      background: #252839; border-radius: 8px; font-size: 0.8rem;
+      background: #f7f8fc; border-radius: 8px; font-size: 0.8rem;
+      border: 1px solid #dde1ea;
       display: none;
     }
-    #status-box.ok { border-left: 3px solid #4ade80; }
+    #status-box.ok { border-left: 3px solid #22c55e; }
     #status-box.warn { border-left: 3px solid #f59e0b; }
     #status-box.err { border-left: 3px solid #e05c5c; }
     #status-box .stat-line { display: flex; justify-content: space-between; margin-bottom: 4px; }
-    #status-box .stat-val { color: #7c83fd; font-weight: 600; }
+    #status-box .stat-val { color: #5c63d8; font-weight: 600; }
 
     .route-item {
       padding: 8px 10px; border-radius: 6px; margin-bottom: 6px;
-      background: #252839; font-size: 0.78rem;
+      background: #f7f8fc; border: 1px solid #dde1ea; font-size: 0.78rem;
     }
     .route-item .route-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
     .route-item .drone-label { font-weight: 600; }
@@ -89,17 +84,18 @@
       display: inline-block; padding: 1px 7px; border-radius: 10px;
       font-size: 0.7rem; font-weight: 600;
     }
-    .route-item .stops { color: #888; line-height: 1.6; }
+    .route-item .stops { color: #666; line-height: 1.6; }
 
     #map { flex: 1; }
 
-    .leaflet-draw-toolbar a { background-color: #1a1d27 !important; color: #ccc !important; }
+    .leaflet-draw-toolbar a { background-color: #ffffff !important; color: #555 !important; }
 
     #mode-hint {
       position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: rgba(26,29,39,0.92); border: 1px solid #3a3f5c;
-      padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; color: #ccc;
+      background: rgba(255,255,255,0.95); border: 1px solid #dde1ea;
+      padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; color: #444;
       pointer-events: none; z-index: 1000; display: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
   </style>
 </head>
@@ -118,7 +114,7 @@
       <div class="mode-btn" data-mode="client">📦 Client</div>
       <div class="mode-btn" data-mode="zone">🚫 Zone</div>
     </div>
-    <div class="row" style="font-size:0.75rem;color:#666;">Cliquer sur la carte pour placer</div>
+    <div class="row" style="font-size:0.75rem;color:#aaa;">Cliquer sur la carte pour placer</div>
   </div>
 
   <div class="section">
@@ -154,10 +150,6 @@
       <label>Charge max (kg)</label>
       <input type="number" id="drone-weight" value="10" min="1" max="50" />
     </div>
-    <div class="row">
-      <label>Volume max (L)</label>
-      <input type="number" id="drone-volume" value="30" min="5" max="100" />
-    </div>
   </div>
 
   <div class="section">
@@ -169,19 +161,6 @@
     </div>
   </div>
 
-  <div class="section">
-    <h2>Instance aléatoire</h2>
-    <div class="row">
-      <label>Clients</label>
-      <input type="number" id="gen-clients" value="10" min="1" max="50" />
-    </div>
-    <div class="row">
-      <label>Seed</label>
-      <input type="number" id="gen-seed" value="42" />
-    </div>
-  </div>
-
-  <button id="btn-generate">⚡ Générer instance</button>
   <button id="btn-clear">🗑 Tout effacer</button>
   <button id="btn-solve">Résoudre</button>
 
@@ -203,7 +182,7 @@ const API = '';  // même origine
 
 // --- Map init ---
 const map = L.map('map', { center: [48.8566, 2.3522], zoom: 12 });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap &copy; Carto', maxZoom: 19
 }).addTo(map);
 
@@ -217,8 +196,25 @@ let zonePoints = [];
 let zoneTempMarkers = [];
 let clientIdCounter = 1;
 
-const DRONE_COLORS = ['#7c83fd', '#4ade80', '#f59e0b', '#e05c5c', '#22d3ee',
+const DRONE_COLORS = ['#5c63d8', '#22c55e', '#f59e0b', '#e05c5c', '#06b6d4',
                       '#f472b6', '#a78bfa', '#34d399', '#fbbf24', '#60a5fa'];
+
+// --- Coordinate helpers ---
+// Convert lat/lng to km offsets from a reference point (for Nathan's solver)
+function latLngToXY(lat, lng, refLat, refLng) {
+  const R = 111.32;
+  const x = (lng - refLng) * Math.cos(refLat * Math.PI / 180) * R;
+  const y = (lat - refLat) * R;
+  return [x, y, 10.0];
+}
+
+// Convert km offsets back to lat/lng for Leaflet rendering
+function xyToLatLng(x, y, refLat, refLng) {
+  const R = 111.32;
+  const lat = refLat + y / R;
+  const lng = refLng + x / (R * Math.cos(refLat * Math.PI / 180));
+  return [lat, lng];
+}
 
 // --- Icons ---
 function depotIcon() {
@@ -228,7 +224,7 @@ function clientIcon(priority) {
   const colors = { 1: '#888', 2: '#f59e0b', 3: '#e05c5c' };
   const c = colors[priority] || '#888';
   return L.divIcon({
-    html: `<div style="width:14px;height:14px;border-radius:50%;background:${c};border:2px solid #fff;"></div>`,
+    html: `<div style="width:14px;height:14px;border-radius:50%;background:${c};border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>`,
     className: '', iconSize: [14, 14], iconAnchor: [7, 7]
   });
 }
@@ -305,10 +301,10 @@ map.on('dblclick', e => {
 function finishZone() {
   if (zonePoints.length >= 3) {
     const poly = L.polygon(zonePoints, {
-      color: '#e05c5c', fillColor: '#e05c5c', fillOpacity: 0.2,
+      color: '#e05c5c', fillColor: '#e05c5c', fillOpacity: 0.15,
       dashArray: '6 4',
     }).addTo(map);
-    poly.bindTooltip('Zone interdite', { permanent: false });
+    poly.bindTooltip('Zone interdite (NOTAM)', { permanent: false });
     poly._zoneData = { points: [...zonePoints] };
     zonePolygons.push(poly);
   }
@@ -328,61 +324,6 @@ document.getElementById('btn-clear').addEventListener('click', () => {
   document.getElementById('routes-section').style.display = 'none';
 });
 
-// --- Generate ---
-document.getElementById('btn-generate').addEventListener('click', async () => {
-  const n = document.getElementById('gen-clients').value;
-  const seed = document.getElementById('gen-seed').value;
-  const center = map.getCenter();
-  const zoom = map.getZoom();
-  const radius = Math.max(2, Math.min(50, 200 / zoom));
-
-  const res = await fetch(`${API}/generate?n_clients=${n}&n_drones=${document.getElementById('drone-count').value}&seed=${seed}&center_lat=${center.lat}&center_lng=${center.lng}&radius_km=${radius}`);
-  const data = await res.json();
-
-  // Clear existing
-  if (depotMarker) { map.removeLayer(depotMarker); depotMarker = null; }
-  clientMarkers.forEach(m => map.removeLayer(m)); clientMarkers = [];
-  zonePolygons.forEach(p => map.removeLayer(p)); zonePolygons = [];
-  routeLayers.forEach(l => map.removeLayer(l)); routeLayers = [];
-
-  // Place depot
-  const dp = data.depot.position;
-  depotMarker = L.marker([dp.lat, dp.lng], { icon: depotIcon(), draggable: true }).addTo(map);
-  depotMarker.bindTooltip('Dépôt');
-
-  // Place clients
-  clientIdCounter = 1;
-  data.clients.forEach(c => {
-    const m = L.marker([c.position.lat, c.position.lng], {
-      icon: clientIcon(c.priority), draggable: true
-    }).addTo(map);
-    m.bindTooltip(`#${c.id} — ${c.weight}kg ${c.volume}L p${c.priority}`);
-    m._clientData = { id: c.id, lat: c.position.lat, lng: c.position.lng, weight: c.weight, volume: c.volume, priority: c.priority };
-    clientMarkers.push(m);
-    clientIdCounter = Math.max(clientIdCounter, c.id + 1);
-  });
-
-  // Place zones
-  data.forbidden_zones.forEach((z, idx) => {
-    const pts = z.polygon.map(p => [p.lat, p.lng]);
-    const poly = L.polygon(pts, { color: '#e05c5c', fillColor: '#e05c5c', fillOpacity: 0.2, dashArray: '6 4' }).addTo(map);
-    poly.bindTooltip(z.label || `Zone ${idx + 1}`);
-    poly._zoneData = { points: pts };
-    zonePolygons.push(poly);
-  });
-
-  // Sync drone params from generated
-  if (data.drones.length > 0) {
-    document.getElementById('drone-count').value = data.drones.length;
-    document.getElementById('drone-range').value = Math.round(data.drones[0].max_range);
-    document.getElementById('drone-weight').value = Math.round(data.drones[0].max_weight);
-    document.getElementById('drone-volume').value = Math.round(data.drones[0].max_volume);
-  }
-
-  document.getElementById('routes-section').style.display = 'none';
-  document.getElementById('status-box').style.display = 'none';
-});
-
 // --- Solve ---
 document.getElementById('btn-solve').addEventListener('click', async () => {
   if (!depotMarker) return alert('Placez le dépôt d\'abord.');
@@ -396,29 +337,34 @@ document.getElementById('btn-solve').addEventListener('click', async () => {
   routeLayers = [];
 
   const dp = depotMarker.getLatLng();
+  const refLat = dp.lat, refLng = dp.lng;
+
   const nDrones = parseInt(document.getElementById('drone-count').value);
   const dRange = parseFloat(document.getElementById('drone-range').value);
   const dWeight = parseFloat(document.getElementById('drone-weight').value);
-  const dVolume = parseFloat(document.getElementById('drone-volume').value);
   const wind = parseFloat(document.getElementById('wind-factor').value);
 
+  // Build payload in Nathan's format
+  // Coordinates are km offsets from depot (depot = origin [0,0,10])
+  // battery_capacity = drone range in km * 100 (matches solver's int(dist*100) scale)
+  // demands/max_load in units of kg * 10 (integer approximation)
   const payload = {
-    depot: { position: { lat: dp.lat, lng: dp.lng } },
-    clients: clientMarkers.map((m, i) => {
-      const d = m._clientData;
+    depot: [0.0, 0.0, 10.0],
+    clients: clientMarkers.map(m => {
       const pos = m.getLatLng();
-      return { id: d.id, position: { lat: pos.lat, lng: pos.lng }, weight: d.weight, volume: d.volume, priority: d.priority };
+      return latLngToXY(pos.lat, pos.lng, refLat, refLng);
     }),
-    drones: Array.from({ length: nDrones }, (_, i) => ({
-      id: i + 1, max_range: dRange, max_weight: dWeight, max_volume: dVolume, speed: 60
-    })),
-    forbidden_zones: zonePolygons.map((p, i) => ({
-      id: i + 1,
-      label: `Zone ${i + 1}`,
-      polygon: p._zoneData.points.map(pt => Array.isArray(pt) ? { lat: pt[0], lng: pt[1] } : pt)
-    })),
-    weather: { wind_factor: wind, rain: false },
-    time_limit_seconds: 30,
+    demands: clientMarkers.map(m => Math.round(m._clientData.weight * 10)),
+    notam_zones: zonePolygons.map(p =>
+      p._zoneData.points.map(pt => {
+        const arr = Array.isArray(pt) ? pt : [pt.lat, pt.lng];
+        const xy = latLngToXY(arr[0], arr[1], refLat, refLng);
+        return [xy[0], xy[1]];
+      })
+    ),
+    num_drones: nDrones,
+    battery_capacity: Math.round(dRange * 100 / wind),
+    max_load: Math.round(dWeight * 10),
   };
 
   try {
@@ -427,7 +373,7 @@ document.getElementById('btn-solve').addEventListener('click', async () => {
       body: JSON.stringify(payload)
     });
     const data = await res.json();
-    renderResult(data, payload.depot.position);
+    renderResult(data, refLat, refLng);
   } catch (e) {
     showStatus('Erreur réseau : ' + e.message, 'err');
   }
@@ -436,58 +382,63 @@ document.getElementById('btn-solve').addEventListener('click', async () => {
   btn.textContent = 'Résoudre';
 });
 
-function renderResult(data, depotPos) {
+function renderResult(data, refLat, refLng) {
   const box = document.getElementById('status-box');
   box.style.display = 'block';
 
-  const statusClass = data.status === 'OPTIMAL' ? 'ok' : data.status === 'FEASIBLE' ? 'warn' : 'err';
-  box.className = statusClass;
+  const success = data.status === 'success' && data.routes.length > 0;
+  box.className = success ? 'ok' : 'err';
 
-  const served = data.routes.reduce((s, r) => s + r.stops.length, 0);
   box.innerHTML = `
-    <div class="stat-line"><span>Statut</span><span class="stat-val">${data.status}</span></div>
-    <div class="stat-line"><span>Livraisons</span><span class="stat-val">${served} / ${served + data.unserved_clients.length}</span></div>
-    <div class="stat-line"><span>Distance totale</span><span class="stat-val">${data.total_distance} km</span></div>
-    <div class="stat-line"><span>Temps solver</span><span class="stat-val">${data.solve_time_seconds}s</span></div>
-    ${data.unserved_clients.length ? `<div style="color:#f59e0b;margin-top:4px;font-size:0.75rem;">⚠ Non livrés : #${data.unserved_clients.join(', #')}</div>` : ''}
+    <div class="stat-line"><span>Statut</span><span class="stat-val">${success ? 'RÉSOLU' : 'AUCUNE SOLUTION'}</span></div>
+    <div class="stat-line"><span>Drones actifs</span><span class="stat-val">${data.routes.length} / ${document.getElementById('drone-count').value}</span></div>
+    <div class="stat-line"><span>Clients assignés</span><span class="stat-val">${clientMarkers.length}</span></div>
   `;
 
   const routesList = document.getElementById('routes-list');
   routesList.innerHTML = '';
+
+  if (!data.routes || data.routes.length === 0) {
+    document.getElementById('routes-section').style.display = 'none';
+    return;
+  }
   document.getElementById('routes-section').style.display = 'block';
 
   data.routes.forEach((route, idx) => {
-    if (route.stops.length === 0) return;
     const color = DRONE_COLORS[idx % DRONE_COLORS.length];
 
-    // Draw route on map
-    const pts = [[depotPos.lat, depotPos.lng]];
-    route.stops.forEach(s => pts.push([s.position.lat, s.position.lng]));
-    pts.push([depotPos.lat, depotPos.lng]);
-
+    // Convert geometry (x,y,z km offsets) back to lat/lng for Leaflet
+    const pts = route.geometry.map(p => xyToLatLng(p[0], p[1], refLat, refLng));
     const line = L.polyline(pts, { color, weight: 3, opacity: 0.85 }).addTo(map);
     routeLayers.push(line);
 
-    route.stops.forEach(s => {
-      const c = L.circleMarker([s.position.lat, s.position.lng], {
-        radius: 8, color, fillColor: color, fillOpacity: 0.7, weight: 2
-      }).addTo(map);
-      c.bindTooltip(`Drone ${route.drone_id} → #${s.client_id} (${s.cumulative_distance}km)`, { permanent: false });
-      routeLayers.push(c);
-    });
+    // Mark start and end (depot)
+    const startMarker = L.circleMarker(pts[0], {
+      radius: 7, color, fillColor: '#fff', fillOpacity: 1, weight: 3
+    }).addTo(map);
+    startMarker.bindTooltip(`Drone ${route.drone_id} — départ/retour dépôt`);
+    routeLayers.push(startMarker);
 
     // Sidebar card
+    const totalDist = route.geometry.length > 1
+      ? route.geometry.reduce((acc, p, i) => {
+          if (i === 0) return 0;
+          const prev = route.geometry[i - 1];
+          return acc + Math.sqrt((p[0]-prev[0])**2 + (p[1]-prev[1])**2);
+        }, 0).toFixed(1)
+      : 0;
+
     const item = document.createElement('div');
     item.className = 'route-item';
     item.style.borderLeft = `3px solid ${color}`;
     item.innerHTML = `
       <div class="route-header">
         <span class="drone-label" style="color:${color}">Drone ${route.drone_id}</span>
-        <span class="route-badge" style="background:${color}22;color:${color}">${route.stops.length} stops</span>
+        <span class="route-badge" style="background:${color}22;color:${color}">${route.geometry.length} pts</span>
       </div>
       <div class="stops">
-        📍 Dépôt → ${route.stops.map(s => `#${s.client_id}`).join(' → ')} → 📍<br/>
-        🔋 ${route.battery_remaining}% | ${route.total_distance}km | ${route.total_weight}kg
+        📍 Dépôt → contournement NOTAM → 📍<br/>
+        📏 ${totalDist} km parcourus
       </div>
     `;
     routesList.appendChild(item);

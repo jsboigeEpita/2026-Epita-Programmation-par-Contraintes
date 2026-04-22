@@ -1,12 +1,11 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
+from typing import List, Tuple
+from drone_delivery_solver import DroneInstance, DroneRoutingSolver
 import os
-
-from models import SolveRequest, SolveResponse
-from solver import solve
-from generator import generate_instance
 
 app = FastAPI(title="Drone Delivery CP-SAT")
 
@@ -20,35 +19,38 @@ app.add_middleware(
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
 
+class MissionRequest(BaseModel):
+    depot: Tuple[float, float, float]
+    clients: List[Tuple[float, float, float]]
+    demands: List[int]
+    notam_zones: List[List[Tuple[float, float]]]
+    num_drones: int
+    battery_capacity: int
+    max_load: int
+
+
 @app.get("/")
-def index():
+async def root():
     return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
 
 
-@app.post("/solve", response_model=SolveResponse)
-def solve_endpoint(req: SolveRequest):
-    return solve(req)
-
-
-@app.get("/generate", response_model=SolveRequest)
-def generate_endpoint(
-    n_clients: int = Query(10, ge=1, le=50),
-    n_drones: int = Query(3, ge=1, le=10),
-    n_zones: int = Query(2, ge=0, le=5),
-    seed: int = Query(42),
-    center_lat: float = Query(48.8566),
-    center_lng: float = Query(2.3522),
-    radius_km: float = Query(15.0, ge=1.0, le=100.0),
-):
-    return generate_instance(
-        n_clients=n_clients,
-        n_drones=n_drones,
-        n_zones=n_zones,
-        center_lat=center_lat,
-        center_lng=center_lng,
-        radius_km=radius_km,
-        seed=seed,
+@app.post("/solve")
+async def solve_mission(req: MissionRequest):
+    instance = DroneInstance(
+        depot=req.depot,
+        clients=req.clients,
+        demands=req.demands,
+        notam_zones=req.notam_zones,
+        num_drones=req.num_drones,
+        battery_capacity=req.battery_capacity,
+        max_load=req.max_load,
     )
+    solver = DroneRoutingSolver(instance)
+    routes = solver.solve()
+    return {
+        "status": "success" if routes else "failed",
+        "routes": routes if routes else [],
+    }
 
 
-app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+app.mount("/", StaticFiles(directory=FRONTEND_DIR), name="static")
