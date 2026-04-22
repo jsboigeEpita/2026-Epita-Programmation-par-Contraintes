@@ -6,17 +6,30 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#0f172a; color:#e2e8f0; font-family:system-ui; }
-  #hud { position:fixed; top:16px; left:16px; font-size:13px; color:#94a3b8; }
+  #hud { position:fixed; top:16px; left:16px; font-size:13px; color:#94a3b8; line-height:1.7; }
+  #hud .val { color:#7dd3fc; font-weight:600; }
   #controls { position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
-              display:flex; gap:8px; }
+              display:flex; gap:8px; align-items:center; }
   button { padding:8px 20px; background:#1e3a5f; border:1px solid #2563eb;
-           color:#fff; border-radius:6px; cursor:pointer; font-size:13px; }
+           color:#fff; border-radius:6px; cursor:pointer; font-size:13px; transition:background .15s; }
   button:hover { background:#2563eb; }
+  #btn-random { border-color:#a855f7; }
+  #btn-random:hover { background:#7c3aed; border-color:#7c3aed; }
+  label { font-size:13px; color:#94a3b8; }
+  input[type=range] { accent-color:#3b82f6; width:80px; }
 </style>
 </head>
 <body>
-<div id="hud">Loading...</div>
+<div id="hud">
+  <div>Status: <span class="val" id="h-status">—</span></div>
+  <div>Makespan: <span class="val" id="h-makespan">—</span></div>
+  <div>Solve: <span class="val" id="h-time">—</span></div>
+  <div>Frame: <span class="val" id="h-frame">—</span></div>
+</div>
 <div id="controls">
+  <label>Drones <input type="range" id="n-drones" min="2" max="8" value="4"></label>
+  <span id="n-label" style="color:#7dd3fc;font-size:13px;min-width:14px">4</span>
+  <button id="btn-random">&#x1F3B2; Randomize &amp; Solve</button>
   <button id="btn-play">&#9654; Play</button>
   <button id="btn-pause">&#9646;&#9646; Pause</button>
   <button id="btn-reset">&#x21BA; Reset</button>
@@ -27,38 +40,67 @@
 const COLORS = ['#3b82f6','#ef4444','#22c55e','#f59e0b','#a855f7',
                 '#06b6d4','#ec4899','#84cc16','#fb923c','#e11d48'];
 
+const GRID = { rows: 10, cols: 10 };
+
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let currentDrones = [];
 let solution = null, playing = false, frame = 0, animId = null;
 
-const PAYLOAD = {
-  grid: { rows: 8, cols: 8, alts: 1 },
-  drones: [
-    { id: 0, start: [0,0], goal: [7,7] },
-    { id: 1, start: [7,0], goal: [0,7] },
-    { id: 2, start: [0,7], goal: [7,0] },
-    { id: 3, start: [3,0], goal: [3,7] },
-  ],
-  nofly: [], buildings: [], time_limit_s: 15,
-};
+// Sync slider label
+const slider = document.getElementById('n-drones');
+const label  = document.getElementById('n-label');
+slider.oninput = () => { label.textContent = slider.value; };
 
-async function load() {
-  document.getElementById('hud').textContent = 'Solving...';
+function randomDrones(n) {
+  const cells = [];
+  for (let r = 0; r < GRID.rows; r++)
+    for (let c = 0; c < GRID.cols; c++)
+      cells.push([r, c]);
+
+  // Fisher-Yates shuffle then take first 2*n
+  for (let i = cells.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cells[i], cells[j]] = [cells[j], cells[i]];
+  }
+  const starts = cells.slice(0, n);
+  const goals  = cells.slice(n, 2 * n);
+  return starts.map((s, i) => ({ id: i, start: s, goal: goals[i] }));
+}
+
+async function solve(drones) {
+  document.getElementById('h-status').textContent = 'Solving...';
+  document.getElementById('h-makespan').textContent = '—';
+  document.getElementById('h-time').textContent = '—';
+  document.getElementById('h-frame').textContent = '—';
+  playing = false; frame = 0; solution = null;
+
+  const payload = {
+    grid: { rows: GRID.rows, cols: GRID.cols, alts: 1 },
+    drones,
+    nofly: [], buildings: [], time_limit_s: 20,
+  };
   const r = await fetch('http://localhost:5050/solve', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(PAYLOAD),
+    body: JSON.stringify(payload),
   });
   solution = await r.json();
-  document.getElementById('hud').textContent =
-    `Status: ${solution.status} | Makespan: ${solution.makespan} | Solve: ${solution.solve_time_ms}ms`;
+  currentDrones = drones;
+  document.getElementById('h-status').textContent  = solution.status;
+  document.getElementById('h-makespan').textContent = solution.makespan;
+  document.getElementById('h-time').textContent     = solution.solve_time_ms + 'ms';
   draw(0);
 }
 
-function cellSize() { return Math.min(canvas.width, canvas.height) / 10; }
+function cellSize() {
+  const pad = 2;
+  return Math.min((canvas.width - pad * 2) / (GRID.cols + 2),
+                  (canvas.height - pad * 2) / (GRID.rows + 2));
+}
 
 function drawStar(x, y, r) {
   const pts = 5, inner = r * 0.45;
@@ -73,54 +115,57 @@ function drawStar(x, y, r) {
 }
 
 function draw(t) {
-  if (!solution) return;
   const cs = cellSize();
   const off = cs;
   ctx.fillStyle = '#0f172a';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const rows = PAYLOAD.grid.rows, cols = PAYLOAD.grid.cols;
-  ctx.strokeStyle = '#1e3a5f';
-  ctx.lineWidth = 0.5;
-  for (let r = 0; r <= rows; r++) {
-    ctx.beginPath(); ctx.moveTo(off, off + r*cs); ctx.lineTo(off + cols*cs, off + r*cs); ctx.stroke();
+  // Grid
+  ctx.strokeStyle = '#1e3a5f'; ctx.lineWidth = 0.5;
+  for (let r = 0; r <= GRID.rows; r++) {
+    ctx.beginPath(); ctx.moveTo(off, off + r*cs); ctx.lineTo(off + GRID.cols*cs, off + r*cs); ctx.stroke();
   }
-  for (let c = 0; c <= cols; c++) {
-    ctx.beginPath(); ctx.moveTo(off + c*cs, off); ctx.lineTo(off + c*cs, off + rows*cs); ctx.stroke();
+  for (let c = 0; c <= GRID.cols; c++) {
+    ctx.beginPath(); ctx.moveTo(off + c*cs, off); ctx.lineTo(off + c*cs, off + GRID.rows*cs); ctx.stroke();
   }
 
-  // Start markers (hollow circle) and goal markers (filled star)
-  PAYLOAD.drones.forEach((d, i) => {
+  if (!currentDrones.length) return;
+
+  // Start rings + goal stars (always visible)
+  currentDrones.forEach((d, i) => {
     const col = COLORS[i % COLORS.length];
     const sx = off + d.start[1] * cs + cs/2, sy = off + d.start[0] * cs + cs/2;
     const gx = off + d.goal[1]  * cs + cs/2, gy = off + d.goal[0]  * cs + cs/2;
 
-    ctx.beginPath();
-    ctx.arc(sx, sy, cs * 0.32, 0, Math.PI * 2);
-    ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.globalAlpha = 0.45; ctx.stroke();
+    // Start: hollow ring
+    ctx.beginPath(); ctx.arc(sx, sy, cs * 0.35, 0, Math.PI * 2);
+    ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.globalAlpha = 0.5; ctx.stroke();
     ctx.globalAlpha = 1;
 
-    drawStar(gx, gy, cs * 0.32);
-    ctx.fillStyle = col; ctx.globalAlpha = 0.55; ctx.fill();
+    // Goal: filled star
+    drawStar(gx, gy, cs * 0.35);
+    ctx.fillStyle = col; ctx.globalAlpha = 0.6; ctx.fill();
     ctx.globalAlpha = 1;
   });
 
-  // Drone spheres + index label
+  if (!solution || solution.status === 'infeasible') return;
+
+  // Drone bodies + ID labels
   Object.entries(solution.paths).forEach(([id, path], i) => {
     const pos = path[Math.min(t, path.length - 1)];
     const x = off + pos[1] * cs + cs/2;
     const y = off + pos[0] * cs + cs/2;
-    ctx.beginPath();
-    ctx.arc(x, y, cs * 0.28, 0, Math.PI * 2);
-    ctx.fillStyle = COLORS[i % COLORS.length];
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y, cs * 0.3, 0, Math.PI * 2);
+    ctx.fillStyle = COLORS[i % COLORS.length]; ctx.fill();
 
     ctx.fillStyle = '#fff';
     ctx.font = `bold ${Math.round(cs * 0.28)}px system-ui`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(id, x, y);
   });
+
+  document.getElementById('h-frame').textContent =
+    `${t}/${solution.makespan}`;
 }
 
 let lastTime = 0;
@@ -135,11 +180,16 @@ function loop(ts) {
   animId = requestAnimationFrame(loop);
 }
 
-document.getElementById('btn-play').onclick = () => { playing = true; requestAnimationFrame(loop); };
-document.getElementById('btn-pause').onclick = () => { playing = false; cancelAnimationFrame(animId); };
-document.getElementById('btn-reset').onclick = () => { playing = false; frame = 0; draw(0); };
+document.getElementById('btn-random').onclick = () => {
+  const n = parseInt(slider.value);
+  solve(randomDrones(n));
+};
+document.getElementById('btn-play').onclick   = () => { if (solution) { playing = true; requestAnimationFrame(loop); } };
+document.getElementById('btn-pause').onclick  = () => { playing = false; cancelAnimationFrame(animId); };
+document.getElementById('btn-reset').onclick  = () => { playing = false; frame = 0; draw(0); };
 
-load();
+// Auto-solve on load with random drones
+solve(randomDrones(parseInt(slider.value)));
 </script>
 </body>
 </html>
