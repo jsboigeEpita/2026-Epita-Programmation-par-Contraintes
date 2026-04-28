@@ -12,7 +12,7 @@ reference issue numbers in their merge messages.
 - **Owner:** @NCH04
 - **Reviewer:** @Sosolalt
 - **Branch:** feat/generator
-- **Status:** open
+- **Status:** closed 2026-04-28 by merge of PR #1, reviewed by @Sosolalt
 - **Acceptance:**
   - [x] random + regions distributions
   - [x] reproducible by seed
