@@ -7,3 +7,15 @@ direct commit on `main`.
 Lifecycle: planning commit `docs(plan): open issue #N` adds the entry;
 closing commit `docs(plan): close issue #N` flips the Status line. PRs
 reference issue numbers in their merge messages.
+
+## #1 — Synthetic instance generator (random + regions)
+- **Owner:** @NCH04
+- **Reviewer:** @Sosolalt
+- **Branch:** feat/generator
+- **Status:** open
+- **Acceptance:**
+  - [x] random + regions distributions
+  - [x] reproducible by seed
+- **Discussion:**
+  - @NCH04: small/med/large/stress sizes
+  - @Sosolalt (review): outputs reproducible by seed
