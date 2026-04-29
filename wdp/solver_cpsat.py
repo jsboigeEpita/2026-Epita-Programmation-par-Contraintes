@@ -30,7 +30,10 @@ from ortools.sat.python import cp_model
 from .instance import Allocation, Instance
 
 
-PRICE_SCALE = 100  # 2 décimales : 1.23 -> 123
+PRICE_SCALE = 1000  # 3 décimales : 1.234 -> 1234. Aligné avec
+# CATS ``bid_alpha=1000`` (cf. ``wdp/cats_parser.py``) pour éviter la
+# perte de précision lors de la conversion en centimes des prix CATS.
+# Les pédagogiques (2 décimales) restent exacts par construction.
 
 
 def _scale(price: float) -> int:
@@ -82,6 +85,9 @@ def solve_wdp_cpsat(
         x[b.id] = model.NewBoolVar(f"x_{b.id}")
 
     # ---- (1) Exclusivité par item -----------------------------------------
+    # Hypothèse de FREE DISPOSAL côté vendeur (Cramton, Shoham, Steinberg
+    # 2006, *Combinatorial Auctions*, ch. 1) : on impose <= 1 (et non = 1),
+    # donc un item peut rester non alloué sans coût.
     for item in instance.items:
         vars_for_item = [
             x[b.id] for b in instance.bids if b.id in x and item in b.items
@@ -141,7 +147,9 @@ def solve_wdp_cpsat(
 
     if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         winners = sorted(bid_id for bid_id, var in x.items() if solver.Value(var) == 1)
-        revenue = _unscale(int(solver.ObjectiveValue()))
+        # ObjectiveValue() est un float ; arrondir avant unscale pour
+        # absorber le bruit FP (sinon 4099.9999 -> 40.99 au lieu de 41.00).
+        revenue = _unscale(round(solver.ObjectiveValue()))
     else:
         winners = []
         revenue = 0.0
