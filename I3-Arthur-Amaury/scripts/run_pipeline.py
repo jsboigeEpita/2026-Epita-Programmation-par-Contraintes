@@ -14,6 +14,16 @@ sys.path.insert(0, str(ROOT))
 from cp_llm.llm_client import LLMClient, MistralClient  # noqa: E402
 from cp_llm.runner import run_pipeline  # noqa: E402
 
+# Patch CpSolver globally for this process (essential for macOS stability)
+try:
+    from ortools.sat.python import cp_model
+    _original_solve = cp_model.CpSolver.Solve
+    def _patched_solve(self, model, solution_callback=None):
+        self.parameters.num_search_workers = 1
+        return _original_solve(self, model, solution_callback)
+    cp_model.CpSolver.Solve = _patched_solve
+except ImportError:
+    pass
 
 def build_client(provider: str, model: str | None, effort: str) -> LLMClient:
     try:

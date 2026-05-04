@@ -8,6 +8,9 @@ from pydantic import BaseModel, Field
 class ProblemAnalysis(BaseModel):
     """Etage 1 : analyse de haut niveau du probleme NL."""
 
+    reasoning: str = Field(
+        description="Reflexion pas a pas sur la comprehension de l'enonce, les entites et les objectifs."
+    )
     problem_type: str = Field(
         description=(
             "Categorie generale : 'satisfaction', 'optimization', 'scheduling', "
@@ -58,6 +61,9 @@ class VariableSpec(BaseModel):
 class VariableSet(BaseModel):
     """Etage 2 : ensemble des variables de decision."""
 
+    reasoning: str = Field(
+        description="Explication du choix des variables de decision et de leur domaine."
+    )
     variables: list[VariableSpec]
 
 
@@ -107,6 +113,8 @@ class PipelineResult(BaseModel):
     constraints: ConstraintSet
     generated_code: str
     verification: dict
+    execution_time_s: Optional[float] = None
+    reference_execution_time_s: Optional[float] = None
     error_stage: Optional[
         Literal[
             "analysis",

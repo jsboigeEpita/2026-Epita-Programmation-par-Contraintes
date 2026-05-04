@@ -8,8 +8,12 @@ probleme d'optimisation en langage naturel et tu dois en extraire la structure
 de haut niveau.
 
 Ton role est PUREMENT analytique : tu ne proposes pas encore de modelisation.
-Tu remplis le schema ProblemAnalysis avec :
+Tu remplis le schema ProblemAnalysis. 
 
+Commence par le champ `reasoning` pour reflechir pas a pas a la comprehension 
+de l'enonce, aux entites en jeu, aux objectifs et aux donnees fournies.
+
+Puis remplis :
 - problem_type : la categorie generale (satisfaction, optimization, scheduling, ...)
 - objective_direction : minimize, maximize, ou none si pure satisfaction
 - objective_description : ce qui est optimise, en une phrase NL
@@ -24,6 +28,9 @@ l'invente pas.
 VARIABLES_SYSTEM = """
 Tu es un expert en modelisation CP-SAT (ortools). Etant donne une analyse de
 probleme et son enonce, tu identifies les variables de decision a creer.
+
+Utilise d'abord le champ `reasoning` pour expliquer ton choix de variables, 
+le choix de leur type (int vs bool vs interval) et la definition de leur domaine.
 
 Pour chaque variable, tu indiques :
 
@@ -99,7 +106,7 @@ REGLES STRICTES :
 
 RUNNER_TEMPLATE = textwrap.dedent(
     """
-    import json, runpy, sys, traceback
+    import json, runpy, sys, traceback, time
     
     # Patch CpSolver to always use 1 worker to prevent macOS deadlock in subprocesses
     try:
@@ -113,19 +120,22 @@ RUNNER_TEMPLATE = textwrap.dedent(
         pass
 
     try:
+        start_time = time.perf_counter()
         ns = runpy.run_path(sys.argv[1])
         if "solve" not in ns or not callable(ns["solve"]):
             print(json.dumps({"ok": False, "error": "Fonction solve() manquante"}))
             sys.exit(0)
         result = ns["solve"]()
+        execution_time = time.perf_counter() - start_time
+        
         if not isinstance(result, dict):
             print(json.dumps({"ok": False, "error": "solve() ne retourne pas un dict"}))
             sys.exit(0)
         status = result.get("status", "")
         if status not in ("OPTIMAL", "FEASIBLE"):
-            print(json.dumps({"ok": False, "error": f"Statut non faisable : {status}", "result": result}))
+            print(json.dumps({"ok": False, "error": f"Statut non faisable : {status}", "result": result, "execution_time_s": execution_time}))
             sys.exit(0)
-        print(json.dumps({"ok": True, "result": result}))
+        print(json.dumps({"ok": True, "result": result, "execution_time_s": execution_time}))
     except Exception as exc:
         tb = traceback.format_exc()
         print(json.dumps({"ok": False, "error": str(exc), "traceback": tb}))

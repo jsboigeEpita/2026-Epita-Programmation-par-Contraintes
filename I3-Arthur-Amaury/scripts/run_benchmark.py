@@ -22,6 +22,16 @@ sys.path.insert(0, str(ROOT))
 from cp_llm.llm_client import LLMClient, MistralClient  # noqa: E402
 from cp_llm.runner import run_pipeline  # noqa: E402
 
+# Patch CpSolver globally for this process (essential for macOS stability)
+try:
+    from ortools.sat.python import cp_model
+    _original_solve = cp_model.CpSolver.Solve
+    def _patched_solve(self, model, solution_callback=None):
+        self.parameters.num_search_workers = 1
+        return _original_solve(self, model, solution_callback)
+    cp_model.CpSolver.Solve = _patched_solve
+except ImportError:
+    pass
 
 def build_client(provider: str, model: str | None, effort: str) -> LLMClient:
     try:
@@ -36,21 +46,25 @@ def build_client(provider: str, model: str | None, effort: str) -> LLMClient:
     raise ValueError(f"Provider inconnu : {provider}")
 
 
-def load_reference(problem_name: str) -> dict | None:
-    """Lance le modele manuel de reference pour comparaison."""
+def load_reference(problem_name: str) -> tuple[dict | None, float | None]:
+    """Lance le modele manuel de reference pour comparaison et mesure le temps."""
     ref_path = ROOT / "benchmark" / "references" / f"{problem_name}.py"
     if not ref_path.exists():
-        return None
+        return None, None
 
     import runpy
+    import time
 
     try:
+        start_time = time.perf_counter()
         ns = runpy.run_path(str(ref_path))
         if "solve" in ns and callable(ns["solve"]):
-            return ns["solve"]()
+            res = ns["solve"]()
+            exec_time = time.perf_counter() - start_time
+            return res, exec_time
     except Exception as exc:
-        return {"error": str(exc)}
-    return None
+        return {"error": str(exc)}, None
+    return None, None
 
 
 def benchmark(
@@ -67,7 +81,7 @@ def benchmark(
 
         import time
 
-        t0 = time.time()
+        t0 = time.perf_counter()
         try:
             result = run_pipeline(client, problem_path)
         except Exception as exc:
@@ -82,12 +96,10 @@ def benchmark(
             print(f"  ERREUR runner : {exc}", flush=True)
             continue
 
-        t1 = time.time()
-        gen_time = t1 - t0
+        gen_time = time.perf_counter() - t0
 
-        t2 = time.time()
-        reference = load_reference(name)
-        ref_time = time.time() - t2
+        reference, ref_exec_time = load_reference(name)
+        result.reference_execution_time_s = ref_exec_time
 
         row = {
             "problem": name,
@@ -106,13 +118,15 @@ def benchmark(
             "reference": reference,
             "objective_match": _compare_objectives(result.verification, reference),
             "generation_time_s": gen_time,
-            "reference_execution_time_s": ref_time,
+            "execution_time_s": result.execution_time_s,
+            "reference_execution_time_s": result.reference_execution_time_s,
+            "execution_time_diff_s": (result.execution_time_s - result.reference_execution_time_s) if result.execution_time_s is not None and result.reference_execution_time_s is not None else None,
         }
         rows.append(row)
 
         status = "OK" if row["ok"] else f"ECHEC ({row['error_stage']})"
         print(
-            f"  {status} | vars={row['n_variables_generated']} contraintes={row['n_constraints_generated']}",
+            f"  {status} | vars={row['n_variables_generated']} contraintes={row['n_constraints_generated']} | exec={row['execution_time_s']:.3f}s ref={row['reference_execution_time_s']:.3f}s" if row['execution_time_s'] is not None and row['reference_execution_time_s'] is not None else f"  {status} | vars={row['n_variables_generated']} contraintes={row['n_constraints_generated']}",
             flush=True,
         )
 

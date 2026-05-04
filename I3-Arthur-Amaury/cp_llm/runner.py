@@ -89,6 +89,7 @@ def run_pipeline(
         constraints=constraints,
         generated_code=code,
         verification=verification,
+        execution_time_s=verification.get("execution_time_s"),
         error_stage=None
         if verification.get("ok")
         else verification.get("stage", "verification"),

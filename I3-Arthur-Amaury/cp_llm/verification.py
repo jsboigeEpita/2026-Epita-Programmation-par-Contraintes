@@ -84,6 +84,7 @@ def verify_executable(code: str, timeout: float = 30.0) -> dict:
                 "stage": "feasibility",
                 "error": payload.get("error", "Erreur inconnue"),
                 "details": payload,
+                "execution_time_s": payload.get("execution_time_s"),
             }
 
         return {
@@ -91,6 +92,7 @@ def verify_executable(code: str, timeout: float = 30.0) -> dict:
             "stage": "feasibility",
             "error": None,
             "result": payload["result"],
+            "execution_time_s": payload.get("execution_time_s"),
         }
 
 
