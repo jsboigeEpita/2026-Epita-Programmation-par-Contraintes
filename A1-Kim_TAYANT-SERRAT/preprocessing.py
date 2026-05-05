@@ -21,14 +21,14 @@ COLUMNS_MAP = {
 
 NUTRIMENTS = ["kcal", "prot_g", "lip_g", "gluc_g", "fibres_g", "sel_g", "calcium_mg", "fer_mg"]
 
-GROUPES_EXCLUS = {
+GROUP_EXCLUDED = {
     "aliments infantiles",
     "glaces et sorbets",
     "boissons",
     "aides culinaires et ingrédients divers",
 }
 
-SOUS_GROUPES_EXCLUS = {
+SUBGROUP_EXCLUDED = {
     "huiles de poissons", "autres matières grasses", "margarines",
     "huiles et graisses végétales", "beurres",
     "confiseries non chocolatées", "chocolats et produits à base de chocolat",
@@ -41,7 +41,7 @@ SOUS_GROUPES_EXCLUS = {
     "charcuteries et alternatives végétales", "fruits secs", "fruits séchés",
 }
 
-MOTS_CLES_EXCLUS = [
+KEY_WORD_EXCLUDED = [
     "cru", "non cuit",
     "déshydraté", "lyophilisé", "s[eéè]ch",
     "abats", "tripes", "rognon", "foie gras",
@@ -53,9 +53,10 @@ MOTS_CLES_EXCLUS = [
 ]
 
 # FIXME not sure how to handle that
+# J'ai fait des approximations mais ça reste encore à cook
 # Niveau 1 — mots-clés dans le nom (ordre : du plus cher au moins cher à l'intérieur d'un type)
-PRIX_MOTS_CLES = [
-    # poissons & fruits de mer
+PRICES = [
+    # poissons et fruits de mer
     (r"huître|saint-jacques|homard|langouste",          28.0),
     (r"crevette|gambas",                                18.0),
     (r"saumon fumé|tarama",                             20.0),
@@ -96,8 +97,8 @@ PRIX_MOTS_CLES = [
     (r"lait",                                              1.5),
 ]
 
-# Niveau 2 — sous_groupe (fallback si aucun mot-clé ne matche)
-PRIX_SOUS_GROUPE = {
+# Niveau 2 - sous_groupe (fallback si aucun mot-clé ne match)
+PRICES_SUBGROUP = {
     "viandes cuites":                                    12.0,
     "autres produits à base de viande":                  10.0,
     "poissons cuits":                                    10.0,
@@ -121,15 +122,15 @@ PRIX_SOUS_GROUPE = {
     "pâtes à tarte":                                      4.0,
 }
 
-# Niveau 3 — groupe (dernier recours)
-PRIX_EUR_KG = {
+# Niveau 3 - groupe
+PRICE_PER_KG = {
     "fruits, légumes, légumineuses et oléagineux": 3.0,
     "viandes, oeufs, poissons":                   12.0,
     "produits laitiers":                            5.0,
     "entrées et plats composés":                    8.0,
     "produits céréaliers":                          4.0,
 }
-PRIX_EUR_KG_DEFAUT = 5.0
+FALLBACK = 5.0
 
 MAX_G = {
     "fruits, légumes, légumineuses et oléagineux": 500,
@@ -177,23 +178,24 @@ NUTRIENTS = [
 
 
 def load_ciqual(path: str) -> pd.DataFrame:
-    df = pd.read_excel(path, sheet_name=0)
+    df = pd.read_excel(path, sheet_name="composition nutritionnelle")
     return df[list(COLUMNS_MAP.keys())].rename(columns=COLUMNS_MAP)
 
 
 def clean_numeric(df: pd.DataFrame) -> pd.DataFrame:
     for col in NUTRIMENTS:
-        if df[col].dtype == object:
-            df[col] = df[col].astype(str).str.replace(",", ".", regex=False)
-        df[col] = pd.to_numeric(df[col], errors="coerce")
+        df[col] = pd.to_numeric(
+            df[col].astype(str).str.replace(",", ".", regex=False),
+            errors="coerce",
+        )
     return df.fillna({col: 0 for col in NUTRIMENTS})
 
 
 def filter_foods(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna(subset=["groupe", "nom"])
-    df = df[~df["groupe"].str.lower().isin(GROUPES_EXCLUS)]
-    df = df[~df["sous_groupe"].str.lower().isin(SOUS_GROUPES_EXCLUS)]
-    df = df[~df["nom"].str.lower().str.contains("|".join(MOTS_CLES_EXCLUS), regex=True, na=False)]
+    df = df[~df["groupe"].str.lower().isin(GROUP_EXCLUDED)]
+    df = df[~df["sous_groupe"].str.lower().isin(SUBGROUP_EXCLUDED)]
+    df = df[~df["nom"].str.lower().str.contains("|".join(KEY_WORD_EXCLUDED), regex=True, na=False)]
     df = df[~df["nom"].str.lower().str.startswith("lait de")]
     df = df[df["kcal"] > 0]
     return df.reset_index(drop=True)
@@ -201,12 +203,12 @@ def filter_foods(df: pd.DataFrame) -> pd.DataFrame:
 
 def _prix_cts_100g(nom: str, sous_groupe: str, groupe: str) -> int:
     nom_lower = nom.lower()
-    for pattern, eur_kg in PRIX_MOTS_CLES:
+    for pattern, eur_kg in PRICES:
         if re.search(pattern, nom_lower):
             return int(round(eur_kg * 10))
-    eur_kg = (PRIX_SOUS_GROUPE.get(sous_groupe)
-              or PRIX_EUR_KG.get(groupe)
-              or PRIX_EUR_KG_DEFAUT)
+    eur_kg = (PRICES_SUBGROUP.get(sous_groupe)
+              or PRICE_PER_KG.get(groupe)
+              or FALLBACK)
     return int(round(eur_kg * 10))
 
 
