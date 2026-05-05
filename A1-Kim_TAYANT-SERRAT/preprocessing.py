@@ -54,7 +54,7 @@ KEY_WORD_EXCLUDED = [
 
 # FIXME not sure how to handle that
 # J'ai fait des approximations mais ça reste encore à cook
-# Niveau 1 — mots-clés dans le nom (ordre : du plus cher au moins cher à l'intérieur d'un type)
+# Niveau 1 - mots-clés dans le nom (ordre : du plus cher au moins cher à l'intérieur d'un type)
 PRICES = [
     # poissons et fruits de mer
     (r"huître|saint-jacques|homard|langouste",          28.0),

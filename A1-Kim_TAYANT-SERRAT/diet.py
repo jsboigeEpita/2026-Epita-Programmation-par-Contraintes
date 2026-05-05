@@ -199,7 +199,7 @@ def print_weekly_menu(weekly: list) -> None:
         print(f"{'='*55}")
         for meal_idx, meal in enumerate(day_meals, 1):
             label = ["Déjeuner", "Dîner"][meal_idx - 1]
-            print(f"\n  {label}  [{meal['status']}]  —  {meal['cost']:.2f} €")
+            print(f"\n  {label}  [{meal['status']}]  -  {meal['cost']:.2f} €")
             for nom, qty in meal["foods"]:
                 print(f"    {nom:45s} : {qty:4d} g")
             total_cost += meal["cost"]
