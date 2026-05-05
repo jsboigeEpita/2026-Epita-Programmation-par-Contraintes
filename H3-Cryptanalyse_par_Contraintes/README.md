@@ -1,6 +1,6 @@
-# H3 - Cryptanalyse par Contraintes (Ciphers Avancés)
+# H3 - Cryptanalyse par Contraintes
 
-> Utiliser la programmation par contraintes (CP-SAT) pour casser des chiffrements classiques : substitution monoalphabétique, Vigenère, transposition et Hill cipher.
+> Utiliser la programmation par contraintes (CP-SAT) pour casser des chiffrements classiques : substitution monoalphabétique, Vigenère, transposition columnar et Hill cipher.
 
 ---
 
@@ -37,11 +37,15 @@ Ce projet n'est pas de la cryptanalyse par machine learning ni de la force brute
 
 ### Résultats obtenus
 
-| Chiffrement | Espace clé | Approche | Précision | Temps |
-|-------------|-----------|----------|-----------|-------|
-| Substitution (+ mot connu) | 26! ≈ 4×10²⁶ | CP-SAT | ~95–100% | < 5 s |
-| Substitution (pur) | 26! ≈ 4×10²⁶ | Hill climbing + trigrammes | ~90% (400+ lettres) | < 2 s |
-| Vigenère | 26^L | IC → CP-SAT | 100% (8/8 clés) | 4–6 s |
+| Chiffrement | Espace clé | Approche | Précision / Succès | Temps |
+|-------------|-----------|----------|--------------------|-------|
+| Substitution | 26! ≈ 4×10²⁶ | Analyse de fréquence | ~31% (400 L) | < 1 ms |
+| Substitution | 26! ≈ 4×10²⁶ | Hill climbing (trigrammes) | ~85% (400 L) / 40% succès (800 L) | < 2 s |
+| Substitution | 26! ≈ 4×10²⁶ | CP-SAT + mot connu | ~92% (400 L) | < 5 s |
+| Vigenère | 26^L | IC → CP-SAT | 100% (L=4,5,6) | 4–6 s |
+| Transposition | L! | CP-SAT bigrammes | 100% (L=6) | < 0.1 s |
+| Hill 2×2 | 26^4 | CP-SAT (texte clair connu) | 100% | < 1 s |
+| Hill 2×2 | 26^4 | CP-SAT seul | ~0% (timeout) | ≈ 20 s |
 
 ---
 
@@ -64,23 +68,36 @@ H3-Cryptanalyse_par_Contraintes/
 │   ├── ciphers/
 │   │   ├── substitution.py                [✓] encrypt / decrypt / key_accuracy
 │   │   ├── vigenere.py                    [✓] encrypt / decrypt / str_to_key / key_to_str
-│   │   ├── transposition.py               [✓] encrypt / decrypt / generate_random_key
-│   │   └── hill.py                        [✓] encrypt / decrypt / known_plaintext_attack
+│   │   ├── transposition.py               [✓] encrypt / decrypt / generate_random_key / key_accuracy
+│   │   └── hill.py                        [✓] encrypt / decrypt / known_plaintext_attack / _matrix_inv_mod26
 │   ├── solvers/
 │   │   ├── cp_substitution.py             [✓] CP-SAT : AllDifferent + coûts bigrammes + unigrammes
-│   │   ├── cp_vigenere.py                 [✓] CP-SAT : agrégation par paire de positions-clé
+│   │   ├── cp_vigenere.py                 [✓] CP-SAT : agrégation par paire de positions-clé (L² contraintes)
 │   │   ├── hill_climbing.py               [✓] Hill climbing bigrammes/trigrammes + restarts
-│   │   ├── cp_transposition.py            [✓] CP-SAT : AllDifferent + table agrégée within-row
-│   │   └── cp_hill.py                     [✓] CP-SAT : connu (mod 26) + seul (bigrammes)
+│   │   ├── cp_transposition.py            [✓] CP-SAT : AllDifferent + table agrégée within-row (L-1 contraintes)
+│   │   └── cp_hill.py                     [✓] CP-SAT : connu (mod 26 linéaire) + seul (bigrammes)
 │   ├── linguistics/
 │   │   └── frequency_analysis.py          [✓] IC, Kasiski, bigrammes, trigrammes, freq attack
 │   └── evaluation/
 │       └── benchmark.py                   [✓] run_trials, print_table, compare_approaches
 │
-└── data/
-    ├── french_reference.txt               [✓] 8 314 lettres de référence
-    ├── french_bigrams_standard.json       [✓] 676 bigrammes avec log-probabilités
-    └── french_trigrams_standard.json      [✓] 17 576 trigrammes avec log-probabilités
+├── data/
+│   ├── french_reference.txt               [✓] 8 314 lettres de référence
+│   ├── french_bigrams_standard.json       [✓] 676 bigrammes avec log-probabilités
+│   └── french_trigrams_standard.json      [✓] 17 576 trigrammes avec log-probabilités
+│
+└── examples/                              ← graphiques générés par les notebooks
+    ├── freq_distributions.png
+    ├── benchmark_substitution.png
+    ├── vigenere_ic.png
+    ├── vigenere_key_length.png
+    ├── transpo_freq.png
+    ├── transpo_perm_scores.png
+    ├── benchmark_transposition.png
+    ├── hill_freq.png
+    ├── benchmark_hill.png
+    ├── evaluation_comparative.png
+    └── evaluation_temps.png
 ```
 
 ---
@@ -100,7 +117,7 @@ IC = Σ f(l)×(f(l)−1) / (n×(n−1))
 | Texte chiffré Vigenère | ~0.038–0.055 |
 | Texte uniforme (aléatoire) | ~0.038 |
 
-L'IC est **conservé par une substitution monoalphabétique** (clé fixe) — signal clé pour distinguer les types de chiffrement.
+L'IC est **conservé par une substitution monoalphabétique** (clé fixe) et par la **transposition** — signal clé pour distinguer les types de chiffrement.
 
 ### 3.2 Score de bigrammes (fonction objectif CP-SAT)
 
@@ -121,7 +138,7 @@ model.minimize(sum(cost_vars))
 
 ### 3.3 Score de trigrammes
 
-Utilisé par le hill climbing pour une meilleure discrimination (les bigrammes seuls peuvent ne pas distinguer JUSTICE de QUSTIDE car QU, US, ST sont tous fréquents).
+Utilisé par le hill climbing pour une meilleure discrimination (les bigrammes seuls peuvent ne pas distinguer des substitutions proches).
 
 ### 3.4 Coûts unigrammes (guide de recherche CP-SAT)
 
@@ -158,13 +175,14 @@ Objectif    : minimize Σ count(c1,c2) × cost_table[key[c1]×26 + key[c2]]
             + Σ UNIGRAM_SCALE × |rang(c) − rang_fr(key[c])|
 ```
 
-### Trois approches comparées
+### Trois approches comparées (benchmark, 5 essais, seed=42)
 
-| Approche | Précision (400 lettres) | Temps | Garantie |
-|----------|------------------------|-------|----------|
-| Analyse de fréquence | ~40–60% | < 1 ms | Non |
-| Hill climbing (trigrammes) | ~90% | 0.5–2 s | Non (local opt.) |
-| CP-SAT + mot connu | ~95–100% | < 5 s | Optimale |
+| Approche | Précision (400 L) | Succès complet (800 L) | Temps |
+|----------|-------------------|------------------------|-------|
+| Analyse de fréquence | ~31% | 0% | < 1 ms |
+| Hill climbing (trigrammes) | ~85% | 40% | 0.5–2 s |
+| CP-SAT pur | ~14% (timeout) | 0% | ≈ 15 s |
+| CP-SAT + mot connu | ~92% | — | < 5 s |
 
 ### Force du CP-SAT : les contraintes additionnelles
 
@@ -214,15 +232,13 @@ Pour chaque paire de positions-clé (j1, j2) :
 → L² contraintes AddElement au total (36 pour L=6)
 ```
 
-### Résultats
+### Résultats (benchmark, 5 essais par longueur, n=200/400/800 L)
 
-| Clé | L | Détection IC | CP-SAT | Temps |
-|-----|---|-------------|--------|-------|
-| CLEF | 4 | ✓ | ✓ exact | 3.7 s |
-| PARIS | 5 | ✓ | ✓ exact | 4.1 s |
-| FRANCE | 6 | ✓ | ✓ exact | 4.0 s |
-| NAPOLEON | 8 | ✓ | ✓ exact | 4.4 s |
-| REPUBLIQUE | 10 | ✓ | ✓ exact | 5.2 s |
+| Clé | L | Détection IC | Succès CP-SAT | Temps moyen |
+|-----|---|-------------|---------------|-------------|
+| CLEF | 4 | ✓ | 100% | ~4 s |
+| PARIS | 5 | ✓ | 100% | ~5 s |
+| FRANCE | 6 | ✓ | 100% | ~4 s |
 
 ---
 
@@ -233,23 +249,38 @@ Pour chaque paire de positions-clé (j1, j2) :
 Les lettres ne sont **pas substituées** mais **réarrangées** selon une permutation de colonnes.
 
 ```
-Clair   : BONJOUR PARIS  →  en colonnes de largeur L=4
+Clair   : BONJOURPARIS  (12 lettres, L=4)
 Matrice :  B O N J
            O U R P
            A R I S
-Clé     : [3, 1, 4, 2]   (ordre de lecture des colonnes)
-Chiffré : lecture dans l'ordre de la clé
+Clé     : [3, 1, 0, 2]  (lire les colonnes dans cet ordre)
+Chiffré : JPS | OUR | BOA | NRI  → JPSOURBOANRI
 ```
 
-### Modèle CP-SAT prévu
+**Propriété clé** : la transposition **préserve les fréquences** (IC conservé) mais brise les bigrammes → signal pour CP-SAT.
+
+### Modèle CP-SAT
 
 ```
-Variables   : perm[j] ∈ [0..L-1] pour j ∈ [0..L-1]
-Contrainte  : AllDifferent(perm)
-Objectif    : minimize coût bigrammes du texte reconstitué selon perm
+Variables   : pos[c] ∈ [0..L-1] pour c ∈ [0..L-1]
+              pos[c] = j  ↔  colonne originale c placée en segment j
+Contrainte  : AllDifferent(pos)
+Objectif    : minimiser coûts bigrammes within-row
+
+Table agrégée : agg_table[p*L + q] = Σ_row bigram_cost(cipher[p*n_rows+row], cipher[q*n_rows+row])
+→ L-1 contraintes AddElement seulement (une par paire de colonnes consécutives)
 ```
 
-**Statut** : *à implémenter* (`H3-3-Transposition.ipynb`)
+### Résultats (benchmark, 5 essais, L=6, seed=42)
+
+| n (lettres) | Précision | Succès (100%) | Temps |
+|-------------|-----------|---------------|-------|
+| 120 | 100% | 100% | ~0.08 s |
+| 240 | 100% | 100% | ~0.09 s |
+| 360 | 100% | 100% | ~0.09 s |
+| 480 | 100% | 100% | ~0.08 s |
+
+CP-SAT résout la transposition (L=6, L!=720) en moins de 100 ms — résultats parfaits.
 
 ---
 
@@ -257,24 +288,40 @@ Objectif    : minimize coût bigrammes du texte reconstitué selon perm
 
 ### Principe
 
-Chiffrement **linéaire par blocs** — multiplication matricielle mod 26 sur des blocs de n lettres.
+Chiffrement **linéaire par blocs** — multiplication matricielle mod 26 sur des blocs de 2 lettres.
 
 ```
 K = [[6, 24], [1, 13]]   (clé : matrice 2×2 inversible mod 26)
 [c1, c2]ᵀ = K × [p1, p2]ᵀ  mod 26
 ```
 
-### Modèle CP-SAT prévu
+**Condition d'inversibilité** : `gcd(det(K) mod 26, 26) = 1`
 
+**Espace** : 26⁴ = 456 976 matrices, dont ~157 248 inversibles.
+
+### Deux approches CP-SAT
+
+**Attaque à texte clair connu** — 2 paires (clair, chiffré) suffisent :
 ```
-Variables        : K[i][j] ∈ [0..25]  (entrées de la matrice clé)
-Contrainte forte : gcd(det(K) mod 26, 26) = 1  (inversibilité)
-Objectif         : bigrammes des blocs déchiffrés ≈ français
+K = C × P⁻¹ (mod 26)    →  solution unique, temps < 1 ms (algèbre)
 ```
+CP-SAT encode les équations linéaires mod 26 directement → 100% de succès.
 
-**Cas d'usage CP-SAT :** attaque à texte clair connu partiel — quelques paires (clair, chiffré) suffisent à résoudre le système linéaire mod 26.
+**Attaque texte chiffré seul** :
+```
+Variables   : kd[i][j] ∈ [0..25]  (matrice de déchiffrement K_inv)
+Contrainte  : gcd(det(K_inv), 26) = 1
+Objectif    : minimiser Σ bigram_cost(p0[b], p1[b]) + bigram_cost(p1[b], p0[b+1])
+```
+Modèle purement linéaire (c0, c1 = constantes). Mais le paysage bigramme est trop plat → CP-SAT atteint le timeout.
 
-**Statut** : *à implémenter* (`H3-4-Hill.ipynb`)
+### Résultats
+
+| Approche | Données | Temps | Succès |
+|----------|---------|-------|--------|
+| Algèbre directe | 2 paires | < 1 ms | 100% |
+| CP-SAT connu (2 paires) | 2 paires | < 1 s | 100% |
+| CP-SAT seul | ≥ 50 L | ≈ 20 s (timeout) | ~0% |
 
 ---
 
@@ -284,18 +331,35 @@ Objectif         : bigrammes des blocs déchiffrés ≈ français
 
 | Métrique | Description |
 |----------|-------------|
-| `key_accuracy` | % de lettres/valeurs de clé correctement trouvées |
-| `plaintext_score` | Score bigramme log-vraisemblance du texte déchiffré |
-| `time_s` | Temps de résolution (secondes) |
-| `success_rate` | % d'essais avec clé exacte |
+| `mean_accuracy` | % de valeurs de clé correctement trouvées (moyenne) |
+| `success_rate` | % d'essais avec clé exacte (accuracy ≥ 99%) |
+| `mean_time_s` | Temps moyen de résolution (secondes) |
 
-### Protocole prévu
+### Protocole
 
-1. 10 clés aléatoires × 5 longueurs de texte (100 à 1000 lettres) × 4 chiffrements
-2. Approches : fréquence, hill climbing, CP-SAT pur, CP-SAT + contraintes
-3. Courbes `success_rate` vs `text_length` par approche
+- **5 essais** par longueur, clés aléatoires, `seed=42`
+- Timeout CP-SAT fixé à **20 s**
+- Corpus français source commun
 
-**Statut** : *à implémenter* (`H3-5-Evaluation.ipynb`)
+### Synthèse comparative
+
+| Chiffrement | Approche | Espace clé | Temps | Résultat |
+|-------------|----------|-----------|-------|----------|
+| Substitution | Analyse de fréquence | 26! | < 1 ms | ~31% précision |
+| Substitution | Hill climbing | 26! | 0.5–2 s | ~85% / 40% succès (800 L) |
+| Substitution | CP-SAT pur | 26! | ≈ 20 s (timeout) | ~14% |
+| Substitution | CP-SAT + mot connu | 19! (ex.) | < 5 s | ~99% |
+| Vigenère | IC + CP-SAT | 26^L | ~4 s | 100% (L≤6) |
+| Transposition | CP-SAT bigrammes | L=6! | ~0.09 s | ~100% |
+| Hill 2×2 | CP-SAT connu | 26^4 / algèbre | < 1 s | 100% |
+| Hill 2×2 | CP-SAT seul | 26^4 | ≈ 20 s (timeout) | ~0% |
+
+### Conclusions clés
+
+1. **CP-SAT brille avec des contraintes additionnelles** : mots connus, texte clair partiel, longueur de clé connue
+2. **Sans contraintes fortes**, le hill climbing surpasse CP-SAT pour la substitution (QAP NP-difficile)
+3. **La longueur du texte est critique** : < 200 lettres difficile même avec hill climbing
+4. **Hiérarchie d'attaque** : Transposition ≈ Vigenère > Substitution + connaissance > Substitution seule > Hill seul
 
 ---
 
@@ -319,39 +383,48 @@ jupyter notebook notebooks/
 
 ```python
 from core.ciphers.substitution import generate_random_key, encrypt
-from core.linguistics.frequency_analysis import bigram_log_probs, trigram_log_probs
+from core.linguistics.frequency_analysis import bigram_log_probs, trigram_log_probs, letter_frequencies
 from core.solvers.hill_climbing import hill_climbing_attack
 from core.solvers.cp_substitution import solve_substitution
 from core.ciphers.vigenere import encrypt as v_encrypt
 from core.solvers.cp_vigenere import solve_vigenere
+from core.ciphers.transposition import generate_random_key as trans_gen_key, encrypt as trans_enc
+from core.solvers.cp_transposition import solve_transposition
 
 # Substitution
 with open('data/french_reference.txt') as f:
     corpus = f.read()
-tlp = trigram_log_probs(corpus)
 blp = bigram_log_probs(corpus)
+tlp = trigram_log_probs(corpus)
+lf  = letter_frequencies(corpus)
 
 key = generate_random_key()
 cipher = encrypt("BONJOUR MONDE", key)
-result = hill_climbing_attack(cipher, tlp, letter_frequencies(corpus), ngram_size=3)
+result = hill_climbing_attack(cipher, blp, lf, ngram_size=3)
 
 # Vigenère
-from core.linguistics.frequency_analysis import detect_key_length_ic, letter_frequencies
-cipher_v = v_encrypt("BONJOUR MONDE", "FRANCE")
+from core.linguistics.frequency_analysis import detect_key_length_ic
+cipher_v = v_encrypt("BONJOUR MONDE", [5, 17, 0, 13, 2, 4])  # FRANCE
 L = detect_key_length_ic(cipher_v)[0][0]
 res = solve_vigenere(cipher_v, L, blp)
 print(res['key_str'])  # → FRANCE
+
+# Transposition
+key_t = trans_gen_key(6)
+cipher_t = trans_enc("BONJOUR MONDE", key_t)
+res_t = solve_transposition(cipher_t, 6, blp)
+print(res_t['key'])
 ```
 
 ### Ordre des notebooks
 
-| Notebook | Contenu | Statut |
-|----------|---------|--------|
-| `H3-1-Substitution.ipynb` | Substitution mono, 3 approches, benchmark | ✓ Terminé |
-| `H3-2-Vigenere.ipynb` | IC, Kasiski, CP-SAT, pipeline complet | ✓ Terminé |
-| `H3-3-Transposition.ipynb` | Transposition, permutation CP-SAT | ✓ Terminé |
-| `H3-4-Hill.ipynb` | Hill cipher, algèbre mod 26 | ✓ Terminé |
-| `H3-5-Evaluation.ipynb` | Benchmark comparatif global | ✓ Terminé |
+| Notebook | Contenu | Durée estimée |
+|----------|---------|---------------|
+| `H3-1-Substitution.ipynb` | Substitution mono, 3 approches, benchmark | ~6 min |
+| `H3-2-Vigenere.ipynb` | IC, Kasiski, CP-SAT, pipeline complet | ~5 min |
+| `H3-3-Transposition.ipynb` | Transposition, permutation CP-SAT | ~3 min |
+| `H3-4-Hill.ipynb` | Hill cipher, algèbre mod 26 | ~5 min |
+| `H3-5-Evaluation.ipynb` | Benchmark comparatif global | ~15 min |
 
 ---
 
@@ -361,29 +434,31 @@ print(res['key_str'])  # → FRANCE
 
 - [x] **H3-1 — Substitution monoalphabétique**
   - [x] `core/ciphers/substitution.py` — encrypt, decrypt, key_accuracy
-  - [x] `core/solvers/cp_substitution.py` — AllDifferent + coûts bigrammes + coûts unigrammes + hints
+  - [x] `core/solvers/cp_substitution.py` — AllDifferent + coûts bigrammes + coûts unigrammes
   - [x] `core/solvers/hill_climbing.py` — bigrammes/trigrammes, restarts aléatoires
   - [x] `notebooks/H3-1-Substitution.ipynb` — 3 approches + CP-SAT avec mots connus + benchmark
+
 - [x] **H3-2 — Vigenère**
   - [x] `core/ciphers/vigenere.py` — encrypt, decrypt, réduction de période
   - [x] `core/linguistics/frequency_analysis.py` — IC, Kasiski, detect_key_length_ic
-  - [x] `core/solvers/cp_vigenere.py` — agrégation par paires, L² contraintes, 8/8 clés exactes
+  - [x] `core/solvers/cp_vigenere.py` — agrégation par paires, L² contraintes, 100% sur L=4,5,6
   - [x] `notebooks/H3-2-Vigenere.ipynb` — IC, Kasiski, CP-SAT, benchmark multi-clés
-- [x] **Données linguistiques**
-  - [x] `data/french_reference.txt` — 8 314 lettres de référence
-  - [x] `data/french_bigrams_standard.json` — 676 bigrammes
-  - [x] `data/french_trigrams_standard.json` — 17 576 trigrammes
-
-### Terminé ✓ (suite)
 
 - [x] **H3-3 — Transposition columnar**
   - [x] `core/ciphers/transposition.py` — encrypt, decrypt, generate_random_key, key_accuracy
   - [x] `core/solvers/cp_transposition.py` — AllDifferent + table agrégée within-row, L-1 contraintes
   - [x] `notebooks/H3-3-Transposition.ipynb` — IC conservé, CP-SAT, benchmark L=4..8
+
 - [x] **H3-4 — Hill cipher**
   - [x] `core/ciphers/hill.py` — encrypt, decrypt, known_plaintext_attack, _matrix_inv_mod26
   - [x] `core/solvers/cp_hill.py` — attaque connue (linéaire mod 26) + attaque seule (bigrammes)
   - [x] `notebooks/H3-4-Hill.ipynb` — algèbre, CP-SAT connu (100%), CP-SAT seul
+
 - [x] **H3-5 — Évaluation comparée**
   - [x] `core/evaluation/benchmark.py` — run_trials, print_table, compare_approaches
-  - [x] `notebooks/H3-5-Evaluation.ipynb` — benchmark global 4 chiffrements + courbes
+  - [x] `notebooks/H3-5-Evaluation.ipynb` — benchmark global 4 chiffrements + courbes comparatives
+
+- [x] **Données linguistiques**
+  - [x] `data/french_reference.txt` — 8 314 lettres de référence
+  - [x] `data/french_bigrams_standard.json` — 676 bigrammes
+  - [x] `data/french_trigrams_standard.json` — 17 576 trigrammes
