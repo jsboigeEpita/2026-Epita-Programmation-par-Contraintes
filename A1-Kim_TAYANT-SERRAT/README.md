@@ -49,8 +49,10 @@ pour accélérer les démarrages suivants.
 ```
 api.py              # backend FastAPI
 diet.py             # solveur CP-SAT et générateur hebdo
+diet_pnle.py        # solveur PLNE équivalent (pywraplp/CBC) pour comparaison
+benchmark.py        # mesure des temps de résolution CP-SAT vs PLNE
 preprocessing.py    # nettoyage et enrichissement de la table Ciqual
-train.ipynb         # notebook d'exploration et de modélisation
+modelisation.ipynb  # notebook d'exploration et de modélisation
 static/
   index.html        # interface
   app.js            # logique front
