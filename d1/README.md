@@ -37,3 +37,5 @@ Le VM Scheduling Problem consiste a allouer des machines virtuelles (VMs) avec d
 - Certaines VMs ne doivent pas être sur le même serveur
 - On doit favoriser l'aggrégation des espaces libres restants pour économiser les ressources
 - Dans le cadre d'une situation initiale de VM active, trouver la solution optimale pour mettre les VMs en format optimal sans downtime
+
+Pour l'utilisation de ortools pour le CP-SAT: [CSP-3 Advanced](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-3-Advanced.ipynb)
