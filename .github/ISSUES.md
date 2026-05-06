@@ -36,7 +36,7 @@ reference issue numbers in their merge messages.
 - **Owner:** @NCH04
 - **Reviewer:** @Sosolalt
 - **Branch:** feat/cats
-- **Status:** open
+- **Status:** closed 2026-05-06 by merge of PR #2, reviewed by @Sosolalt
 - **Acceptance:**
   - [x] parser handles arbitrary/matching/paths/regions/scheduling
   - [x] 18 seeds parse and solve OPTIMAL via CP-SAT
