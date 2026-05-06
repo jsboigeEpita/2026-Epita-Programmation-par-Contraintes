@@ -39,3 +39,107 @@ Le VM Scheduling Problem consiste a allouer des machines virtuelles (VMs) avec d
 - Dans le cadre d'une situation initiale de VM active, trouver la solution optimale pour mettre les VMs en format optimal sans downtime
 
 Pour l'utilisation de ortools pour le CP-SAT: [CSP-3 Advanced](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-3-Advanced.ipynb)
+
+## Modélisation du problème
+
+On va chercher ici à représenter ce problème par un problème de programmation
+linéaire pour pouvoir le résoudre par CP-SAT et PLNE.
+
+La première partie du problème, à savoir la recherche de la configuration
+optimale, s'apparente à un Bin Packing Problem (BPP). La seconde reposera sur
+l'ajout d'une notion de transition d'un état de départ vers cet état optimal.
+
+Supposons `NB_SERVER` le nombre maximal de serveurs et `NB_VM` le nombre de VMs.
+
+### Variables de décision
+
+Pour chaque VM, on peut choisir à quel serveur on l'associe. On a donc comme
+variables de décision les valeurs $x_{i,j}$ avec $i \in [[1;\text{NB\_VM}]]$ et
+$j \in [[1;\text{NB\_SERVER}]]$ avec $x_{i,j} \in \{0;1\}$.
+
+### Fonction objectif
+
+On cherche à minimiser les coûts d'exploitation du centre de données, on veut
+donc minimiser le nombre de serveur avec une VM active dessus pour pouvoir les
+mettre dans un mode d'économie d'énergie. Autrement dit, on cherche:
+$$min \; \sum_j \max_{i} x_{i,j}$$
+
+Pour transformer ce problème en problème linéaire, on va ruser en introduisant
+une variable intermédiaire $y_j \in \{0;1\}$ avec de nouvelles contraintes
+telles que $\forall i, y_j \ge x_{i,j}$ (ce qui donne l'opération max). On
+obtient alors:
+$$min \; \sum_j y_j$$
+
+### Contraintes de présence
+
+On veut que les VMs soient présentes sur exactement un serveur. On peut traduire cette contrainte par:
+$$\sum_j x_{i,j} = 1$$
+
+### Contraintes de capacités
+
+On veut que les VMs aient leurs ressources adéquates, donc on ne veut pas
+surcharger un serveur et lui assigner plus de VMs que sa capacité ne permettent.
+Pour ce faire, on définit les capacités `CPU`, `RAM`, `STOCKAGE` et `RESEAU`
+pour les `VM` et les `SERVER`.
+On veut pour chaque serveur $j$ que:
+$$\sum_i \text{VM\_CPU}_i \; x_{i,j} \le \text{SERVER\_CPU}_j$$
+
+et de même pour les autres capacités.
+
+### Contraintes d'affinité / anti-affinité
+
+On veut que certaines VMs soient sur le même serveur ou, au contraire, sur des
+serveurs différents. Autrement dit, avec deux vms $i$ et $k$, pour un serveur
+$j$ fixé, on a la contrainte d'affinité:
+$$x_{i,j} = x_{k,j}$$
+
+et d'anti-affinité:
+$$x_{i,j} \ne x_{k,j}$$
+
+### Contraintes souples de consolidation dynamique
+
+Jusqu'ici on est parti sur un contexte statique, les serveurs sont vides et on
+souhaite remplir avec des VMs. On veut ici permettre la transition entre une
+configuration ancienne vers une configuration nouvelle. La contrainte
+principale que l'on va vouloir traiter ici et de pénaliser les hot swaps qui
+sont couteux en ressources. Pour le représenter, on peut avoir les anciennes
+assignations $x_{i,j}'$ et on applique une pénalité sur changements de valeur
+en fonction d'un facteur.
+
+Pour être précis, on est dans un contexte où, pour une VM donnée, on veut
+l'ajouter ou optimiser son placement. Si $x_{i,j} \gt x_{i,j}'$, on vient de
+rajouter la VM sur ce serveur. On sait que si $x_{i,j} \ne x_{i,j}'$, avec la
+contrainte de présence, on a eu hot swap. Avec $\lambda_{hot}$ le facteur de
+pénalisation, on peut ajouter le terme $\lambda_{hot} \sum_{(i,j)}
+|x_{i,j} - x_{i,j}'|$ avec ici les $x_{i,j}'$ constants dans le problème d'optimisation.
+
+Le problème ici est que le terme $|x_{i,j} - x_{i,j}'|$ n'est pas linéaire, pour
+le rendre linéaire on peut introduire un terme $d_{i,j} \in \{0;1\}$ avec les
+contraintes $d_{i,j} \ge (x_{i,j} - x_{i,j}')$ et
+$d_{i,j} \ge -(x_{i,j} - x_{i,j}')$ ce qui équivaut à
+$d_{i,j} \ge |x_{i,j} - x_{i,j}'|$. Vu que le terme de pénalisation devient
+ $\lambda_{hot} \sum_{(i,j)} d_{i,j}$, la minimisation s'occupera de le mettre à
+ 0 si possible.
+
+ ### Contraintes souples de minimisation de la fragmentation
+
+ Ici on va vouloir minimiser la fragmentation des serveurs allumés. Autrement
+ dit, si la somme des besoins des VMs n'est pas exactement égale à la somme des
+ capacités des serveurs et qu'il y a de la marge, on veut que cette marge soit
+ concentrée le plus possible sur un serveur. On veut donc minimiser le nombre
+ de serveur fragmentés, donc avec de la marge.
+
+ Posons $f_j \in \{0;1\}$ pour si le serveur $j$ est fragmenté ou non. On
+ rajoutera à la fonction objectif le terme $\lambda_{frag} \sum_j f_j$ pour
+ favoriser la baisse de fragmentation. D'un point de vue contraintes, on sait
+ déjà que $f_j \le y_j$ (un serveur vide n'est pas fragmenté). Un serveur n'est
+ pas fragmenté si la somme des capacités de ses VMs est égale à sa capacité
+ totale, sachant qu'elle doit rester inférieure de toute manière. On peut le
+ reformuler en disant que la marge restante est 0 si $f_j = 0$. On peut donc
+ établir la contrainte suivante:
+ $$\text{SERVER\_CPU}_j - \sum_i \text{VM\_CPU}_i \; x_{i,j} \le f_j \; \text{SERVER\_CPU}_j$$
+
+ et de même pour les autres capacités. Ainsi, on a le terme de gauche toujours
+ positif avec la contrainte de capacités, le terme de droite est soit la valeur
+ maximale possible de la marge, soit 0. Avec la minimisation de la somme des
+ $f_j$, le $f_j$ sera à 0 seulement si la marge l'est.
