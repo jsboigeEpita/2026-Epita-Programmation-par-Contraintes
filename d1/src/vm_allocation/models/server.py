@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class Server:
     def __init__(self, server_id, cpu, ram, storage, bw):
 
@@ -28,7 +31,6 @@ class Server:
 
         return False
 
-
     def add_vm(self, vm):
 
         if not self.can_host(vm):
@@ -44,10 +46,12 @@ class Server:
 
     def can_host(self, vm):
 
-        if (self.cpu_usage + vm.cpu > self.cpu_capacity or
-            self.ram_usage + vm.ram > self.ram_capacity or
-            self.storage_usage + vm.storage > self.storage_capacity or
-            self.bw_usage + vm.bw > self.bw_capacity):
+        if (
+            self.cpu_usage + vm.cpu > self.cpu_capacity
+            or self.ram_usage + vm.ram > self.ram_capacity
+            or self.storage_usage + vm.storage > self.storage_capacity
+            or self.bw_usage + vm.bw > self.bw_capacity
+        ):
             return False
 
         for other_vm in self.vms:
@@ -55,3 +59,16 @@ class Server:
                 return False
 
         return True
+
+    def copy(self) -> Server:
+        c = Server(
+            self.id,
+            self.cpu_capacity,
+            self.ram_capacity,
+            self.storage_capacity,
+            self.bw_capacity,
+        )
+        for vm in self.vms:
+            c.add_vm(vm.copy())
+
+        return c
