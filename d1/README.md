@@ -70,7 +70,7 @@ telles que $\forall i, y_j \ge x_{i,j}$ (ce qui donne l'opération max). On
 obtient alors:
 $$min \; \sum_j y_j$$
 
-### Contraintes de présence
+### Contraintes d'unicité
 
 On veut que les VMs soient présentes sur exactement un serveur. On peut traduire cette contrainte par:
 $$\sum_j x_{i,j} = 1$$
