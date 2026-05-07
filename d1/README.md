@@ -119,7 +119,9 @@ contraintes $d_{i,j} \ge (x_{i,j} - x_{i,j}')$ et
 $d_{i,j} \ge -(x_{i,j} - x_{i,j}')$ ce qui équivaut à
 $d_{i,j} \ge |x_{i,j} - x_{i,j}'|$. Vu que le terme de pénalisation devient
  $\lambda_{hot} \sum_{(i,j)} d_{i,j}$, la minimisation s'occupera de le mettre à
- 0 si possible.
+0 si possible. On peut ne pas traiter le cas où $x_{i,j}'$ est égal à 0 pour
+éviter les fausses alertes avec les créations de VMs, ce qui donne
+$d_{i,j} \ge (1 - x_{i,j})$.
 
  ### Contraintes souples de minimisation de la fragmentation
 
