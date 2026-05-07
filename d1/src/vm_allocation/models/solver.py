@@ -3,7 +3,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from vm_allocation.models import VM, Context
+from .context import Context
+from .vm import VM
 
 
 class Solver(ABC):

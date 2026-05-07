@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import List
 from uuid import UUID
 
-from vm_allocation.models import VM
+from .vm import VM
 
 
 class Server:
