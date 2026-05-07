@@ -100,3 +100,17 @@ class VM:
         c.anti_affinity = c.anti_affinity.union(self.anti_affinity)
 
         return c
+
+    def __str__(self) -> str:
+        parts = [
+            f"cpu={self.cpu}",
+            f"ram={self.ram}",
+            f"sto={self.storage}",
+            f"bw={self.bw}",
+        ]
+
+        if self.affinity:
+            parts.append(f"aff={self.affinity}")
+        if self.anti_affinity:
+            parts.append(f"anti={self.anti_affinity}")
+        return f"VM[{self.id}]({', '.join(parts)})"
