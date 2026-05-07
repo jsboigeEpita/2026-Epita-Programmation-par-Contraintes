@@ -130,6 +130,21 @@ class Server:
 
         return True
 
+    def capacities(self) -> dict[str, int]:
+        """Return the server capacities by resource name.
+
+        Returns
+        -------
+        dict[str, int]
+            Mapping from resource names to server capacities.
+        """
+        return {
+            "cpu": self.cpu_capacity,
+            "ram": self.ram_capacity,
+            "storage": self.storage_capacity,
+            "bw": self.bw_capacity,
+        }
+
     def copy(self) -> Server:
         """ "Creates a new server instance from this server.
 

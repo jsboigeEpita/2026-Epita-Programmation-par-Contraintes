@@ -1,25 +1,31 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Callable, List
 
 import pulp
 
 from vm_allocation.models import Context, Server, Solver, VM
 
 
-RESOURCES = (
-    ("cpu", "cpu_capacity"),
-    ("ram", "ram_capacity"),
-    ("storage", "storage_capacity"),
-    ("bw", "bw_capacity"),
-)
+RESOURCES = ("cpu", "ram", "storage", "bw")
 
+#dictionnaire rerésentant les assignation (serveur, vm) == 1 si assigné
 AssignmentVars = dict[tuple[int, int], pulp.LpVariable]
+#dictionnaire représentant les serveurs utilisé (ayant 1 ou plus d'une vm assigné)
 ServerUsageVars = dict[int, pulp.LpVariable]
 
 
 class PLNESolver(Solver):
-    """Solve VM allocation as an integer linear program with PuLP/CBC."""
+    """Solve VM allocation as an integer linear program with PuLP/CBC.
+
+    Parameters
+    ----------
+    migration_weight : float, default=0
+        Penalty applied when an existing VM is moved away from its current
+        server.
+    fragmentation_weight : float, default=0
+        Penalty applied to normalized free resources left on active servers.
+    """
 
     def __init__(
         self,
@@ -30,11 +36,22 @@ class PLNESolver(Solver):
         self.fragmentation_weight = fragmentation_weight
 
     def solve(self, modifications: List[VM], context: Context) -> Context | None:
-        """Build and solve the ILP model, then return the resulting context.
+        """Build and solve the ILP model.
 
-        The model re-allocates every VM from the current context plus every VM
-        from ``modifications``. If a modified VM has the same id as an existing
-        one, the modified definition replaces the old one.
+        Parameters
+        ----------
+        modifications : List[VM]
+            VMs to add or replace before solving. If a VM id already exists in
+            the context, the VM from ``modifications`` replaces it.
+        context : Context
+            Current allocation context containing servers and already hosted
+            VMs.
+
+        Returns
+        -------
+        Context | None
+            New allocation context if an optimal solution is found, otherwise
+            ``None``.
         """
         servers = context.get_servers()
         vms = self._target_vms(modifications, context)
@@ -63,7 +80,21 @@ class PLNESolver(Solver):
     def _create_assignment_variables(
         self, vms: list[VM], servers: list[Server]
     ) -> AssignmentVars:
-        """Create x[i, j], equal to 1 when VM i is assigned to server j."""
+        """Create VM-to-server assignment variables.
+
+        Parameters
+        ----------
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        AssignmentVars
+            Binary variables ``x[i, j]`` equal to 1 when VM ``i`` is assigned
+            to server ``j``.
+        """
         return {
             (i, j): pulp.LpVariable(f"x_{i}_{j}", cat="Binary")
             for i in range(len(vms))
@@ -71,7 +102,19 @@ class PLNESolver(Solver):
         }
 
     def _create_server_usage_variables(self, servers: list[Server]) -> ServerUsageVars:
-        """Create y[j], equal to 1 when server j hosts at least one VM."""
+        """Create server usage variables.
+
+        Parameters
+        ----------
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        ServerUsageVars
+            Binary variables ``y[j]`` equal to 1 when server ``j`` hosts at
+            least one VM.
+        """
         return {
             j: pulp.LpVariable(f"y_{j}", cat="Binary")
             for j in range(len(servers))
@@ -80,9 +123,18 @@ class PLNESolver(Solver):
     def _target_vms(self, modifications: List[VM], context: Context) -> list[VM]:
         """Return the VMs that must exist in the final allocation.
 
-        Existing VMs are copied from the current context. VMs from
-        ``modifications`` are then copied on top of them: a new id adds a VM,
-        while an existing id replaces the previous VM definition.
+        Parameters
+        ----------
+        modifications : List[VM]
+            VMs to add or replace.
+        context : Context
+            Current allocation context.
+
+        Returns
+        -------
+        list[VM]
+            Copied VMs from the context plus copied VMs from ``modifications``.
+            New ids are appended, existing ids are replaced.
         """
         vms_by_id = {}
         ordered_ids = []
@@ -107,7 +159,23 @@ class PLNESolver(Solver):
         vms: list[VM],
         servers: list[Server],
     ) -> None:
-        """Force every VM to be assigned to exactly one server."""
+        """Add constraints forcing every VM onto exactly one server.
+
+        Parameters
+        ----------
+        problem : pulp.LpProblem
+            PuLP problem receiving the constraints.
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        None
+        """
         number_of_servers = len(servers)
 
         for vm_index in range(len(vms)):
@@ -130,10 +198,29 @@ class PLNESolver(Solver):
         vms: list[VM],
         servers: list[Server],
     ) -> None:
-        """Mark a server as used when at least one VM is assigned to it.
+        """Add constraints linking assignments to server usage.
 
-        If x[i, j] is 1, then y[j] must also be 1. Since the objective
-        minimizes the sum of y[j], unused servers naturally stay at 0.
+        Parameters
+        ----------
+        problem : pulp.LpProblem
+            PuLP problem receiving the constraints.
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        y : ServerUsageVars
+            Server usage variables ``y[j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        If ``x[i, j]`` is 1, then ``y[j]`` must also be 1. Since the objective
+        minimizes the sum of ``y[j]``, unused servers naturally stay at 0.
         """
         number_of_vms = len(vms)
         number_of_servers = len(servers)
@@ -159,19 +246,39 @@ class PLNESolver(Solver):
         vms: list[VM],
         servers: list[Server],
     ) -> None:
-        """Ensure each server stays within CPU, RAM, storage, and bandwidth limits."""
+        """Add multi-resource capacity constraints.
+
+        Parameters
+        ----------
+        problem : pulp.LpProblem
+            PuLP problem receiving the constraints.
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        y : ServerUsageVars
+            Server usage variables ``y[j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        None
+        """
         for server_index, server in enumerate(servers):
-            for vm_attr, server_attr in RESOURCES:
+            server_capacities = server.capacities()
+
+            for resource in RESOURCES:
                 total_resource_usage = self._server_usage_expression(
                     x,
                     vms,
                     server_index,
-                    vm_attr,
+                    resource,
                 )
-                server_capacity = getattr(server, server_attr)
+                server_capacity = server_capacities[resource]
                 server_is_used = y[server_index]
                 available_capacity = server_capacity * server_is_used
-                constraint_name = f"capacity_{vm_attr}_server_{server_index}"
+                constraint_name = f"capacity_{resource}_server_{server_index}"
 
                 problem += (
                     total_resource_usage <= available_capacity,
@@ -185,8 +292,29 @@ class PLNESolver(Solver):
         vms: list[VM],
         servers: list[Server],
     ) -> None:
-        """Force affinity pairs to be placed on the same server."""
-        affinity_pairs = self._vm_relation_pairs(vms, "affinity")
+        """Add affinity constraints.
+
+        Parameters
+        ----------
+        problem : pulp.LpProblem
+            PuLP problem receiving the constraints.
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        For every affinity pair and every server, both VMs must have the same
+        assignment value.
+        """
+        affinity_pairs = self._vm_relation_pairs(vms, lambda vm: vm.affinity)
         number_of_servers = len(servers)
 
         for left_vm_index, right_vm_index in affinity_pairs:
@@ -210,8 +338,29 @@ class PLNESolver(Solver):
         vms: list[VM],
         servers: list[Server],
     ) -> None:
-        """Force anti-affinity pairs to be placed on different servers."""
-        anti_affinity_pairs = self._vm_relation_pairs(vms, "anti_affinity")
+        """Add anti-affinity constraints.
+
+        Parameters
+        ----------
+        problem : pulp.LpProblem
+            PuLP problem receiving the constraints.
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        For every anti-affinity pair and every server, at most one of the two
+        VMs can be assigned to that server.
+        """
+        anti_affinity_pairs = self._vm_relation_pairs(vms, lambda vm: vm.anti_affinity)
         number_of_servers = len(servers)
 
         for left_vm_index, right_vm_index in anti_affinity_pairs:
@@ -232,14 +381,27 @@ class PLNESolver(Solver):
                 )
 
     def _vm_relation_pairs(
-        self, vms: list[VM], relation_attr: str
+        self, vms: list[VM], related_vm_ids: Callable[[VM], set]
     ) -> set[tuple[int, int]]:
-        """Return unique VM index pairs for an affinity-like relation."""
+        """Return unique VM index pairs for an affinity-like relation.
+
+        Parameters
+        ----------
+        vms : list[VM]
+            VMs to inspect.
+        related_vm_ids : Callable[[VM], set]
+            Function returning related VM ids for one VM.
+
+        Returns
+        -------
+        set[tuple[int, int]]
+            Unique pairs of VM indices involved in the relation.
+        """
         vm_index = {vm.id: i for i, vm in enumerate(vms)}
         pairs = set()
 
         for vm in vms:
-            for other_vm_id in getattr(vm, relation_attr):
+            for other_vm_id in related_vm_ids(vm):
                 if other_vm_id not in vm_index:
                     continue
                 pairs.add(tuple(sorted((vm_index[vm.id], vm_index[other_vm_id]))))
@@ -254,7 +416,26 @@ class PLNESolver(Solver):
         servers: list[Server],
         context: Context,
     ):
-        """Build the objective: used servers plus optional soft penalties."""
+        """Build the objective expression.
+
+        Parameters
+        ----------
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        y : ServerUsageVars
+            Server usage variables ``y[j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+        context : Context
+            Current allocation context.
+
+        Returns
+        -------
+        pulp.LpAffineExpression
+            Objective minimizing used servers plus optional soft penalties.
+        """
         terms = [pulp.lpSum(y[j] for j in range(len(servers)))]
 
         if self.migration_weight:
@@ -274,7 +455,25 @@ class PLNESolver(Solver):
     def _migration_expression(
         self, x: AssignmentVars, vms: list[VM], servers: list[Server], context: Context
     ):
-        """Count assignments that move an existing VM away from its current server."""
+        """Build the migration penalty expression.
+
+        Parameters
+        ----------
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+        context : Context
+            Current allocation context.
+
+        Returns
+        -------
+        pulp.LpAffineExpression
+            Sum of assignments moving existing VMs away from their current
+            server.
+        """
         current_assignment = self._current_assignment(context)
         server_index = {server.id: j for j, server in enumerate(servers)}
         terms = []
@@ -298,33 +497,88 @@ class PLNESolver(Solver):
         vms: list[VM],
         servers: list[Server],
     ):
-        """Measure normalized free resources left on active servers."""
+        """Build the fragmentation penalty expression.
+
+        Parameters
+        ----------
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        y : ServerUsageVars
+            Server usage variables ``y[j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        pulp.LpAffineExpression
+            Sum of normalized free resources left on active servers.
+        """
         terms = []
         for j, server in enumerate(servers):
-            for vm_attr, server_attr in RESOURCES:
-                capacity = getattr(server, server_attr)
+            server_capacities = server.capacities()
+
+            for resource in RESOURCES:
+                capacity = server_capacities[resource]
                 if capacity <= 0:
                     continue
 
-                used = self._server_usage_expression(x, vms, j, vm_attr)
+                used = self._server_usage_expression(x, vms, j, resource)
                 terms.append((capacity * y[j] - used) / capacity)
 
         return pulp.lpSum(terms)
 
     def _server_usage_expression(
-        self, x: AssignmentVars, vms: list[VM], server_index: int, vm_attr: str
+        self, x: AssignmentVars, vms: list[VM], server_index: int, resource: str
     ):
-        """Return the total usage of one VM resource on one server."""
+        """Return total usage of one resource on one server.
+
+        Parameters
+        ----------
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        vms : list[VM]
+            VMs to place.
+        server_index : int
+            Index of the server whose usage is computed.
+        resource : str
+            Resource whose VM requirements must be summed.
+
+        Returns
+        -------
+        pulp.LpAffineExpression
+            Total symbolic usage of the selected resource on the selected
+            server.
+        """
         return pulp.lpSum(
-            getattr(vm, vm_attr) * x[(i, server_index)] for i, vm in enumerate(vms)
+            vm.requirements()[resource] * x[(i, server_index)]
+            for i, vm in enumerate(vms)
         )
 
     def _make_pulp_solver(self):
-        """Create the PuLP CBC solver used for the ILP."""
+        """Create the PuLP CBC solver.
+
+        Returns
+        -------
+        pulp.PULP_CBC_CMD
+            CBC solver instance with solver messages disabled.
+        """
         return pulp.PULP_CBC_CMD(msg=False)
 
     def _current_assignment(self, context: Context) -> dict:
-        """Map each currently hosted VM id to its current server id."""
+        """Map each currently hosted VM id to its server id.
+
+        Parameters
+        ----------
+        context : Context
+            Current allocation context.
+
+        Returns
+        -------
+        dict
+            Mapping from VM ids to server ids.
+        """
         assignment = {}
         for server in context.get_servers():
             for vm in server.vms:
@@ -334,7 +588,22 @@ class PLNESolver(Solver):
     def _build_solution_context(
         self, x: AssignmentVars, vms: list[VM], servers: list[Server]
     ) -> Context:
-        """Convert solved x[i, j] values back into a concrete Context."""
+        """Convert solved assignment variables into a concrete context.
+
+        Parameters
+        ----------
+        x : AssignmentVars
+            Solved assignment variables ``x[i, j]``.
+        vms : list[VM]
+            VMs placed by the model.
+        servers : list[Server]
+            Candidate servers used to preserve capacities and ids.
+
+        Returns
+        -------
+        Context
+            Allocation context built from the solved assignment values.
+        """
         solution_servers = [
             Server(
                 server.id,
