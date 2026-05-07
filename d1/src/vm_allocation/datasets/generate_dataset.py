@@ -42,4 +42,15 @@ def generate_vms(n):
                 bw=random.randint(1, 100),
             )
         )
+
+    for i in range(len(vms)):
+        for j in range(i + 1, len(vms)):
+            vm_a, vm_b = vms[i], vms[j]
+
+            roll = random.random()
+
+            if roll < 0.15:
+                vm_a.add_affinity(vm_b)
+            elif roll < 0.25:
+                vm_a.add_anti_affinity(vm_b)
     return vms
