@@ -1,5 +1,6 @@
 from typing import List
-from vm_allocation.models import Context, VM
+from .context import Context
+from .vm import VM
 from abc import ABC, abstractmethod
 
 

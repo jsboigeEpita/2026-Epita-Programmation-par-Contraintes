@@ -1,6 +1,5 @@
 import random
-from models.server import Server
-from models.vm import VM
+from vm_allocation.models import Server, VM
 
 def random_power_of_two(min_exp=1, max_exp=6):
     return 2 ** random.randint(min_exp, max_exp)
