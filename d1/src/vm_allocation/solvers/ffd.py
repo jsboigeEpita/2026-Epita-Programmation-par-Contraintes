@@ -1,6 +1,5 @@
 from typing import List
-from vm_allocation.models import Context, VM
-from vm_allocation.solvers.base import Solver
+from vm_allocation.models import Context, VM, Solver
 
 
 class FFDSolver(Solver):
