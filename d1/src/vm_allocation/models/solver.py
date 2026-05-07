@@ -1,10 +1,14 @@
-from typing import List
-from .context import Context
-from .vm import VM
+"""Provides the Solver interface."""
+
 from abc import ABC, abstractmethod
+from typing import List
+
+from vm_allocation.models import VM, Context
 
 
 class Solver(ABC):
+    """Interface providing the template for VM allocation problem solvers."""
+
     @abstractmethod
     def solve(self, modifications: List[VM], context: Context) -> Context | None:
         """Returns the solution to a vm allocation problem.

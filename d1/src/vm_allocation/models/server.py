@@ -1,8 +1,41 @@
+"""Provides the Server class."""
+
 from __future__ import annotations
+
+from typing import List
+from uuid import UUID
+
+from vm_allocation.models import VM
 
 
 class Server:
-    def __init__(self, server_id, cpu, ram, storage, bw):
+    """Model representing a server with a capacity and running VMs.
+
+    Attributes
+    ----------
+    server_id : UUID
+        The id of the server, supposed to be unique per server.
+    cpu : int
+        CPU capacity of the server.
+    ram : int
+        RAM capacity of the server.
+    storage : int
+        Storage capacity of the server.
+    bw : int
+        Bandwidth capacity of the server.
+    cpu_usage : int
+        Current usage of the CPU.
+    ram_usage : int
+        Current usage of the RAM.
+    storage_usage : int
+        Current usage of the storage.
+    bw_usage : int
+        Current usage of the bandwidth.
+    vms : List[VM]
+        Active VMs running on the server.
+    """
+
+    def __init__(self, server_id: UUID, cpu: int, ram: int, storage: int, bw: int):
 
         self.id = server_id
         self.cpu_capacity = cpu
@@ -15,9 +48,21 @@ class Server:
         self.storage_usage = 0
         self.bw_usage = 0
 
-        self.vms = []
+        self.vms: List[VM] = []
 
-    def remove_vm_by_id(self, vm_id):
+    def remove_vm_by_id(self, vm_id: UUID) -> bool:
+        """Removes a running VM by id.
+
+        Parameters
+        ----------
+        vm_id : UUID
+            The id of the VM to remove.
+
+        Returns
+        -------
+        bool
+            True if removal successful, False otherwise.
+        """
         for vm in self.vms:
             if vm.id == vm_id:
                 self.cpu_usage -= vm.cpu
@@ -31,7 +76,20 @@ class Server:
 
         return False
 
-    def add_vm(self, vm):
+    def add_vm(self, vm: VM) -> bool:
+        """Adds a running VM.
+
+        Parameters
+        ----------
+        vm : VM
+            The VM to add.
+
+        Returns
+        -------
+        bool
+            True if addition successful, False otherwise (in case of lack of
+            capacity for example).
+        """
 
         if not self.can_host(vm):
             return False
@@ -44,7 +102,19 @@ class Server:
 
         return True
 
-    def can_host(self, vm):
+    def can_host(self, vm: VM) -> bool:
+        """Whether the server can host the given VM.
+
+        Parameters
+        ----------
+        vm : VM
+            The VM to check for.
+
+        Returns
+        -------
+        bool
+            True if possible, False otherwise.
+        """
 
         if (
             self.cpu_usage + vm.cpu > self.cpu_capacity
@@ -61,6 +131,13 @@ class Server:
         return True
 
     def copy(self) -> Server:
+        """ "Creates a new server instance from this server.
+
+        Returns
+        -------
+        Server
+            The copied server.
+        """
         c = Server(
             self.id,
             self.cpu_capacity,
