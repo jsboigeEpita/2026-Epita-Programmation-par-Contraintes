@@ -7,4 +7,5 @@ Modules :
     solver_milp   — Solveur PLNE PuLP/CBC (livrable 4)
     solver_greedy — Heuristique gloutonne LOS (extension)
     cats_parser   — Parser pour le format CATS officiel (Leyton-Brown 2000)
+    vcg           — Mécanisme VCG (livrable 5)
 """
