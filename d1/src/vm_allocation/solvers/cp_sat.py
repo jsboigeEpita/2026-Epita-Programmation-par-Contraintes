@@ -1,5 +1,7 @@
+"""Provides the CPSATSolver class."""
+
 from uuid import UUID
-from typing import List, Any
+from typing import List
 
 from ortools.sat.python import cp_model
 
@@ -7,9 +9,19 @@ from vm_allocation.models import VM, Context, Solver, Server
 
 
 class CPSATSolver(Solver):
-    def __init__(self, hot_swaps_factor: float, fragmentation_factor: float):
-        self.hot_swaps_factor = hot_swaps_factor
-        self.fragmentation_factor = fragmentation_factor
+    """CP-SAT Solver for the VM allocation problem.
+
+    Attributes
+    ----------
+    migration_weight : float
+        Weight applied to hot swap penalty.
+    fragmentation_weight : float
+        Weight applied to fragmentation penalty.
+    """
+
+    def __init__(self, migration_weight: float, fragmentation_weight: float):
+        self.migration_weight = migration_weight
+        self.fragmentation_weight = fragmentation_weight
 
     def solve(self, modifications: List[VM], context: Context) -> Context | None:
         """Returns the solution to a vm allocation problem.
@@ -84,9 +96,9 @@ class CPSATSolver(Solver):
         for vm_id, vm in vms.items():
             for server_id in servers:
                 for other_vm in vm.affinity:
-                    model.add(x[(vm_id, server_id)] == x[(other_vm.id, server_id)])
+                    model.add(x[(vm_id, server_id)] == x[(other_vm, server_id)])
                 for other_vm in vm.anti_affinity:
-                    model.add(x[(vm_id, server_id)] != x[(other_vm.id, server_id)])
+                    model.add(x[(vm_id, server_id)] != x[(other_vm, server_id)])
 
         # Dynamic consolidation
         d_list: list[cp_model.IntVar] = []
@@ -124,8 +136,8 @@ class CPSATSolver(Solver):
         # Objective
         model.minimize(
             sum(y[server_id] for server_id in servers)
-            + self.hot_swaps_factor * sum(d for d in d_list)
-            + self.fragmentation_factor * sum(f for f in f_list)
+            + self.migration_weight * sum(d for d in d_list)
+            + self.fragmentation_weight * sum(f for f in f_list)
         )
 
         # Solving
