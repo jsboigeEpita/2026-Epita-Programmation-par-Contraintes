@@ -17,7 +17,7 @@ def generate_servers(n):
             cpu=random_power_of_two(5, 7),   # 32 à 128
             ram=random_even(64, 256),
             storage=random.randint(500, 2000),
-            bw=random.randint(100, 1000),
+            bw=random.randint(200, 2000),
         )
         for i in range(n)
     ]

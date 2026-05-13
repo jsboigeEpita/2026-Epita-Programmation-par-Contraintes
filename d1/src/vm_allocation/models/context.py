@@ -179,6 +179,7 @@ class Context:
 
         fig.tight_layout(pad=2)
 
+        plt.close(fig)
         return fig
 
     def __str__(self) -> str:
