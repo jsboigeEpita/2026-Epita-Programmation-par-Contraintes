@@ -20,10 +20,10 @@ class FFDSolver(Solver):
         for vm in modifications:
             for server in new_context.get_servers():
                 server.remove_vm_by_id(vm.id)
-
+        #print('modification', modifications)
         # Construire les groupes d'affinité
-        all_vms = self._merge_with_existing(modifications, new_context)
-        groups = self._build_affinity_groups(all_vms)
+        #all_vms = self._merge_with_existing(modifications, new_context)
+        groups = self._build_affinity_groups(modifications)
 
         # Trier chaque groupe par taille décroissante (la plus grosse VM du groupe en tête)
         groups.sort(key=lambda g: max(vm.total_requirement() for vm in g), reverse=True)

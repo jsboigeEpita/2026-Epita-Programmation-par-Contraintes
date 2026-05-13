@@ -96,9 +96,14 @@ class CPSATSolver(Solver):
         for vm_id, vm in vms.items():
             for server_id in servers:
                 for other_vm in vm.affinity:
-                    model.add(x[(vm_id, server_id)] == x[(other_vm, server_id)])
+                    ####### CORRECTIF
+                    
+                    if other_vm in vms:
+                        model.add(x[(vm_id, server_id)] == x[(other_vm, server_id)])
+
                 for other_vm in vm.anti_affinity:
-                    model.add(x[(vm_id, server_id)] != x[(other_vm, server_id)])
+                    if other_vm in vms:
+                        model.add(x[(vm_id, server_id)] != x[(other_vm, server_id)])
 
         # Dynamic consolidation
         d_list: list[cp_model.IntVar] = []

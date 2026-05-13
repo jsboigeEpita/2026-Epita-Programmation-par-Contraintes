@@ -58,6 +58,9 @@ class Server:
         self.bw_usage = 0
 
         self.vms: List[VM] = []
+    
+    def get_vms(self) -> List[VM]:
+        return self.vms
 
     def remove_vm_by_id(self, vm_id: UUID) -> bool:
         """Removes a running VM by id.
