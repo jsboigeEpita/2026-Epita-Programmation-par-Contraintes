@@ -1,6 +1,5 @@
 """Provides the CPSATSolver class."""
 
-from uuid import UUID
 from typing import List
 
 from ortools.sat.python import cp_model
@@ -23,7 +22,9 @@ class CPSATSolver(Solver):
         self.migration_weight = migration_weight
         self.fragmentation_weight = fragmentation_weight
 
-    def solve(self, modifications: List[VM], context: Context) -> Context | None:
+    def solve[ID_T](
+        self, modifications: List[VM[ID_T]], context: Context[ID_T]
+    ) -> Context[ID_T] | None:
         """Returns the solution to a vm allocation problem.
 
         Parameters
@@ -39,9 +40,9 @@ class CPSATSolver(Solver):
             A new context to accommodate for the changes, None if impossible.
         """
 
-        vms: dict[UUID, VM] = {vm.id: vm for vm in modifications}
-        servers: dict[UUID, Server] = {}
-        servers_id_sets: dict[UUID, set[UUID]] = {}
+        vms: dict[ID_T, VM] = {vm.id: vm for vm in modifications}
+        servers: dict[ID_T, Server] = {}
+        servers_id_sets: dict[ID_T, set[ID_T]] = {}
         for server in context.get_servers():
             servers[server.id] = server
             id_set = set()
@@ -54,14 +55,14 @@ class CPSATSolver(Solver):
         model = cp_model.CpModel()
 
         # VM allocation
-        x: dict[tuple[UUID, UUID], cp_model.IntVar] = {
+        x: dict[tuple[ID_T, ID_T], cp_model.IntVar] = {
             (vm_id, server_id): model.new_bool_var(f"x_{vm_id}_{server_id}")
             for vm_id in vms
             for server_id in servers
         }
 
         # Server activity
-        y: dict[UUID, cp_model.IntVar] = {
+        y: dict[ID_T, cp_model.IntVar] = {
             server_id: model.new_bool_var(f"y_{server_id}") for server_id in servers
         }
         for vm_id in vms:
@@ -97,7 +98,7 @@ class CPSATSolver(Solver):
             for server_id in servers:
                 for other_vm in vm.affinity:
                     ####### CORRECTIF
-                    
+
                     if other_vm in vms:
                         model.add(x[(vm_id, server_id)] == x[(other_vm, server_id)])
 

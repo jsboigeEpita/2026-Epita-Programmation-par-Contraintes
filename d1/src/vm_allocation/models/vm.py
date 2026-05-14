@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
-from uuid import UUID
 
-
-class VM:
+class VM[ID_T]:
     """Model representing a VM with requirements.
 
     Attributes
     ----------
-    vm_id : UUID
+    vm_id : ID_T
         The id of the VM, supposed to be unique per VM.
     cpu : int
         The CPU requirement.
@@ -26,15 +24,15 @@ class VM:
         The set of VM ids this VM needs to have distinct server with.
     """
 
-    def __init__(self, vm_id: int, cpu: int, ram: int, storage: int, bw: int):
+    def __init__(self, vm_id: ID_T, cpu: int, ram: int, storage: int, bw: int):
         self.id = vm_id
 
         self.cpu = cpu
         self.ram = ram
         self.storage = storage
         self.bw = bw
-        self.affinity: set[UUID] = set()
-        self.anti_affinity: set[UUID] = set()
+        self.affinity: set[ID_T] = set()
+        self.anti_affinity: set[ID_T] = set()
 
     def requirements(self) -> dict[str, int]:
         """VM requirements represented as a dictionary.
@@ -61,7 +59,7 @@ class VM:
         """
         return sum(self.requirements().values())
 
-    def add_affinity(self, vm: VM) -> None:
+    def add_affinity(self, vm: VM[ID_T]) -> None:
         """Adds a VM as affinity.
 
         Please bear in mind that this attribute, although transitive, will not
@@ -76,7 +74,7 @@ class VM:
         self.affinity.add(vm.id)
         vm.affinity.add(self.id)
 
-    def add_anti_affinity(self, vm: VM) -> None:
+    def add_anti_affinity(self, vm: VM[ID_T]) -> None:
         """Adds a VM as anti-affinity.
 
         Parameters
@@ -87,7 +85,7 @@ class VM:
         self.anti_affinity.add(vm.id)
         vm.anti_affinity.add(self.id)
 
-    def copy(self) -> VM:
+    def copy(self) -> VM[ID_T]:
         """ "Creates a new VM instance from this VM.
 
         Returns

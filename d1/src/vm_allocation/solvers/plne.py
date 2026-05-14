@@ -9,9 +9,9 @@ from vm_allocation.models import Context, Server, Solver, VM
 
 RESOURCES = ("cpu", "ram", "storage", "bw")
 
-#dictionnaire rerésentant les assignation (serveur, vm) == 1 si assigné
+# Mapping representing VM assignation to Server (1 if assigned)
 AssignmentVars = dict[tuple[int, int], pulp.LpVariable]
-#dictionnaire représentant les serveurs utilisé (ayant 1 ou plus d'une vm assigné)
+# Mapping representing Server usage (1 if used)
 ServerUsageVars = dict[int, pulp.LpVariable]
 
 
@@ -35,7 +35,9 @@ class PLNESolver(Solver):
         self.migration_weight = migration_weight
         self.fragmentation_weight = fragmentation_weight
 
-    def solve(self, modifications: List[VM], context: Context) -> Context | None:
+    def solve[ID_T](
+        self, modifications: List[VM[ID_T]], context: Context[ID_T]
+    ) -> Context[ID_T] | None:
         """Build and solve the ILP model.
 
         Parameters
@@ -77,8 +79,8 @@ class PLNESolver(Solver):
 
         return self._build_solution_context(x, vms, servers)
 
-    def _create_assignment_variables(
-        self, vms: list[VM], servers: list[Server]
+    def _create_assignment_variables[ID_T](
+        self, vms: list[VM[ID_T]], servers: list[Server[ID_T]]
     ) -> AssignmentVars:
         """Create VM-to-server assignment variables.
 
@@ -101,7 +103,9 @@ class PLNESolver(Solver):
             for j in range(len(servers))
         }
 
-    def _create_server_usage_variables(self, servers: list[Server]) -> ServerUsageVars:
+    def _create_server_usage_variables[ID_T](
+        self, servers: list[Server[ID_T]]
+    ) -> ServerUsageVars:
         """Create server usage variables.
 
         Parameters
@@ -115,12 +119,11 @@ class PLNESolver(Solver):
             Binary variables ``y[j]`` equal to 1 when server ``j`` hosts at
             least one VM.
         """
-        return {
-            j: pulp.LpVariable(f"y_{j}", cat="Binary")
-            for j in range(len(servers))
-        }
+        return {j: pulp.LpVariable(f"y_{j}", cat="Binary") for j in range(len(servers))}
 
-    def _target_vms(self, modifications: List[VM], context: Context) -> list[VM]:
+    def _target_vms[ID_T](
+        self, modifications: List[VM[ID_T]], context: Context[ID_T]
+    ) -> list[VM[ID_T]]:
         """Return the VMs that must exist in the final allocation.
 
         Parameters
@@ -152,12 +155,12 @@ class PLNESolver(Solver):
 
         return [vms_by_id[vm_id] for vm_id in ordered_ids]
 
-    def _add_presence_constraints(
+    def _add_presence_constraints[ID_T](
         self,
         problem: pulp.LpProblem,
         x: AssignmentVars,
-        vms: list[VM],
-        servers: list[Server],
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
     ) -> None:
         """Add constraints forcing every VM onto exactly one server.
 
@@ -190,13 +193,13 @@ class PLNESolver(Solver):
 
             problem += (vm_assignment_count == 1, constraint_name)
 
-    def _add_server_usage_constraints(
+    def _add_server_usage_constraints[ID_T](
         self,
         problem: pulp.LpProblem,
         x: AssignmentVars,
         y: ServerUsageVars,
-        vms: list[VM],
-        servers: list[Server],
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
     ) -> None:
         """Add constraints linking assignments to server usage.
 
@@ -229,22 +232,20 @@ class PLNESolver(Solver):
             for server_index in range(number_of_servers):
                 vm_assigned_to_server = x[(vm_index, server_index)]
                 server_is_used = y[server_index]
-                constraint_name = (
-                    f"server_usage_vm_{vm_index}_server_{server_index}"
-                )
+                constraint_name = f"server_usage_vm_{vm_index}_server_{server_index}"
 
                 problem += (
                     vm_assigned_to_server <= server_is_used,
                     constraint_name,
                 )
 
-    def _add_capacity_constraints(
+    def _add_capacity_constraints[ID_T](
         self,
         problem: pulp.LpProblem,
         x: AssignmentVars,
         y: ServerUsageVars,
-        vms: list[VM],
-        servers: list[Server],
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
     ) -> None:
         """Add multi-resource capacity constraints.
 
@@ -285,12 +286,12 @@ class PLNESolver(Solver):
                     constraint_name,
                 )
 
-    def _add_affinity_constraints(
+    def _add_affinity_constraints[ID_T](
         self,
         problem: pulp.LpProblem,
         x: AssignmentVars,
-        vms: list[VM],
-        servers: list[Server],
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
     ) -> None:
         """Add affinity constraints.
 
@@ -331,12 +332,12 @@ class PLNESolver(Solver):
                     constraint_name,
                 )
 
-    def _add_anti_affinity_constraints(
+    def _add_anti_affinity_constraints[ID_T](
         self,
         problem: pulp.LpProblem,
         x: AssignmentVars,
-        vms: list[VM],
-        servers: list[Server],
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
     ) -> None:
         """Add anti-affinity constraints.
 
@@ -367,9 +368,7 @@ class PLNESolver(Solver):
             for server_index in range(number_of_servers):
                 left_vm_assignment = x[(left_vm_index, server_index)]
                 right_vm_assignment = x[(right_vm_index, server_index)]
-                assignment_count_on_server = (
-                    left_vm_assignment + right_vm_assignment
-                )
+                assignment_count_on_server = left_vm_assignment + right_vm_assignment
                 constraint_name = (
                     f"anti_affinity_vm_{left_vm_index}_vm_{right_vm_index}"
                     f"_server_{server_index}"
@@ -380,8 +379,8 @@ class PLNESolver(Solver):
                     constraint_name,
                 )
 
-    def _vm_relation_pairs(
-        self, vms: list[VM], related_vm_ids: Callable[[VM], set]
+    def _vm_relation_pairs[ID_T](
+        self, vms: list[VM[ID_T]], related_vm_ids: Callable[[VM[ID_T]], set]
     ) -> set[tuple[int, int]]:
         """Return unique VM index pairs for an affinity-like relation.
 
@@ -408,13 +407,13 @@ class PLNESolver(Solver):
 
         return pairs
 
-    def _objective_expression(
+    def _objective_expression[ID_T](
         self,
         x: AssignmentVars,
         y: ServerUsageVars,
-        vms: list[VM],
-        servers: list[Server],
-        context: Context,
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
+        context: Context[ID_T],
     ):
         """Build the objective expression.
 
@@ -452,8 +451,12 @@ class PLNESolver(Solver):
 
         return pulp.lpSum(terms)
 
-    def _migration_expression(
-        self, x: AssignmentVars, vms: list[VM], servers: list[Server], context: Context
+    def _migration_expression[ID_T](
+        self,
+        x: AssignmentVars,
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
+        context: Context[ID_T],
     ):
         """Build the migration penalty expression.
 
@@ -490,12 +493,12 @@ class PLNESolver(Solver):
 
         return pulp.lpSum(terms)
 
-    def _fragmentation_expression(
+    def _fragmentation_expression[ID_T](
         self,
         x: AssignmentVars,
         y: ServerUsageVars,
-        vms: list[VM],
-        servers: list[Server],
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
     ):
         """Build the fragmentation penalty expression.
 
@@ -529,8 +532,8 @@ class PLNESolver(Solver):
 
         return pulp.lpSum(terms)
 
-    def _server_usage_expression(
-        self, x: AssignmentVars, vms: list[VM], server_index: int, resource: str
+    def _server_usage_expression[ID_T](
+        self, x: AssignmentVars, vms: list[VM[ID_T]], server_index: int, resource: str
     ):
         """Return total usage of one resource on one server.
 
@@ -566,7 +569,7 @@ class PLNESolver(Solver):
         """
         return pulp.PULP_CBC_CMD(msg=False)
 
-    def _current_assignment(self, context: Context) -> dict:
+    def _current_assignment[ID_T](self, context: Context[ID_T]) -> dict[ID_T, ID_T]:
         """Map each currently hosted VM id to its server id.
 
         Parameters
@@ -585,9 +588,9 @@ class PLNESolver(Solver):
                 assignment[vm.id] = server.id
         return assignment
 
-    def _build_solution_context(
-        self, x: AssignmentVars, vms: list[VM], servers: list[Server]
-    ) -> Context:
+    def _build_solution_context[ID_T](
+        self, x: AssignmentVars, vms: list[VM[ID_T]], servers: list[Server[ID_T]]
+    ) -> Context[ID_T]:
         """Convert solved assignment variables into a concrete context.
 
         Parameters

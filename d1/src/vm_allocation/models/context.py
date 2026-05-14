@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from typing import List
-from uuid import UUID
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -11,7 +10,7 @@ import matplotlib.patches as patches
 from .server import Server
 
 
-class Context:
+class Context[ID_T]:
     """Datacenter context, containing populated servers with various capacities.
 
     Attributes
@@ -33,45 +32,54 @@ class Context:
         "#64B5CD",
     ]
 
-    def __init__(self, servers: List[Server] | None = None):
-        self.servers: dict[int, Server] = {}
+    def __init__(self, servers: List[Server[ID_T]] | None = None):
+        self.servers: dict[ID_T, Server] = {}
         if servers is not None:
             for server in servers:
                 self.add_server(server)
 
-    def add_server(self, server: Server | None = None, **kwargs) -> UUID:
-        """Adds a server to the context by object or kwargs construction.
+    def add_server(self, server: Server[ID_T]) -> bool:
+        """Adds a server to the context.
 
         Parameters
         ----------
-        server : Server | None, optional
-            The server to add, by default None.
+        server : Server
+            The server to add.
 
         Returns
         -------
-        UUID
-            The generated id of the server if it was created by kwargs.
+        bool
+            True if addition was successful, False otherwise (already present).
         """
-        new_server = server or Server(UUID(), **kwargs)
-        self.servers[new_server.id] = new_server
-        return new_server.id
+        if server.id in self.servers.keys():
+            return False
+        self.servers[server.id] = server
+        return True
 
-    def remove_server(self, server_id: UUID):
+    def remove_server(self, server_id: ID_T) -> bool:
         """Removes a server from the context by id.
 
         Parameters
         ----------
-        server_id : UUID
+        server_id : ID_T
             The id of the server to remove.
-        """
-        self.servers.pop(server_id)
 
-    def get_server(self, server_id: UUID) -> Server:
+        Returns
+        -------
+        bool:
+            True if removal successful, False otherwise.
+        """
+        if server_id not in self.servers.keys():
+            return False
+        self.servers.pop(server_id)
+        return True
+
+    def get_server(self, server_id: ID_T) -> Server[ID_T]:
         """Gets a specific server object from the context.
 
         Parameters
         ----------
-        server_id : UUID
+        server_id : ID_T
             The id of the server to get.
 
         Returns
@@ -86,7 +94,7 @@ class Context:
         """
         return self.servers[server_id]
 
-    def get_servers(self) -> List[Server]:
+    def get_servers(self) -> List[Server[ID_T]]:
         """Gets a list of all servers.
 
         Returns
@@ -96,7 +104,7 @@ class Context:
         """
         return list(server for server in self.servers.values())
 
-    def copy(self) -> Context:
+    def copy(self) -> Context[ID_T]:
         """Creates a new context instance from this context.
 
         Returns
