@@ -26,7 +26,7 @@ class VM:
         The set of VM ids this VM needs to have distinct server with.
     """
 
-    def __init__(self, vm_id: UUID, cpu: int, ram: int, storage: int, bw: int):
+    def __init__(self, vm_id: int, cpu: int, ram: int, storage: int, bw: int):
         self.id = vm_id
 
         self.cpu = cpu

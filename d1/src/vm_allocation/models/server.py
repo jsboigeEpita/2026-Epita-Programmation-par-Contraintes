@@ -62,7 +62,7 @@ class Server:
     def get_vms(self) -> List[VM]:
         return self.vms
 
-    def remove_vm_by_id(self, vm_id: UUID) -> bool:
+    def remove_vm_by_id(self, vm_id: int) -> bool:
         """Removes a running VM by id.
 
         Parameters
@@ -75,18 +75,21 @@ class Server:
         bool
             True if removal successful, False otherwise.
         """
+        removed = False
+
+        new_vms = []
         for vm in self.vms:
             if vm.id == vm_id:
                 self.cpu_usage -= vm.cpu
                 self.ram_usage -= vm.ram
                 self.storage_usage -= vm.storage
                 self.bw_usage -= vm.bw
+                removed = True
+            else:
+                new_vms.append(vm)
 
-                self.vms.remove(vm)
-
-                return True
-
-        return False
+        self.vms = new_vms
+        return removed
 
     def add_vm(self, vm: VM) -> bool:
         """Adds a running VM.
@@ -102,7 +105,10 @@ class Server:
             True if addition successful, False otherwise (in case of lack of
             capacity for example).
         """
-
+        if any(existing_vm.id == vm.id for existing_vm in self.vms):
+            return False
+        if any(v.id == vm.id for v in self.vms):
+            return False
         if not self.can_host(vm):
             return False
         self.vms.append(vm)

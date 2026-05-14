@@ -34,7 +34,7 @@ class Context:
     ]
 
     def __init__(self, servers: List[Server] | None = None):
-        self.servers: dict[UUID, Server] = {}
+        self.servers: dict[int, Server] = {}
         if servers is not None:
             for server in servers:
                 self.add_server(server)
