@@ -61,9 +61,10 @@ class FFDSolver(Solver):
             placed = False
 
             for server in servers:
-                if all(server.can_host(vm) for vm in group):
+                if self._can_place_group(server, group):
                     for vm in group:
-                        server.add_vm(vm)
+                        if not server.add_vm(vm):
+                            return None
                     placed = True
                     break
 
@@ -131,9 +132,51 @@ class FFDSolver(Solver):
         Retourne True si le placement a réussi.
         """
         for server in servers:
-            if all(server.can_host(vm) for vm in group):
+            if self._can_place_group(server, group):
                 for vm in group:
-                    server.add_vm(vm)
+                    if not server.add_vm(vm):
+                        return False
                 return True
 
         return False
+
+    def _can_place_group[ID_T](self, server, group: List[VM[ID_T]]) -> bool:
+        """
+        Vérifie qu'un groupe entier peut être placé sur un serveur.
+        """
+        cpu_usage = server.cpu_usage
+        ram_usage = server.ram_usage
+        storage_usage = server.storage_usage
+        bw_usage = server.bw_usage
+
+        for vm in group:
+            if any(existing_vm.id == vm.id for existing_vm in server.vms):
+                return False
+
+            for existing_vm in server.vms:
+                if (
+                    existing_vm.id in vm.anti_affinity
+                    or vm.id in existing_vm.anti_affinity
+                ):
+                    return False
+
+            for other_vm in group:
+                if other_vm.id == vm.id:
+                    continue
+                if (
+                    other_vm.id in vm.anti_affinity
+                    or vm.id in other_vm.anti_affinity
+                ):
+                    return False
+
+            cpu_usage += vm.cpu
+            ram_usage += vm.ram
+            storage_usage += vm.storage
+            bw_usage += vm.bw
+
+        return (
+            cpu_usage <= server.cpu_capacity
+            and ram_usage <= server.ram_capacity
+            and storage_usage <= server.storage_capacity
+            and bw_usage <= server.bw_capacity
+        )
