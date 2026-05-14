@@ -14,29 +14,68 @@ class FFDSolver(Solver):
     """
 
     def solve(self, modifications: List[VM], context: Context) -> Context | None:
-        new_context = context.copy()
 
-        # Retirer les VMs modifiées de leur serveur actuel
-        for vm in modifications:
-            for server in new_context.get_servers():
-                server.remove_vm_by_id(vm.id)
-        #print('modification', modifications)
-        # Construire les groupes d'affinité
-        #all_vms = self._merge_with_existing(modifications, new_context)
-        groups = self._build_affinity_groups(modifications)
+        print("\n===== FFD CLEAN SOLVER =====")
 
-        # Trier chaque groupe par taille décroissante (la plus grosse VM du groupe en tête)
-        groups.sort(key=lambda g: max(vm.total_requirement() for vm in g), reverse=True)
+        servers = context.get_servers()
 
-        servers = new_context.get_servers()
+        # 1. REMOVE old versions of modified VMs
+        modified_ids = {vm.id for vm in modifications}
 
+        for server in servers:
+            server.vms = [vm for vm in server.vms if vm.id not in modified_ids]
+
+            # reset usage propre (IMPORTANT)
+            server.cpu_usage = sum(vm.cpu for vm in server.vms)
+            server.ram_usage = sum(vm.ram for vm in server.vms)
+            server.storage_usage = sum(vm.storage for vm in server.vms)
+            server.bw_usage = sum(vm.bw for vm in server.vms)
+
+        # 2. rebuild full VM list CLEAN
+        all_vms = []
+        for server in servers:
+            all_vms.extend(server.vms)
+
+        all_vms.extend(modifications)
+
+        print(f"[DEBUG] total VMs = {len(all_vms)}")
+
+        # 3. rebuild groups (affinity safe)
+        groups = self._build_affinity_groups(all_vms)
+
+        groups.sort(
+            key=lambda g: sum(vm.total_requirement() for vm in g),
+            reverse=True
+        )
+
+        # 4. clear servers BEFORE placement (VERY IMPORTANT)
+        for server in servers:
+            server.vms.clear()
+            server.cpu_usage = 0
+            server.ram_usage = 0
+            server.storage_usage = 0
+            server.bw_usage = 0
+
+        # 5. place groups
         for group in groups:
-            # Trouver le premier serveur qui peut accueillir tout le groupe
-            placed = self._place_group(group, servers)
-            if not placed:
-                return None  # Impossible de placer ce groupe
 
-        return new_context
+            placed = False
+
+            for server in servers:
+
+                if all(server.can_host(vm) for vm in group):
+                    for vm in group:
+                        server.add_vm(vm)
+                    placed = True
+                    break
+
+            if not placed:
+                print("[FAIL] cannot place group")
+                return None
+
+        return context
+
+
 
     # ------------------------------------------------------------------
     # Helpers
