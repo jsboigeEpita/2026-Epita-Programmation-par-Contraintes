@@ -13,10 +13,13 @@ class FFDSolver(Solver):
     doivent être ensemble, et on les place en bloc.
     """
 
-    def solve(self, modifications: List[VM], context: Context) -> Context | None:
+    def solve[ID_T](
+        self, modifications: List[VM[ID_T]], context: Context[ID_T]
+    ) -> Context[ID_T] | None:
 
         print("\n===== FFD CLEAN SOLVER =====")
 
+        context = context.copy()
         servers = context.get_servers()
 
         # 1. REMOVE old versions of modified VMs
@@ -43,10 +46,7 @@ class FFDSolver(Solver):
         # 3. rebuild groups (affinity safe)
         groups = self._build_affinity_groups(all_vms)
 
-        groups.sort(
-            key=lambda g: sum(vm.total_requirement() for vm in g),
-            reverse=True
-        )
+        groups.sort(key=lambda g: sum(vm.total_requirement() for vm in g), reverse=True)
 
         # 4. clear servers BEFORE placement (VERY IMPORTANT)
         for server in servers:
@@ -58,11 +58,9 @@ class FFDSolver(Solver):
 
         # 5. place groups
         for group in groups:
-
             placed = False
 
             for server in servers:
-
                 if all(server.can_host(vm) for vm in group):
                     for vm in group:
                         server.add_vm(vm)
@@ -75,13 +73,13 @@ class FFDSolver(Solver):
 
         return context
 
-
-
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
 
-    def _merge_with_existing(self, modifications: List[VM], context: Context) -> List[VM]:
+    def _merge_with_existing[ID_T](
+        self, modifications: List[VM[ID_T]], context: Context[ID_T]
+    ) -> List[VM[ID_T]]:
         """
         Fusionne les VMs modifiées avec celles déjà présentes dans le contexte,
         en remplaçant les anciennes versions par les nouvelles.
@@ -97,7 +95,7 @@ class FFDSolver(Solver):
 
         return existing_vms + modifications
 
-    def _build_affinity_groups(self, vms: List[VM]) -> List[List[VM]]:
+    def _build_affinity_groups[ID_T](self, vms: List[VM[ID_T]]) -> List[List[VM[ID_T]]]:
         """
         Regroupe les VMs liées par affinité via un union-find simple.
         Chaque groupe devra être placé sur le même serveur.
@@ -127,7 +125,7 @@ class FFDSolver(Solver):
 
         return list(groups.values())
 
-    def _place_group(self, group: List[VM], servers: list) -> bool:
+    def _place_group[ID_T](self, group: List[VM[ID_T]], servers: list) -> bool:
         """
         Tente de placer tout un groupe sur le même serveur (First Fit).
         Retourne True si le placement a réussi.

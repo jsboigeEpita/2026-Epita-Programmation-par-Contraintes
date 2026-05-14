@@ -11,7 +11,9 @@ class Solver(ABC):
     """Interface providing the template for VM allocation problem solvers."""
 
     @abstractmethod
-    def solve(self, modifications: List[VM], context: Context) -> Context | None:
+    def solve[ID_T](
+        self, modifications: List[VM[ID_T]], context: Context[ID_T]
+    ) -> Context[ID_T] | None:
         """Returns the solution to a vm allocation problem.
 
         Parameters

@@ -3,19 +3,18 @@
 from __future__ import annotations
 
 from typing import List, Mapping
-from uuid import UUID
 
 import matplotlib.pyplot as plt
 
 from .vm import VM
 
 
-class Server:
+class Server[ID_T]:
     """Model representing a server with a capacity and running VMs.
 
     Attributes
     ----------
-    server_id : UUID
+    server_id : ID_T
         The id of the server, supposed to be unique per server.
     cpu : int
         CPU capacity of the server.
@@ -44,7 +43,7 @@ class Server:
         ("bw_usage", "bw_capacity", "bw", "BW"),
     ]
 
-    def __init__(self, server_id: UUID, cpu: int, ram: int, storage: int, bw: int):
+    def __init__(self, server_id: ID_T, cpu: int, ram: int, storage: int, bw: int):
 
         self.id = server_id
         self.cpu_capacity = cpu
@@ -57,12 +56,12 @@ class Server:
         self.storage_usage = 0
         self.bw_usage = 0
 
-        self.vms: List[VM] = []
-    
-    def get_vms(self) -> List[VM]:
+        self.vms: List[VM[ID_T]] = []
+
+    def get_vms(self) -> List[VM[ID_T]]:
         return self.vms
 
-    def remove_vm_by_id(self, vm_id: int) -> bool:
+    def remove_vm_by_id(self, vm_id: ID_T) -> bool:
         """Removes a running VM by id.
 
         Parameters
@@ -91,7 +90,7 @@ class Server:
         self.vms = new_vms
         return removed
 
-    def add_vm(self, vm: VM) -> bool:
+    def add_vm(self, vm: VM[ID_T]) -> bool:
         """Adds a running VM.
 
         Parameters
@@ -107,8 +106,6 @@ class Server:
         """
         if any(existing_vm.id == vm.id for existing_vm in self.vms):
             return False
-        if any(v.id == vm.id for v in self.vms):
-            return False
         if not self.can_host(vm):
             return False
         self.vms.append(vm)
@@ -120,7 +117,7 @@ class Server:
 
         return True
 
-    def can_host(self, vm: VM) -> bool:
+    def can_host(self, vm: VM[ID_T]) -> bool:
         """Whether the server can host the given VM.
 
         Parameters
@@ -163,7 +160,7 @@ class Server:
             "bw": self.bw_capacity,
         }
 
-    def copy(self) -> Server:
+    def copy(self) -> Server[ID_T]:
         """ "Creates a new server instance from this server.
 
         Returns
@@ -183,7 +180,7 @@ class Server:
 
         return c
 
-    def draw(self, ax: plt.Axes, vm_colors: Mapping[UUID, str]):
+    def draw(self, ax: plt.Axes, vm_colors: Mapping[ID_T, str]):
         """Draws the server representation on the given matplotlib axes.
 
         Parameters
@@ -295,7 +292,7 @@ class Server:
             server_lines.append("VMs:")
             for vm in self.vms:
                 raw = f"  · {vm}"
-                # Tronquer si trop long
+                # Truncate if too long
                 if len(raw) > 64:
                     raw = raw[:61] + "…"
                 server_lines.append(raw)
