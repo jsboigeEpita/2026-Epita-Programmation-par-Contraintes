@@ -13,6 +13,8 @@ RESOURCES = ("cpu", "ram", "storage", "bw")
 AssignmentVars = dict[tuple[int, int], pulp.LpVariable]
 # Mapping representing Server usage (1 if used)
 ServerUsageVars = dict[int, pulp.LpVariable]
+# Dictionnaire représentant la fragmentation (ayant 1 si le serveur est utilisé et a une ressource de libre)
+FragmentationVars = dict[int, pulp.LpVariable]
 
 
 class PLNESolver(Solver):
@@ -24,7 +26,7 @@ class PLNESolver(Solver):
         Penalty applied when an existing VM is moved away from its current
         server.
     fragmentation_weight : float, default=0
-        Penalty applied to normalized free resources left on active servers.
+        Penalty applied to active servers with at least one free resource.
     """
 
     def __init__(
@@ -64,14 +66,16 @@ class PLNESolver(Solver):
 
         x = self._create_assignment_variables(vms, servers)
         y = self._create_server_usage_variables(servers)
+        f = self._create_fragmentation_variables(servers)
 
         self._add_presence_constraints(problem, x, vms, servers)
         self._add_server_usage_constraints(problem, x, y, vms, servers)
         self._add_capacity_constraints(problem, x, y, vms, servers)
         self._add_affinity_constraints(problem, x, vms, servers)
         self._add_anti_affinity_constraints(problem, x, vms, servers)
+        self._add_fragmentation_constraints(problem, x, y, f, vms, servers)
 
-        problem += self._objective_expression(x, y, vms, servers, context)
+        problem += self._objective_expression(x, y, f, vms, servers, context)
 
         status = problem.solve(self._make_pulp_solver())
         if status != pulp.LpStatusOptimal:
@@ -120,6 +124,27 @@ class PLNESolver(Solver):
             least one VM.
         """
         return {j: pulp.LpVariable(f"y_{j}", cat="Binary") for j in range(len(servers))}
+
+    def _create_fragmentation_variables[ID_T](
+        self, servers: list[Server[ID_T]]
+    ) -> FragmentationVars:
+        """Create server fragmentation variables.
+
+        Parameters
+        ----------
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        FragmentationVars
+            Binary variables ``f[j]`` equal to 1 when an active server has at
+            least one free resource.
+        """
+        return {
+            j: pulp.LpVariable(f"f_{j}", cat="Binary")
+            for j in range(len(servers))
+        }
 
     def _target_vms[ID_T](
         self, modifications: List[VM[ID_T]], context: Context[ID_T]
@@ -379,6 +404,69 @@ class PLNESolver(Solver):
                     constraint_name,
                 )
 
+    def _add_fragmentation_constraints[ID_T](
+        self,
+        problem: pulp.LpProblem,
+        x: AssignmentVars,
+        y: ServerUsageVars,
+        f: FragmentationVars,
+        vms: list[VM[ID_T]],
+        servers: list[Server[ID_T]],
+    ) -> None:
+        """Add constraints identifying active servers with free resources.
+
+        Parameters
+        ----------
+        problem : pulp.LpProblem
+            PuLP problem receiving the constraints.
+        x : AssignmentVars
+            Assignment variables ``x[i, j]``.
+        y : ServerUsageVars
+            Server usage variables ``y[j]``.
+        f : FragmentationVars
+            Fragmentation variables ``f[j]``.
+        vms : list[VM]
+            VMs to place.
+        servers : list[Server]
+            Candidate servers.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        ``f[j]`` is forced to 1 when server ``j`` is active and has slack in at
+        least one resource. Inactive servers are not counted as fragmented.
+        """
+        for server_index, server in enumerate(servers):
+            server_capacities = server.capacities()
+            server_is_used = y[server_index]
+            server_is_fragmented = f[server_index]
+
+            problem += (
+                server_is_fragmented <= server_is_used,
+                f"fragmentation_requires_usage_server_{server_index}",
+            )
+
+            for resource in RESOURCES:
+                capacity = server_capacities[resource]
+                if capacity <= 0:
+                    continue
+
+                used = self._server_usage_expression(
+                    x,
+                    vms,
+                    server_index,
+                    resource,
+                )
+                free_capacity = capacity * server_is_used - used
+
+                problem += (
+                    free_capacity <= capacity * server_is_fragmented,
+                    f"fragmentation_{resource}_server_{server_index}",
+                )
+
     def _vm_relation_pairs[ID_T](
         self, vms: list[VM[ID_T]], related_vm_ids: Callable[[VM[ID_T]], set]
     ) -> set[tuple[int, int]]:
@@ -411,6 +499,7 @@ class PLNESolver(Solver):
         self,
         x: AssignmentVars,
         y: ServerUsageVars,
+        f: FragmentationVars,
         vms: list[VM[ID_T]],
         servers: list[Server[ID_T]],
         context: Context[ID_T],
@@ -423,6 +512,8 @@ class PLNESolver(Solver):
             Assignment variables ``x[i, j]``.
         y : ServerUsageVars
             Server usage variables ``y[j]``.
+        f : FragmentationVars
+            Fragmentation variables ``f[j]``.
         vms : list[VM]
             VMs to place.
         servers : list[Server]
@@ -446,7 +537,7 @@ class PLNESolver(Solver):
         if self.fragmentation_weight:
             terms.append(
                 self.fragmentation_weight
-                * self._fragmentation_expression(x, y, vms, servers)
+                * self._fragmentation_expression(f)
             )
 
         return pulp.lpSum(terms)
@@ -493,44 +584,20 @@ class PLNESolver(Solver):
 
         return pulp.lpSum(terms)
 
-    def _fragmentation_expression[ID_T](
-        self,
-        x: AssignmentVars,
-        y: ServerUsageVars,
-        vms: list[VM[ID_T]],
-        servers: list[Server[ID_T]],
-    ):
+    def _fragmentation_expression(self, f: FragmentationVars):
         """Build the fragmentation penalty expression.
 
         Parameters
         ----------
-        x : AssignmentVars
-            Assignment variables ``x[i, j]``.
-        y : ServerUsageVars
-            Server usage variables ``y[j]``.
-        vms : list[VM]
-            VMs to place.
-        servers : list[Server]
-            Candidate servers.
+        f : FragmentationVars
+            Fragmentation variables ``f[j]``.
 
         Returns
         -------
         pulp.LpAffineExpression
-            Sum of normalized free resources left on active servers.
+            Number of active servers with at least one free resource.
         """
-        terms = []
-        for j, server in enumerate(servers):
-            server_capacities = server.capacities()
-
-            for resource in RESOURCES:
-                capacity = server_capacities[resource]
-                if capacity <= 0:
-                    continue
-
-                used = self._server_usage_expression(x, vms, j, resource)
-                terms.append((capacity * y[j] - used) / capacity)
-
-        return pulp.lpSum(terms)
+        return pulp.lpSum(f[j] for j in f)
 
     def _server_usage_expression[ID_T](
         self, x: AssignmentVars, vms: list[VM[ID_T]], server_index: int, resource: str
