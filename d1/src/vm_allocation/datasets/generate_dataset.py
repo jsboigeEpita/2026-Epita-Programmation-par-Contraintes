@@ -30,16 +30,17 @@ def generate_n_servers(n: int) -> List[Server[int]]:
     List[Server[int]]
         A list containing `n` randomly generated servers with ids from 0 to n-1.
     """
-    return [
-        Server(
+    servers = []
+    for i in range(n):
+        server = Server(
             i,
             cpu=random_power_of_two(5, 7),  # 32 à 128
             ram=random_even(64, 256),
             storage=random.randint(500, 2000),
             bw=random.randint(200, 2000),
         )
-        for i in range(n)
-    ]
+        servers.append(server)
+    return servers
 
 
 def generate_n_vms_with_context(
