@@ -197,3 +197,79 @@ class CBSSolver:
                 counter += 1
 
         return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)
+
+
+class ECBSSolver:
+    """
+    Enhanced CBS: picks from FOCAL (nodes with cost <= w * f_min) the node with
+    fewest conflicts. Guarantees w-suboptimal solution. w=1.0 reduces to CBS.
+    """
+    def __init__(self, grid: Grid, drones: List[Drone], w: float = 1.3, time_limit_s: float = 30.0):
+        self.grid = grid
+        self.drones = drones
+        self.w = w
+        self.time_limit_s = time_limit_s
+
+    def solve(self) -> Solution:
+        t0 = time.time()
+        max_t = _compute_max_t(self.grid, self.drones)
+        counter = 0
+
+        root_constraints: Dict[int, Set[Constraint]] = {d.id: set() for d in self.drones}
+        root_paths: Dict[int, List[Pos]] = {}
+        for drone in self.drones:
+            path = astar_spacetime(self.grid, drone.start, drone.goal, set(), max_t)
+            if path is None:
+                return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)
+            root_paths[drone.id] = path
+
+        root = _CTNode(root_constraints, root_paths, sum(len(p) for p in root_paths.values()))
+        # open_list entries: (cost, node_id, node)
+        open_list: List[Tuple[int, int, _CTNode]] = [(root.cost, counter, root)]
+        counter += 1
+
+        while open_list:
+            if time.time() - t0 > self.time_limit_s:
+                return Solution("timeout", 0, (time.time() - t0) * 1000, {}, 0)
+
+            f_min = min(item[0] for item in open_list)
+            focal = [(c, nid, n) for c, nid, n in open_list if c <= self.w * f_min]
+            # Pick node with fewest conflicts from focal
+            _, chosen_id, node = min(focal, key=lambda x: _count_conflicts(x[2].paths))
+            open_list = [(c, nid, n) for c, nid, n in open_list if nid != chosen_id]
+            heapq.heapify(open_list)
+
+            conflict = find_first_conflict(node.paths)
+            if conflict is None:
+                makespan = max(len(p) for p in node.paths.values()) - 1
+                return Solution(
+                    status="feasible",
+                    makespan=makespan,
+                    solve_time_ms=(time.time() - t0) * 1000,
+                    paths=node.paths,
+                    conflicts_avoided=_near_passes(node.paths),
+                )
+
+            if conflict[0] == 'vertex':
+                _, a, b, pos, t = conflict
+                new_constraints_list = [(a, (pos, t)), (b, (pos, t))]
+            else:
+                _, a, b, pos_a, pos_b, t = conflict
+                new_constraints_list = [(a, (pos_b, t + 1)), (b, (pos_a, t + 1))]
+
+            for agent_id, new_con in new_constraints_list:
+                new_constraints = {d.id: set(node.constraints[d.id]) for d in self.drones}
+                new_constraints[agent_id].add(new_con)
+                drone = next(d for d in self.drones if d.id == agent_id)
+                new_path = astar_spacetime(
+                    self.grid, drone.start, drone.goal, new_constraints[agent_id], max_t
+                )
+                if new_path is None:
+                    continue
+                new_paths = dict(node.paths)
+                new_paths[agent_id] = new_path
+                child = _CTNode(new_constraints, new_paths, sum(len(p) for p in new_paths.values()))
+                heapq.heappush(open_list, (child.cost, counter, child))
+                counter += 1
+
+        return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)

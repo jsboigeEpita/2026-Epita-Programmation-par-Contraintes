@@ -1,7 +1,7 @@
 import pytest
 from solver.grid import Grid
 from solver.mapf import Drone
-from solver.cbs import astar_spacetime, find_first_conflict, CBSSolver
+from solver.cbs import astar_spacetime, find_first_conflict, CBSSolver, ECBSSolver
 
 
 def test_spacetime_no_constraints():
@@ -76,3 +76,23 @@ def test_cbs_makespan_positive():
     drones = [Drone(0, (0, 0), (3, 3)), Drone(1, (3, 3), (0, 0))]
     sol = CBSSolver(g, drones).solve()
     assert sol.makespan > 0
+
+
+def test_ecbs_all_goals_reached():
+    g = Grid(rows=5, cols=5)
+    drones = [Drone(0, (0, 0), (4, 4)), Drone(1, (0, 4), (4, 0)), Drone(2, (4, 0), (0, 4))]
+    sol = ECBSSolver(g, drones, w=1.3).solve()
+    assert sol.status == "feasible"
+    for d in drones:
+        assert sol.paths[d.id][-1] == d.goal
+
+
+def test_ecbs_no_vertex_conflict():
+    g = Grid(rows=4, cols=4)
+    drones = [Drone(0, (0, 0), (3, 3)), Drone(1, (3, 3), (0, 0))]
+    sol = ECBSSolver(g, drones, w=1.3).solve()
+    assert sol.status == "feasible"
+    max_t = max(len(p) for p in sol.paths.values())
+    for t in range(max_t):
+        positions = [sol.paths[d.id][min(t, len(sol.paths[d.id]) - 1)] for d in drones]
+        assert len(positions) == len(set(positions))
