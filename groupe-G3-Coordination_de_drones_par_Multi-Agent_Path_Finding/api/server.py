@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from solver.grid import Grid
 from solver.mapf import Drone, MAPFSolver
+from solver.cbs import CBSSolver, ECBSSolver
+from solver.od_astar import ODAstarSolver
 from api.scenario_loader import load_all
 
 
@@ -40,10 +42,21 @@ def create_app() -> Flask:
         ]
 
         time_limit = body.get("time_limit_s", 10)
-        sol = MAPFSolver(grid, drones, time_limit_s=time_limit).solve()
+        method = body.get("method", "cpsat")
+        w = float(body.get("suboptimality_w", 1.3))
+
+        if method == "cbs":
+            sol = CBSSolver(grid, drones, time_limit_s=time_limit).solve()
+        elif method == "ecbs":
+            sol = ECBSSolver(grid, drones, w=w, time_limit_s=time_limit).solve()
+        elif method == "od_astar":
+            sol = ODAstarSolver(grid, drones, time_limit_s=time_limit).solve()
+        else:
+            sol = MAPFSolver(grid, drones, time_limit_s=time_limit).solve()
 
         return jsonify({
             "status": sol.status,
+            "method": method,
             "makespan": sol.makespan,
             "solve_time_ms": round(sol.solve_time_ms, 1),
             "conflicts_avoided": sol.conflicts_avoided,
