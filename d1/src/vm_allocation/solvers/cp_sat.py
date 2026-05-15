@@ -43,11 +43,13 @@ class CPSATSolver(Solver):
         vms: dict[ID_T, VM] = {vm.id: vm for vm in modifications}
         servers: dict[ID_T, Server] = {}
         servers_id_sets: dict[ID_T, set[ID_T]] = {}
+        old_vm_tuples = []
         for server in context.get_servers():
             servers[server.id] = server
             id_set = set()
             for vm in server.vms:
                 id_set.add(vm.id)
+                old_vm_tuples.append((vm.id, server.id))
                 if vm.id not in vms:
                     vms[vm.id] = vm
             servers_id_sets[server.id] = id_set
@@ -79,69 +81,87 @@ class CPSATSolver(Solver):
             # CPU, RAM, Storage, Bandwidth
             model.add(
                 sum(vm.cpu * x[(vm_id, server_id)] for vm_id, vm in vms.items())
-                <= server.cpu_capacity
+                <= server.cpu_capacity * y[server_id]
             )
             model.add(
                 sum(vm.ram * x[(vm_id, server_id)] for vm_id, vm in vms.items())
-                <= server.ram_capacity
+                <= server.ram_capacity * y[server_id]
             )
             model.add(
                 sum(
                     vm.storage * x[(vm_id, server_id)]
                     for vm_id, vm in vms.items()
                 )
-                <= server.storage_capacity
+                <= server.storage_capacity * y[server_id]
             )
             model.add(
                 sum(vm.bw * x[(vm_id, server_id)] for vm_id, vm in vms.items())
-                <= server.bw_capacity
+                <= server.bw_capacity * y[server_id]
             )
 
         # Affinity / Anti-affinity
+        affinity_relations: set[tuple[ID_T, ID_T, ID_T]] = set()
+        anti_affinity_relations: set[tuple[ID_T, ID_T, ID_T]] = set()
         for vm_id, vm in vms.items():
             for server_id in servers:
                 for other_vm in vm.affinity:
-                    if other_vm in vms:
+                    # We check if the inverse isn't already in effect
+                    # a = b is equivalent to b = a, same goes for addition
+                    if (
+                        other_vm in vms
+                        and (vm_id, other_vm, server_id)
+                        not in affinity_relations
+                        and (other_vm, vm_id, server_id)
+                        not in affinity_relations
+                    ):
                         model.add(
                             x[(vm_id, server_id)] == x[(other_vm, server_id)]
                         )
+                        affinity_relations.add((vm_id, other_vm, server_id))
 
                 for other_vm in vm.anti_affinity:
-                    if other_vm in vms:
+                    if (
+                        other_vm in vms
+                        and (vm_id, other_vm, server_id)
+                        not in anti_affinity_relations
+                        and (other_vm, vm_id, server_id)
+                        not in anti_affinity_relations
+                    ):
                         model.add(
                             x[(vm_id, server_id)] + x[(other_vm, server_id)]
                             <= 1
                         )
+                        anti_affinity_relations.add(
+                            (vm_id, other_vm, server_id)
+                        )
 
         # Dynamic consolidation
         d_list: list[cp_model.IntVar] = []
-        for server_id, vm_ids in servers_id_sets.items():
-            for vm_id in vm_ids:
-                d = model.new_bool_var(f"d_{vm_id}_{server_id}")
-                d_list.append(d)
-                model.add(d >= (1 - x[(vm_id, server_id)]))
+        for vm_id, server_id in old_vm_tuples:
+            d_list.append(x[(vm_id, server_id)])
 
         # Fragmentation
         f_list: list[cp_model.IntVar] = []
         for server_id, server in servers.items():
             f = model.new_bool_var(f"f_{server_id}")
             f_list.append(f)
+            model.add(f <= y[server_id])
             model.add(
-                server.cpu_capacity
+                server.cpu_capacity * y[server_id]
                 - sum(
                     vm.cpu * x[(vm_id, server_id)] for vm_id, vm in vms.items()
                 )
                 <= f * server.cpu_capacity
             )
             model.add(
-                server.ram_capacity
+                server.ram_capacity * y[server_id]
                 - sum(
                     vm.ram * x[(vm_id, server_id)] for vm_id, vm in vms.items()
                 )
                 <= f * server.ram_capacity
             )
             model.add(
-                server.storage_capacity
+                server.storage_capacity * y[server_id]
                 - sum(
                     vm.storage * x[(vm_id, server_id)]
                     for vm_id, vm in vms.items()
@@ -149,7 +169,7 @@ class CPSATSolver(Solver):
                 <= f * server.storage_capacity
             )
             model.add(
-                server.bw_capacity
+                server.bw_capacity * y[server_id]
                 - sum(
                     vm.bw * x[(vm_id, server_id)] for vm_id, vm in vms.items()
                 )
@@ -159,7 +179,7 @@ class CPSATSolver(Solver):
         # Objective
         model.minimize(
             sum(y[server_id] for server_id in servers)
-            + self.migration_weight * sum(d for d in d_list)
+            - self.migration_weight * sum(d for d in d_list)
             + self.fragmentation_weight * sum(f for f in f_list)
         )
 
