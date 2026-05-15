@@ -63,7 +63,8 @@ class CPSATSolver(Solver):
 
         # Server activity
         y: dict[ID_T, cp_model.IntVar] = {
-            server_id: model.new_bool_var(f"y_{server_id}") for server_id in servers
+            server_id: model.new_bool_var(f"y_{server_id}")
+            for server_id in servers
         }
         for vm_id in vms:
             for server_id in servers:
@@ -85,7 +86,10 @@ class CPSATSolver(Solver):
                 <= server.ram_capacity
             )
             model.add(
-                sum(vm.storage * x[(vm_id, server_id)] for vm_id, vm in vms.items())
+                sum(
+                    vm.storage * x[(vm_id, server_id)]
+                    for vm_id, vm in vms.items()
+                )
                 <= server.storage_capacity
             )
             model.add(
@@ -97,14 +101,16 @@ class CPSATSolver(Solver):
         for vm_id, vm in vms.items():
             for server_id in servers:
                 for other_vm in vm.affinity:
-                    ####### CORRECTIF
-
                     if other_vm in vms:
-                        model.add(x[(vm_id, server_id)] == x[(other_vm, server_id)])
+                        model.add(
+                            x[(vm_id, server_id)] == x[(other_vm, server_id)]
+                        )
 
                 for other_vm in vm.anti_affinity:
                     if other_vm in vms:
-                        model.add(x[(vm_id, server_id)] != x[(other_vm, server_id)])
+                        model.add(
+                            x[(vm_id, server_id)] != x[(other_vm, server_id)]
+                        )
 
         # Dynamic consolidation
         d_list: list[cp_model.IntVar] = []
@@ -120,22 +126,31 @@ class CPSATSolver(Solver):
             f = model.new_bool_var(f"f_{server_id}")
             model.add(
                 server.cpu_capacity
-                - sum(vm.cpu * x[(vm_id, server_id)] for vm_id, vm in vms.items())
+                - sum(
+                    vm.cpu * x[(vm_id, server_id)] for vm_id, vm in vms.items()
+                )
                 <= f * server.cpu_capacity
             )
             model.add(
                 server.ram_capacity
-                - sum(vm.ram * x[(vm_id, server_id)] for vm_id, vm in vms.items())
+                - sum(
+                    vm.ram * x[(vm_id, server_id)] for vm_id, vm in vms.items()
+                )
                 <= f * server.ram_capacity
             )
             model.add(
                 server.storage_capacity
-                - sum(vm.storage * x[(vm_id, server_id)] for vm_id, vm in vms.items())
+                - sum(
+                    vm.storage * x[(vm_id, server_id)]
+                    for vm_id, vm in vms.items()
+                )
                 <= f * server.storage_capacity
             )
             model.add(
                 server.bw_capacity
-                - sum(vm.bw * x[(vm_id, server_id)] for vm_id, vm in vms.items())
+                - sum(
+                    vm.bw * x[(vm_id, server_id)] for vm_id, vm in vms.items()
+                )
                 <= f * server.bw_capacity
             )
 

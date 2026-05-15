@@ -157,7 +157,9 @@ class Context[ID_T]:
         if figsize is None:
             figsize = (cols * 6, rows * 4 + 1)
 
-        fig, axes_grid = plt.subplots(rows, cols, figsize=figsize, squeeze=False)
+        fig, axes_grid = plt.subplots(
+            rows, cols, figsize=figsize, squeeze=False
+        )
         fig.suptitle(title, fontweight="bold")
 
         # Server plotting
