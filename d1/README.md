@@ -94,7 +94,9 @@ $j$ fixé, on a la contrainte d'affinité:
 $$x_{i,j} = x_{k,j}$$
 
 et d'anti-affinité:
-$$x_{i,j} \ne x_{k,j}$$
+$$x_{i,j} + x_{k,j} \le 1$$
+Pour qu'une seule des deux soit à 1 sans pour autant empêcher que les deux
+soient à 0.
 
 ### Contraintes souples de consolidation dynamique
 
