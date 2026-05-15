@@ -109,7 +109,8 @@ class CPSATSolver(Solver):
                 for other_vm in vm.anti_affinity:
                     if other_vm in vms:
                         model.add(
-                            x[(vm_id, server_id)] != x[(other_vm, server_id)]
+                            x[(vm_id, server_id)] + x[(other_vm, server_id)]
+                            <= 1
                         )
 
         # Dynamic consolidation
@@ -122,8 +123,9 @@ class CPSATSolver(Solver):
 
         # Fragmentation
         f_list: list[cp_model.IntVar] = []
-        for server_id in servers:
+        for server_id, server in servers.items():
             f = model.new_bool_var(f"f_{server_id}")
+            f_list.append(f)
             model.add(
                 server.cpu_capacity
                 - sum(
