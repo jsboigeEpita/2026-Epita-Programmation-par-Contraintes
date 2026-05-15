@@ -5,19 +5,19 @@ import pulp
 import networkx as nx
 import time
  
-from models.base import KidneyExchangeSolver, SolverResult
-from core.graph import KEPGraph
+from src.models.base import KidneyExchangeSolver, SolverResult
+from src.core.graph import KEPGraph
 
 class PLNESolver(KidneyExchangeSolver):
     """
     Solver PLNE for Kidney Exchange Problem
     """
 
-    def __init__(self, kep_graph: KEPGraph, max_chain_length: int = 3):
+    def __init__(self, kep_graph: KEPGraph, max_cycle_size:int = 3,max_chain_length: int = 3):
 
-        super().__init__(kep_graph)
+        super().__init__(kep_graph, max_cycle_size)
 
-        self.cycles = []
+        self.cycles = self.graph.get_valid_cycles()
         self.chains = []
 
         self.max_chain_length = max_chain_length
@@ -92,7 +92,7 @@ class PLNESolver(KidneyExchangeSolver):
         return len(chain) - 1
 
 
-    def solve(self) -> SolverResult:
+    def solve(self, time_limit: float = 60.0) -> SolverResult:
         t0 = time.time()
 
         prob = pulp.LpProblem("KEP_PLNE", pulp.LpMaximize)
@@ -140,10 +140,10 @@ class PLNESolver(KidneyExchangeSolver):
             if chain_vars:
                 prob += pulp.lpSum(chain_vars) <= 1, f"ndd_{ndd}"
 
-        solver = pulp.PULP_CBC_CMD(msg=0)
+        solver = pulp.PULP_CBC_CMD(msg=0, timeLimit=int(time_limit))
         prob.solve(solver)
 
-        solve_time_ms = (time.time() - t0) * 1000
+        solve_time = time.time() - t0
 
         selected_cycles = [
             self.cycles[i]
@@ -157,14 +157,24 @@ class PLNESolver(KidneyExchangeSolver):
             if pulp.value(y[j]) is not None and pulp.value(y[j]) > 0.5
         ]
 
-        total_weight = sum(self._cycle_weights(c) for c in selected_cycles) + \
-                        sum(self._chain_weights(ch) for ch in selected_chains)
-
-
+        total_transplants = sum(self._cycle_transplants(c) for c in selected_cycles) + \
+                        sum(self._chain_transplants(ch) for ch in selected_chains)
+ 
+        # CORRECTION: status was "OPTIMIZED" which broke is_feasible()
+        pulp_status = pulp.LpStatus[prob.status]
+        if pulp_status == "Optimal":
+            status_str = "OPTIMAL"
+        elif pulp_status == "Infeasible":
+            status_str = "INFEASIBLE"
+        elif pulp_status == "Not Solved":
+            status_str = "TIMEOUT"
+        else:
+            status_str = "FEASIBLE"
+ 
         return self._make_result(
-            "OPTIMIZED",
+            status_str,
             selected_cycles,
             selected_chains,
-            total_weight,
-            solve_time_ms,
+            float(total_transplants),
+            solve_time,
         )
