@@ -1,71 +1,17 @@
-from typing import List
+"""Provides experiment generation functions for the VM allocation problem."""
+
 import random
+from typing import List
 
-from matplotlib.pylab import rand
-from vm_allocation.models import Server, VM, Context
+from vm_allocation.models import VM, Context, Server
 
+from .utils import random_even, random_power_of_two
 
-def random_power_of_two(min_exp: int = 1, max_exp: int = 6):
-
-    """
-    Generate a random power of two.
-
-    The exponent is chosen uniformly between `min_exp`
-    and `max_exp` (inclusive), and the returned value
-    is computed as:
-
-        2 ** exponent
-
-    Args:
-        min_exp (int, optional):
-            Minimum exponent value. Defaults to 1.
-
-        max_exp (int, optional):
-            Maximum exponent value. Defaults to 6.
-
-    Returns:
-        int:
-            A random power of two.
-    """
-    return 2 ** random.randint(min_exp, max_exp)
-
-
-def random_even(min_val: int, max_val: int):
-    """
-    Generate a random even integer within a given range.
-
-    The function adjusts the boundaries if needed so that
-    both become even numbers before generating the value.
-
-    Args:
-        min_val (int):
-            Minimum allowed value.
-
-        max_val (int):
-            Maximum allowed value.
-
-    Raises:
-        ValueError:
-            If no valid even number exists in the range.
-
-    Returns:
-        int:
-            A random even integer between `min_val`
-            and `max_val`.
-    """
-    min_val = min_val if min_val % 2 == 0 else min_val + 1
-    max_val = max_val if max_val % 2 == 0 else max_val - 1
-    if min_val > max_val:
-        raise ValueError(
-            "Invalid boundaries, min value should be inferior or equal to max."
-        )
-    val = random.randint(0, (max_val - min_val) // 2)
-    return min_val + val * 2
+__all__ = ["generate_n_servers", "generate_n_vms_with_context", "generate_vm"]
 
 
 def generate_n_servers(n: int) -> List[Server[int]]:
-    """
-    Generate a list of random servers.
+    """Generate a list of random servers.
 
     Each server is initialized with randomly generated
     resources:
@@ -74,13 +20,15 @@ def generate_n_servers(n: int) -> List[Server[int]]:
     - Storage: between 500 and 2000
     - Bandwidth: between 200 and 2000
 
-    Args:
-        n (int):
-            Number of servers to generate.
+    Parameters
+    ----------
+    n : int
+        Number of servers to generate.
 
-    Returns:
-        List[Server[int]]:
-            A list containing `n` randomly generated servers.
+    Returns
+    -------
+    List[Server[int]]
+        A list containing `n` randomly generated servers with ids from 0 to n-1.
     """
     return [
         Server(
@@ -102,8 +50,7 @@ def generate_n_vms_with_context(
     anti_affinity_chance: float = 0.1,
     verbose: bool = False,
 ) -> tuple[list[VM[int]], Context[int]]:
-    """
-    Generate virtual machines and place them on servers.
+    """Generate virtual machines and place them on servers.
 
     VMs are generated one by one and assigned to a random
     compatible server from the provided context.
@@ -111,33 +58,28 @@ def generate_n_vms_with_context(
     Affinity and anti-affinity relationships may also
     be randomly created between VMs.
 
-    Args:
-        n (int):
-            Number of VMs to generate.
+    Parameters
+    ----------
+    n : int
+        Number of VMs to generate.
+    context : Context[int]
+        Initial infrastructure context containing servers with integer ids.
+    affinity_chance : float, optional
+        Probability of creating an affinity relation between colocated VMs,
+        by default 0.1.
+    anti_affinity_server_selection_chance : float, optional
+        Probability of selecting another server for anti-affinity generation,
+        by default 0.1.
+    anti_affinity_chance : float, optional
+        Probability of creating an anti-affinity relation with a VM from
+        another server, by default 0.1.
+    verbose : bool, optional
+        Enable debug prints, by default False.
 
-        context (Context[int]):
-            Initial infrastructure context containing servers.
-
-        affinity_chance (float, optional):
-            Probability of creating an affinity relation
-            between colocated VMs. Defaults to 0.1.
-
-        anti_affinity_server_selection_chance (float, optional):
-            Probability of selecting another server for
-            anti-affinity generation. Defaults to 0.1.
-
-        anti_affinity_chance (float, optional):
-            Probability of creating an anti-affinity relation
-            with a VM from another server. Defaults to 0.1.
-
-        verbose (bool, optional):
-            Enable debug prints. Defaults to False.
-
-    Returns:
-        tuple[list[VM[int]], Context[int]]:
-            A tuple containing:
-            - the generated VMs
-            - the updated infrastructure context
+    Returns
+    -------
+    tuple[list[VM[int]], Context[int]]:
+        A tuple containing the generated VMs and the updated infrastructure context.
     """
     if verbose:
         print(f"Creating {n} VMs")
@@ -198,6 +140,24 @@ def generate_n_vms_with_context(
 
 
 def generate_vm[ID_T](i: ID_T) -> VM[ID_T]:
+    """Generate a random valued VM with id i.
+
+    The generated values follow the following generation:
+    - CPU has 80% chance of being 2, 4 or 8 equiprobably, 20% of being 8 or 16.
+    - RAM random even number between 2 and 32
+    - Storage random number between 10 and 200
+    - Bandwidth random number between 1 and 100
+
+    Parameters
+    ----------
+    i : ID_T
+        The id to use for the generated VM.
+
+    Returns
+    -------
+    VM[ID_T]
+        Generated VM.
+    """
 
     if random.random() < 0.8:
         cpu = random_power_of_two(1, 3)  # 2,4,8

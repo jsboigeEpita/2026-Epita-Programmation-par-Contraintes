@@ -43,7 +43,9 @@ class Server[ID_T]:
         ("bw_usage", "bw_capacity", "bw", "BW"),
     ]
 
-    def __init__(self, server_id: ID_T, cpu: int, ram: int, storage: int, bw: int):
+    def __init__(
+        self, server_id: ID_T, cpu: int, ram: int, storage: int, bw: int
+    ):
 
         self.id = server_id
         self.cpu_capacity = cpu
@@ -197,7 +199,9 @@ class Server[ID_T]:
 
         y_positions = list(range(n_res - 1, -1, -1))
 
-        for i, (usage_attr, cap_attr, vm_attr, label) in enumerate(self._RESOURCE_INFO):
+        for i, (usage_attr, cap_attr, vm_attr, label) in enumerate(
+            self._RESOURCE_INFO
+        ):
             capacity = getattr(self, cap_attr)
             used = getattr(self, usage_attr)
             ratio = used / capacity if capacity else 0
@@ -213,7 +217,9 @@ class Server[ID_T]:
             left = 0.0
             for vm in self.vms:
                 vm_requirement = getattr(vm, vm_attr)
-                percentage = (vm_requirement / capacity * 100) if capacity else 0
+                percentage = (
+                    (vm_requirement / capacity * 100) if capacity else 0
+                )
                 color = vm_colors.get(vm.id, "#aaa")
                 ax.barh(
                     y,
@@ -276,9 +282,7 @@ class Server[ID_T]:
             ),
         )
 
-        start_line = (
-            f"Server [{self.id}] {'─' * 3} {n_vms} VM{'s ' if n_vms != 1 else ' '}"
-        )
+        start_line = f"Server [{self.id}] {'─' * 3} {n_vms} VM{'s ' if n_vms != 1 else ' '}"
 
         server_lines = [
             f"CPU     {bar(self.cpu_usage, self.cpu_capacity, bar_width)}",
