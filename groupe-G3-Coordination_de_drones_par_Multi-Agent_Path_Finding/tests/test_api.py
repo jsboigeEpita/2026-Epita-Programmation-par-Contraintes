@@ -64,13 +64,11 @@ def test_solve_returns_solve_time(client):
     assert data["solve_time_ms"] > 0
 
 
-@pytest.mark.xfail(reason="scenarios/ folder added in Task 2")
 def test_load_all_returns_five_scenarios():
     scenarios = load_all()
     assert len(scenarios) == 5
 
 
-@pytest.mark.xfail(reason="scenarios/ folder added in Task 2")
 def test_each_scenario_has_required_keys():
     for s in load_all():
         assert "name" in s

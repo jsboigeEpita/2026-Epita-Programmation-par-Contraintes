@@ -454,7 +454,7 @@ async function solve(scenario, nofly = []) {
   document.getElementById('h-time').textContent      = solution.solve_time_ms + 'ms';
   document.getElementById('h-conflicts').textContent = solution.conflicts_avoided;
 
-  if (solution.status === 'infeasible') return;
+  if (solution.status !== 'optimal' && solution.status !== 'feasible') return;
 
   droneManager = new DroneManager(scenario.drones, cityScene.scene);
   droneManager.updateFrame(solution.paths, 0, true);
