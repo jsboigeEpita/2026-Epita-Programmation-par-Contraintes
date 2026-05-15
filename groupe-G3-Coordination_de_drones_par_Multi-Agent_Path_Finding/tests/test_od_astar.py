@@ -29,3 +29,10 @@ def test_od_all_goals_reached():
     assert sol.status == "optimal"
     for d in drones:
         assert sol.paths[d.id][-1] == d.goal
+
+
+def test_od_timeout():
+    g = Grid(rows=5, cols=5)
+    drones = [Drone(0, (0, 0), (4, 4)), Drone(1, (0, 4), (4, 0))]
+    sol = ODAstarSolver(g, drones, time_limit_s=0.0).solve()
+    assert sol.status == "timeout"

@@ -2,7 +2,7 @@
 from __future__ import annotations
 import heapq
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 from .grid import Grid, Pos
 from .mapf import Drone, Solution
 from .cbs import _near_passes
@@ -77,7 +77,7 @@ class ODAstarSolver:
 
             # Goal check: standard state (agent_idx==0) with all agents at goals
             if agent_idx == 0 and positions == goals:
-                paths = _reconstruct(came_from, state, drone_ids, N)
+                paths = _reconstruct(came_from, state, drone_ids)
                 makespan = max(len(p) for p in paths.values()) - 1
                 return Solution(
                     status="optimal",
@@ -138,7 +138,6 @@ def _reconstruct(
     came_from: Dict,
     final_state: Tuple,
     drone_ids: List[int],
-    N: int,
 ) -> Dict[int, List[Pos]]:
     """Walk came_from backwards, collect only standard states (agent_idx==0)."""
     standard_positions: List[Tuple[Pos, ...]] = []
