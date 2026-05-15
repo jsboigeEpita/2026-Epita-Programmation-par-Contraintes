@@ -40,6 +40,19 @@ Le VM Scheduling Problem consiste a allouer des machines virtuelles (VMs) avec d
 
 Pour l'utilisation de ortools pour le CP-SAT: [CSP-3 Advanced](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-3-Advanced.ipynb)
 
+## Installation
+
+Pour installer la bibliothèque, un appel à pip à la racine suffit
+```console
+pip install .
+```
+
+## Diaporama de présentation
+
+Le lien pour le diaporama de présentation est disponible en consultation
+[ici](https://epitafr-my.sharepoint.com/:p:/g/personal/brendan_martin_epita_fr/IQByf0xdDWQ4QJWC3TpNiXV2AU_Rgv12vXkdPk73j7No7os?e=ycYdHZ). Celui-ci est encore
+en cours de construction et sera complété pour le jour de la présentation.
+
 ## Modélisation du problème
 
 On va chercher ici à représenter ce problème par un problème de programmation
@@ -82,7 +95,7 @@ surcharger un serveur et lui assigner plus de VMs que sa capacité ne permettent
 Pour ce faire, on définit les capacités `CPU`, `RAM`, `STOCKAGE` et `RESEAU`
 pour les `VM` et les `SERVER`.
 On veut pour chaque serveur $j$ que:
-$$\sum_i \text{VM\_CPU}_i \; x_{i,j} \le \text{SERVER\_CPU}_j$$
+$$\sum_i \text{VM\_CPU}_i \; x_{i,j} \le \text{SERVER\_CPU}_j * y_j$$
 
 et de même pour les autres capacités.
 
@@ -109,21 +122,27 @@ assignations $x_{i,j}'$ et on applique une pénalité sur changements de valeur
 en fonction d'un facteur.
 
 Pour être précis, on est dans un contexte où, pour une VM donnée, on veut
-l'ajouter ou optimiser son placement. Si $x_{i,j} \gt x_{i,j}'$, on vient de
-rajouter la VM sur ce serveur. On sait que si $x_{i,j} \ne x_{i,j}'$, avec la
-contrainte de présence, on a eu hot swap. Avec $\lambda_{hot}$ le facteur de
-pénalisation, on peut ajouter le terme $\lambda_{hot} \sum_{(i,j)}
-|x_{i,j} - x_{i,j}'|$ avec ici les $x_{i,j}'$ constants dans le problème d'optimisation.
+l'ajouter ou optimiser son placement. Si $x_{i,j} = 1$ et $x_{i,j}' = 0$, on
+vient de rajouter la VM sur ce serveur. Si au contraire $x_{i,j} = 0$ et
+$x_{i,j}' = 1$, on a eu hot swap. Avec $\lambda_{hot}$ le facteur de
+pénalisation, on peut ajouter le terme $\lambda_{hot} \sum_i \sum_j
+x_{i,j}'(1 - x_{i,j})$ avec ici les $x_{i,j}'$ constants dans le problème d'optimisation. Ca fonctionne car $x_{i,j}'(1 - x_{i,j})$ vaut 1 seulement si
+$x_{i,j} = 0$ et $x_{i,j}' = 1$.
 
-Le problème ici est que le terme $|x_{i,j} - x_{i,j}'|$ n'est pas linéaire, pour
-le rendre linéaire on peut introduire un terme $d_{i,j} \in \{0;1\}$ avec les
-contraintes $d_{i,j} \ge (x_{i,j} - x_{i,j}')$ et
-$d_{i,j} \ge -(x_{i,j} - x_{i,j}')$ ce qui équivaut à
-$d_{i,j} \ge |x_{i,j} - x_{i,j}'|$. Vu que le terme de pénalisation devient
- $\lambda_{hot} \sum_{(i,j)} d_{i,j}$, la minimisation s'occupera de le mettre à
-0 si possible. On peut ne pas traiter le cas où $x_{i,j}'$ est égal à 0 pour
-éviter les fausses alertes avec les créations de VMs, ce qui donne
-$d_{i,j} \ge (1 - x_{i,j})$.
+On peut optimiser un peu la formule en posant
+$\mathcal{A} = \{(i, j) | x_{i,j}' = 1\}$ l'ensemble des VMs qui
+ne sont pas nouvelles. On peut réécrire
+$$\begin{align}
+\sum_i \sum_j x_{i,j}'(1 - x_{i,j}) &= \sum_i \sum_j x_{i,j}' - \sum_i \sum_j
+x_{i,j}' x_{i,j} \\
+&= \sum_{(i, j) \in \mathcal{A}} 1 - \sum_{(i, j) \in \mathcal{A}} x_{i,j} \\
+&= |\mathcal{A}| - \sum_{(i, j) \in \mathcal{A}} x_{i,j}
+\end{align}$$
+
+Avec $|\mathcal{A}|$ une constante, on peut juste ne pas la considérer dans le
+problème et garder le terme $- \lambda_{hot} \sum_{(i, j) \in \mathcal{A}}
+x_{i,j}$. On peut l'interpréter comme une maximisation de conservation des
+emplacements déjà utilisés, ce qui est ce que l'on veut.
 
  ### Contraintes souples de minimisation de la fragmentation
 
@@ -141,7 +160,8 @@ $d_{i,j} \ge (1 - x_{i,j})$.
  totale, sachant qu'elle doit rester inférieure de toute manière. On peut le
  reformuler en disant que la marge restante est 0 si $f_j = 0$. On peut donc
  établir la contrainte suivante:
- $$\text{SERVER\_CPU}_j - \sum_i \text{VM\_CPU}_i \; x_{i,j} \le f_j \; \text{SERVER\_CPU}_j$$
+ $$\text{SERVER\_CPU}_j * y_j - \sum_i \text{VM\_CPU}_i \; x_{i,j} \le f_j \;
+ \text{SERVER\_CPU}_j$$
 
  et de même pour les autres capacités. Ainsi, on a le terme de gauche toujours
  positif avec la contrainte de capacités, le terme de droite est soit la valeur
