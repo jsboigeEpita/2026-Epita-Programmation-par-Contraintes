@@ -28,9 +28,8 @@ export class UIManager {
 
   _syncBtn() {
     const on = this._placingNoFly;
-    this._btnNF.style.borderColor = on ? '#ef4444' : '#334155';
-    this._btnNF.style.color       = on ? '#fca5a5' : '#94a3b8';
-    this._btnNF.textContent       = on ? '🚫 Click grid…' : '🚫 No-Fly';
+    this._btnNF.classList.toggle('is-active', on);
+    this._btnNF.textContent = on ? '🚫 Click grid…' : '🚫 No-Fly';
   }
 
   isPlacingNoFly() { return this._placingNoFly; }
