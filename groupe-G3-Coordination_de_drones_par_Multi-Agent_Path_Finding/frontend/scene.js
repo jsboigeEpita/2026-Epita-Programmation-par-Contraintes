@@ -2,8 +2,8 @@ export class CityScene {
   constructor(renderer) {
     this.renderer = renderer;
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x040810);
-    this.scene.fog = new THREE.FogExp2(0x040810, 0.012);
+    this.scene.background = new THREE.Color(0xd4e8f8);
+    this.scene.fog = new THREE.FogExp2(0xd4e8f8, 0.007);
 
     this.camera = new THREE.PerspectiveCamera(
       55, window.innerWidth / window.innerHeight, 0.1, 500
@@ -21,26 +21,25 @@ export class CityScene {
   }
 
   _addLights() {
-    this.scene.add(new THREE.AmbientLight(0x0f1a2e, 1.5));
-    const dir = new THREE.DirectionalLight(0x93c5fd, 0.9);
+    this.scene.add(new THREE.AmbientLight(0xffffff, 1.0));
+    const dir = new THREE.DirectionalLight(0xfff8ee, 1.3);
     dir.position.set(20, 40, 20);
     this.scene.add(dir);
-    // Subtle fill from below
-    const fill = new THREE.DirectionalLight(0x1e3a5f, 0.3);
-    fill.position.set(-10, -5, -10);
+    const fill = new THREE.DirectionalLight(0xc8dcf0, 0.4);
+    fill.position.set(-10, 10, -10);
     this.scene.add(fill);
   }
 
   _addGround(size = 80) {
     const ground = new THREE.Mesh(
       new THREE.PlaneGeometry(size, size),
-      new THREE.MeshPhongMaterial({ color: 0x070d1a })
+      new THREE.MeshPhongMaterial({ color: 0xb8c8d8 })
     );
     ground.rotation.x = -Math.PI / 2;
     ground.position.set(size / 4, -0.01, size / 4);
     this.scene.add(ground);
 
-    const grid = new THREE.GridHelper(size, size / 2, 0x0f2744, 0x091522);
+    const grid = new THREE.GridHelper(size, size / 2, 0x7a98b8, 0xa0b8cc);
     grid.position.set(size / 4, 0, size / 4);
     this.scene.add(grid);
   }
@@ -51,7 +50,7 @@ export class CityScene {
       const h = b.height * cellSize * 1.5;
       const geo = new THREE.BoxGeometry(cellSize * 0.85, h, cellSize * 0.85);
       const mat = new THREE.MeshPhongMaterial({
-        color: 0x0d1f3c, emissive: 0x071020, transparent: true, opacity: 0.9,
+        color: 0xd0dce8, emissive: 0x000000, transparent: true, opacity: 0.9,
       });
       const mesh = new THREE.Mesh(geo, mat);
       mesh.position.set(b.col * cellSize, h / 2, b.row * cellSize);
@@ -59,13 +58,13 @@ export class CityScene {
 
       const edges = new THREE.LineSegments(
         new THREE.EdgesGeometry(geo),
-        new THREE.LineBasicMaterial({ color: 0x1e3a5f, transparent: true, opacity: 0.5 })
+        new THREE.LineBasicMaterial({ color: 0x5878a0, transparent: true, opacity: 0.55 })
       );
       edges.position.copy(mesh.position);
       this.scene.add(edges);
 
       if (b.height >= 3) {
-        const light = new THREE.PointLight(0x1e3a5f, 0.6, 6);
+        const light = new THREE.PointLight(0xffd060, 0.4, 5);
         light.position.set(b.col * cellSize, h + 0.3, b.row * cellSize);
         this.scene.add(light);
       }
