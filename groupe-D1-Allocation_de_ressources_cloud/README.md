@@ -95,7 +95,7 @@ surcharger un serveur et lui assigner plus de VMs que sa capacité ne permettent
 Pour ce faire, on définit les capacités `CPU`, `RAM`, `STOCKAGE` et `RESEAU`
 pour les `VM` et les `SERVER`.
 On veut pour chaque serveur $j$ que:
-$$\sum_i \text{VM\_CPU}_i \; x_{i,j} \le \text{SERVER\_CPU}_j * y_j$$
+$$\sum_i \text{VM\_CPU}_i \; x_{i,j} \le \text{SERVER\_CPU}_j y_j$$
 
 et de même pour les autres capacités.
 
@@ -160,7 +160,7 @@ emplacements déjà utilisés, ce qui est ce que l'on veut.
  totale, sachant qu'elle doit rester inférieure de toute manière. On peut le
  reformuler en disant que la marge restante est 0 si $f_j = 0$. On peut donc
  établir la contrainte suivante:
- $$\text{SERVER\_CPU}_j * y_j - \sum_i \text{VM\_CPU}_i \; x_{i,j} \le f_j \;
+ $$\text{SERVER\_CPU}_j y_j - \sum_i \text{VM\_CPU}_i \; x_{i,j} \le f_j \;
  \text{SERVER\_CPU}_j$$
 
  et de même pour les autres capacités. Ainsi, on a le terme de gauche toujours
