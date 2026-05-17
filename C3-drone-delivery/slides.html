@@ -611,7 +611,37 @@
         <!-- 4. CONTRAINTES -->
         <div class="slide" data-index="3">
             <div class="label">03 — Modelisation</div>
-            <h2>Contraintes CP-SAT</h2>
+            <h2>Variables &amp; Contraintes CP-SAT</h2>
+
+            <!-- Variables de décision -->
+            <div style="margin-bottom:14px;">
+                <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;">Variables de decision</div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                    <div style="background:var(--surface);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.7rem;font-weight:700;color:var(--accent);margin-bottom:4px;">arc[i,j,k]</div>
+                        <div style="font-size:0.68rem;color:var(--text);font-family:monospace;margin-bottom:4px;">BoolVar</div>
+                        <div style="font-size:0.65rem;color:var(--muted);">Le drone k emprunte-t-il l'arc i→j ?</div>
+                    </div>
+                    <div style="background:var(--surface);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.7rem;font-weight:700;color:var(--yellow);margin-bottom:4px;">battery[i,k]</div>
+                        <div style="font-size:0.68rem;color:var(--text);font-family:monospace;margin-bottom:4px;">IntVar [0, max_bat]</div>
+                        <div style="font-size:0.65rem;color:var(--muted);">Batterie restante du drone k au noeud i.</div>
+                    </div>
+                    <div style="background:var(--surface);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.7rem;font-weight:700;color:var(--red);margin-bottom:4px;">load[i,k]</div>
+                        <div style="font-size:0.68rem;color:var(--text);font-family:monospace;margin-bottom:4px;">IntVar [0, max_w]</div>
+                        <div style="font-size:0.65rem;color:var(--muted);">Charge en poids du drone k au noeud i.</div>
+                    </div>
+                    <div style="background:var(--surface);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.7rem;font-weight:700;color:var(--green);margin-bottom:4px;">vol[i,k]</div>
+                        <div style="font-size:0.68rem;color:var(--text);font-family:monospace;margin-bottom:4px;">IntVar [0, max_v]</div>
+                        <div style="font-size:0.65rem;color:var(--muted);">Charge en volume du drone k au noeud i.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contraintes -->
+            <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;">Contraintes</div>
             <div class="constraint-grid" style="margin-bottom:14px;">
                 <div class="c-card">
                     <div class="c-card-label">
@@ -629,7 +659,7 @@
                 </div>
                 <div class="c-card">
                     <div class="c-card-label">
-                        <span class="c-dot" style="background:var(--yellow)"></span>Batterie (style MTZ)
+                        <span class="c-dot" style="background:var(--yellow)"></span>Batterie
                     </div>
                     <div class="c-formula">battery[j] = battery[i] − dist(i,j)<br>battery[i] ≥ dist(i, depot)</div>
                     <div class="c-desc">Propagation arc par arc. Retour au depot toujours garanti.</div>
@@ -642,9 +672,16 @@
                     <div class="c-desc">Accumulation le long de la route, bornee par max_load et max_volume.</div>
                 </div>
             </div>
-            <div class="callout" style="margin-bottom:0;">
-                Les contraintes de batterie et capacite utilisent <strong>OnlyEnforceIf(arc[i,j,k])</strong> pour n'etre
-                actives que si l'arc est emprunte.
+
+            <!-- Objectif -->
+            <div style="margin-top:14px;">
+                <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;">Objectif</div>
+                <div style="background:var(--accent-light);border:1px solid #c7caef;border-radius:10px;padding:14px 24px;">
+                    <div style="font-family:monospace;font-size:1.15rem;font-weight:600;color:var(--text);margin-bottom:6px;">
+                        <span style="color:var(--accent);font-weight:700;">Minimize</span>(&nbsp;Σ&nbsp;<span style="color:var(--accent);">arc[i,j,k]</span>&nbsp;×&nbsp;dist[i,j]&nbsp;)
+                    </div>
+                    <div style="font-size:0.8rem;color:var(--muted);">Distance totale parcourue par l'ensemble des drones</div>
+                </div>
             </div>
         </div>
 
@@ -655,8 +692,7 @@
             <div class="cols">
                 <div style="display:flex;flex-direction:column;gap:16px;">
                     <div class="callout">
-                        CP-SAT a besoin d'une <strong>matrice de distances</strong> entre tous les noeuds. On ne peut
-                        pas utiliser la distance euclidienne si une zone NOTAM est sur le chemin.
+                        CP-SAT a besoin d'une <strong>matrice de distances</strong> entre tous les noeuds.
                     </div>
                     <div class="steps">
                         <div class="step">
@@ -685,19 +721,8 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <pre><span class="cm"># 1. Chemin direct ?</span>
-<span class="kw">if</span> <span class="fn">is_safe</span>(p1, p2):
-    <span class="kw">return</span> dist_euclidienne, [p1, p2]
-
-<span class="cm"># 2. Dijkstra via waypoints</span>
-<span class="kw">queue</span> = [(0, start, [p1])]
-<span class="kw">while</span> queue:
-    d, curr, path = <span class="fn">heappop</span>(queue)
-    <span class="kw">if</span> curr == end:
-        <span class="kw">return</span> d, path
-    <span class="kw">for</span> nxt, w <span class="kw">in</span> adj[curr]:
-        <span class="fn">heappush</span>(queue, (d+w, nxt, ...))</pre>
+                <div style="display:flex;align-items:center;justify-content:center;">
+                    <img src="assets/NOTAM.webp" style="max-width:100%;max-height:440px;border-radius:10px;object-fit:contain;">
                 </div>
             </div>
         </div>
