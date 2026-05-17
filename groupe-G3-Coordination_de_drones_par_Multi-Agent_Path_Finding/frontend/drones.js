@@ -115,18 +115,14 @@ export class DroneManager {
   }
 
   updateFrameLerp(paths, frame, alpha) {
+    alpha = Math.max(0, Math.min(1, alpha));
     for (const d of this.drones) {
       const path = paths[String(d.id)];
       if (!path) continue;
       const wA = this._toWorld(path[Math.min(frame,     path.length - 1)]);
       const wB = this._toWorld(path[Math.min(frame + 1, path.length - 1)]);
-      const world = new THREE.Vector3(
-        wA.x + (wB.x - wA.x) * alpha,
-        wA.y + (wB.y - wA.y) * alpha,
-        wA.z + (wB.z - wA.z) * alpha,
-      );
-      d.mesh.position.copy(world);
-      d.baseY = world.y;
+      d.mesh.position.lerpVectors(wA, wB, alpha);
+      d.baseY = d.mesh.position.y;
     }
     for (let i = 0; i < this.drones.length; i++)
       for (let j = i + 1; j < this.drones.length; j++)
