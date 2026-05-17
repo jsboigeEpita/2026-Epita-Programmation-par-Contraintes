@@ -4,7 +4,7 @@ Notes techniques et décisions de design, archivées pour ne pas refaire
 deux fois la même analyse.
 
 Convention : un fichier par décision ou découverte, numéroté par
-ordre d'apparition dans le projet (S2 → S3).
+ordre d'apparition dans le projet.
 
 ## Index
 

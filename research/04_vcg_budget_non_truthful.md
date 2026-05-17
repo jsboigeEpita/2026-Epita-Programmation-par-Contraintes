@@ -1,6 +1,6 @@
 # Note 04 — VCG sous contrainte de budget : DSIC perdue
 
-Sprint : S2 — module [`wdp/vcg.py`](../wdp/vcg.py), paramètre `enforce_budget=True` (issue #13).
+Contexte : module [`wdp/vcg.py`](../wdp/vcg.py), paramètre `enforce_budget=True` (issue #4).
 
 ## Constat
 

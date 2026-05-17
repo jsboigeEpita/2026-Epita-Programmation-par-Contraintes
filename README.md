@@ -15,12 +15,13 @@ Projet académique de groupe — ING2 Programmation par Contraintes, EPITA S8.
   analyse / documentation : heuristique greedy, notes de recherche,
   notebook, README.
 
-Découpage en 4 sprints (S0 bootstrap, S1 cœur WDP, S2 benchmarks + VCG,
-S3 livrables). Pour chaque tâche : un *issue* dans
-[`.github/ISSUES.md`](.github/ISSUES.md) (owner, reviewer, deadline,
-critères d'acceptation), une *feature branch*, une *PR* relue par un
-autre membre, un *merge* `--no-ff` portant un `Reviewed-by:` trailer.
-Cf. section *Méthode de travail* plus bas.
+Pour chaque tâche non-triviale : un *issue* dans
+[`.github/ISSUES.md`](.github/ISSUES.md) (owner, reviewer, critères
+d'acceptation), une *feature branch* quand le périmètre le justifie,
+une *PR* relue par un autre membre, un *merge* `--no-ff` portant un
+`Reviewed-by:` trailer. Le cœur des solveurs et du VCG a été poussé
+directement sur `main` par le tech lead. Cf. section *Méthode de
+travail* plus bas.
 
 ---
 
@@ -211,7 +212,7 @@ des dummy goods.
 auction-winner-determination/
 ├── J2-CombinatorialAuctions.ipynb   ← Rendu principal (55 cellules exécutées)
 ├── README.md                          ← Ce document
-├── PROJECT_TRACKER.md                 ← Plan projet (équipe, sprints, issues, deadlines)
+├── PROJECT_TRACKER.md                 ← Plan projet (équipe, issues, conventions)
 ├── requirements.txt
 ├── .gitignore
 ├── .gitmessage                        ← Template Conventional Commits
@@ -677,36 +678,38 @@ Chaque membre a été à la fois *owner* sur une partie du périmètre et
 reviewers est visible dans le tableau d'issues ci-dessous et dans
 [`PROJECT_TRACKER.md`](PROJECT_TRACKER.md) §3.
 
-### Planning (4 sprints)
+### Phases du projet
 
-| Sprint | Période | Thème | Critère de sortie |
-|---|---|---|---|
-| **S0 — Bootstrap** | semaine 1 | structure dépôt, conventions, scaffolding | `.gitignore`, `requirements.txt`, package `wdp/`, CONTRIBUTING, tracker + ledger |
-| **S1 — Cœur WDP** | semaine 2 | data model, générateur, CP-SAT, PLNE, budget, XOR | les deux solveurs résolvent `toy_example`, `with_budget`, `with_xor` à valeurs égales |
-| **S2 — Benchmarks & VCG** | semaine 3 | greedy LOS, parser + datasets CATS officiels, VCG (canonique + budget), audits | CATS end-to-end ; paiements VCG calculés + audit IR / monotonie / OPTIMAL passe |
-| **S3 — Livrables** | semaine 4 | notebook, README, notes de recherche, figures, slides | notebook reproductible, 4 notes, README, slides, PR de soumission |
+Le travail s'est organisé en quatre phases successives, visibles dans
+l'historique Git :
 
-Standups Lundi / Mercredi / Vendredi en groupe privé ; *sprint review*
-de fin de sprint matérialisée par un commit `chore(sprint-N): review …`
-sur `main`.
+| Phase | Thème principal | Livrables |
+|---|---|---|
+| **Bootstrap** | structure dépôt et conventions | `.gitignore`, `requirements.txt`, package `wdp/`, tracker + ledger |
+| **Cœur WDP** | data model, générateur, CP-SAT, PLNE, budget, XOR | deux solveurs résolvent `toy_example`, `with_budget`, `with_xor` à valeurs égales |
+| **Benchmarks & VCG** | greedy LOS, parser et datasets CATS officiels, VCG (canonique et budget), audits | CATS bout-en-bout ; paiements VCG calculés et propriétés vérifiées |
+| **Livrables** | notebook, README, notes de recherche, figures, slides | notebook reproductible, 4 notes, README, slides, PR de soumission |
+
+Coordination tactique en groupe privé (messagerie). Décisions et
+incidents importants formalisés en issues dans
+[`.github/ISSUES.md`](.github/ISSUES.md) avant l'ouverture des feature
+branches correspondantes.
 
 ### Conventions Git et workflow d'issue
 
 - **Commits** : *Conventional Commits* (`feat`, `fix`, `docs`, `test`,
   `refactor`, `perf`, `chore`, `build`, `ci`, `style`, `revert`).
-  Sujet ≤ 60 caractères, impératif. Scopes dédiés pour la
+  Sujet ≤ 60 caractères, impératif. Scope dédié pour la
   planification : `docs(plan): …` (création / clôture d'issue dans le
-  ledger) et `chore(sprint-N): …` (cérémonies de sprint). Template à
-  [`.gitmessage`](.gitmessage), règles complètes dans
-  [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
-- **Branches** : `feat/<sprint>-<slug>`, `fix/<slug>`, `docs/<slug>`.
+  ledger). Template à [`.gitmessage`](.gitmessage), règles complètes
+  dans [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
+- **Branches** : `feat/<slug>`, `fix/<slug>`, `docs/<slug>`.
   Une *feature branch* par issue non triviale ; les changements
   ponctuels de docs/chore peuvent atterrir directement sur `main`.
 - **Cycle d'une issue** :
   1. *Define* : commit `docs(plan): open issue #N — …` qui ajoute
      l'entrée correspondante à [`.github/ISSUES.md`](.github/ISSUES.md)
-     (owner, reviewer, deadline, critères d'acceptation, branche
-     cible).
+     (owner, reviewer, critères d'acceptation, branche cible).
   2. *Work* : commits atomiques sur la *feature branch* dédiée.
   3. *Review* : ouverture de PR, revue par le reviewer désigné. La
      PR est mergée par le **reviewer** lui-même avec `git merge --no-ff`

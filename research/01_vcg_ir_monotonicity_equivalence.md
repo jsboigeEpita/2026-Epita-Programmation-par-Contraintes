@@ -1,6 +1,6 @@
 # Note 01 — Équivalence algébrique IR ↔ monotonie du welfare en VCG
 
-Sprint : S2 — audit du module `wdp/vcg.py`, méthode `VCGResult.verify_properties`.
+Contexte : audit du module `wdp/vcg.py`, méthode `VCGResult.verify_properties`.
 
 ## Constat
 

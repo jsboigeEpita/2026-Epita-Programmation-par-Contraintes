@@ -1,15 +1,15 @@
 # Note 03 — Statut des benchmarks CATS
 
-Sprint : S2 — intégration du générateur CATS officiel.
-Statut : **résolu** (clos par PR #11).
+Contexte : intégration du générateur CATS officiel (issue #5).
+Statut : **résolu** (clos par PR #2 sur le parser ; cette note est la trace de la décision).
 
 ## Contexte
 
 Le sujet (livrable 4) demande explicitement *"Évaluer sur les benchmarks
 CATS"*. Une première itération utilisait uniquement des distributions
 **inspirées** de CATS, générées par notre propre `wdp/generator.py`
-(livrée à l'issue de S1, issue #4). Cette note documente le passage aux
-benchmarks CATS officiels durant S2 (issues #10 et #11).
+(livrée dans le cadre de l'issue #1). Cette note documente le passage aux
+benchmarks CATS officiels durant le travail sur l'issue #3 (parser et dataset).
 
 ## Résolution
 

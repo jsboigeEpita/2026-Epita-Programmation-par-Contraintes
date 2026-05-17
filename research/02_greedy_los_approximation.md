@@ -1,6 +1,6 @@
 # Note 02 — Choix de l'heuristique gloutonne : LOS (Lehmann-O'Callaghan-Shoham)
 
-Sprint : S2 — implémentation de `wdp/solver_greedy.py`.
+Contexte : implémentation de `wdp/solver_greedy.py` (issue #2).
 
 ## Alternatives considérées
 
