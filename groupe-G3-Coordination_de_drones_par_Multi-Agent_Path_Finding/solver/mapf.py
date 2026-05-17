@@ -36,6 +36,8 @@ class MAPFSolver:
         N = len(self.drones)
         P = len(positions)
 
+        t0 = time.time()
+
         # A* individual paths — horizon + warm-start hints (unchanged)
         astar_paths: List[Optional[List[Pos]]] = [
             astar(self.grid, d.start, d.goal) for d in self.drones
@@ -47,7 +49,6 @@ class MAPFSolver:
             T = 2 * (self.grid.rows + self.grid.cols) + N
 
         model = cp_model.CpModel()
-        t0 = time.time()
 
         # Neighbor index lists (includes self for wait move)
         nbrs: List[List[int]] = [
@@ -159,8 +160,12 @@ class MAPFSolver:
                     model.AddHint(here[a][p][t], 1 if p == hint_idx else 0)
 
         # ── Solve ─────────────────────────────────────────────────────────────
+        elapsed_build = time.time() - t0
+        if elapsed_build >= self.time_limit_s:
+            return Solution("timeout", 0, 0, elapsed_build * 1000, {}, 0)
+
         solver = cp_model.CpSolver()
-        solver.parameters.max_time_in_seconds = self.time_limit_s
+        solver.parameters.max_time_in_seconds = self.time_limit_s - elapsed_build
         solver.parameters.num_search_workers = 4
 
         status_code = solver.Solve(model)
