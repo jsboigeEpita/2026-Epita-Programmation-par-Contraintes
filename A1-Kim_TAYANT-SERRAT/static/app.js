@@ -21,13 +21,6 @@ const STATUS_STYLES = {
   infeasible: { bg: "bg-red-100",     text: "text-red-700",      dot: "bg-red-500",     label: "Infaisable" },
 };
 
-const MEAL_LABELS = {
-  1: ["Repas"],
-  2: ["Déjeuner", "Dîner"],
-  3: ["Petit-déj", "Déjeuner", "Dîner"],
-  4: ["Petit-déj", "Déjeuner", "Goûter", "Dîner"],
-};
-
 // --- Init ---
 async function init() {
   bindForm();
@@ -207,7 +200,7 @@ function stat(label, value, color) {
 }
 
 function renderDay(dayNum, meals, mealsPerDay) {
-  const labels = MEAL_LABELS[mealsPerDay] || meals.map((_, i) => `Repas ${i + 1}`);
+  const labels = meals.map((_, i) => `Repas ${i + 1}`);
   const dayCost = meals.reduce((acc, m) => acc + m.cost, 0);
 
   return `
