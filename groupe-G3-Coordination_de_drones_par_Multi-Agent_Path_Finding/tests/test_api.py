@@ -16,7 +16,7 @@ def test_get_scenarios(client):
     data = json.loads(r.data)
     assert isinstance(data, list)
     assert any(s["name"] == "micro_flat" for s in data)
-    assert len(data) == 5
+    assert len(data) == 11
 
 def test_solve_small(client):
     payload = {
@@ -64,9 +64,9 @@ def test_solve_returns_solve_time(client):
     assert data["solve_time_ms"] > 0
 
 
-def test_load_all_returns_five_scenarios():
+def test_load_all_returns_eleven_scenarios():
     scenarios = load_all()
-    assert len(scenarios) == 5
+    assert len(scenarios) == 11
 
 
 def test_each_scenario_has_required_keys():
