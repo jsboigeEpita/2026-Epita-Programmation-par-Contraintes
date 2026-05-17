@@ -1,0 +1,11 @@
+ortools
+networkx
+matplotlib
+numpy
+pandas
+pulp
+jupyter
+ipykernel
+tqdm
+scipy
+seaborn
