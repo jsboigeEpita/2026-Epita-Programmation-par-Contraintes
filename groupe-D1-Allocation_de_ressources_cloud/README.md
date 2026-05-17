@@ -47,6 +47,19 @@ Pour installer la bibliothèque, un appel à pip à la racine suffit
 pip install .
 ```
 
+## Usage type
+
+Cette bibliothèque permet une abstraction de la gestion de l'allocation de
+VM sur des serveurs. Pour l'utiliser, il faut utiliser les classes `VM`,
+`Server` et `Context` pour monter une abstraction des infrasructures techniques
+du Datacenter et des VMs qu'elle accueille. Le positionnement optimal des VMs
+peut être calculée grâce à un `Solver`, les opérations de déplacement relevant
+de l'architecture spécifique de l'utilisateur, celui-ci devra appliqué les
+déplacements conseillés sur son architecture. Pour une utilisation en temps
+réel, la manipulation en continu d'un `Context` créé, avec appel à un solver
+lors d'ajouts ou mises à jour des VMs, est la méthode prévue (les suppressions
+peuvent s'effectuer sans appel à un solver).
+
 ## Diaporama de présentation
 
 Le lien pour le diaporama de présentation est disponible en consultation
