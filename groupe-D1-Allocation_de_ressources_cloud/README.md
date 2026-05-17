@@ -180,3 +180,12 @@ emplacements déjà utilisés, ce qui est ce que l'on veut.
  positif avec la contrainte de capacités, le terme de droite est soit la valeur
  maximale possible de la marge, soit 0. Avec la minimisation de la somme des
  $f_j$, le $f_j$ sera à 0 seulement si la marge l'est.
+
+ Sachant que si $f_j = 1$, on a l'expression qui devient
+ $$\text{SERVER\_CPU}_j y_j - \sum_i \text{VM\_CPU}_i \; x_{i,j} \le
+ \text{SERVER\_CPU}_j$$
+ Ce qui est trivialement vrai (un serveur aura toujours plus ou exactement sa
+ capacité avec les contraintes de capacités), on peut contraindre uniquement le
+ cas où $f_j = 0$, ce qui donne
+$$\text{SERVER\_CPU}_j y_j - \sum_i \text{VM\_CPU}_i \; x_{i,j} \le 0 \\
+\iff \text{SERVER\_CPU}_j y_j -  \le \sum_i \text{VM\_CPU}_i \; x_{i,j}$$
