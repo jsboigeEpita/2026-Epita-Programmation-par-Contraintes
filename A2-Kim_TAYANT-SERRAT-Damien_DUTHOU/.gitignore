@@ -18,7 +18,6 @@ env/
 # Données Ciqual (téléchargeables, pas dans le repo)
 *.xlsx
 *.xls
-ciqual_clean.csv
 
 # Éditeurs
 .vscode/
