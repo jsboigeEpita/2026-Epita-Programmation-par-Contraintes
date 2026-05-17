@@ -52,3 +52,5 @@ resume.md
 *.original.md
 slides/*.key
 slides/*.pptx
+
+# Editor temp files
