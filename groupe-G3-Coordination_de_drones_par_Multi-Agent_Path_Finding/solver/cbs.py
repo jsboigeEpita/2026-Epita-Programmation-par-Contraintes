@@ -150,7 +150,7 @@ class CBSSolver:
         for drone in self.drones:
             path = astar_spacetime(self.grid, drone.start, drone.goal, set(), max_t)
             if path is None:
-                return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)
+                return Solution("infeasible", 0, 0, (time.time() - t0) * 1000, {}, 0)
             root_paths[drone.id] = path
 
         root = _CTNode(root_constraints, root_paths, sum(len(p) for p in root_paths.values()))
@@ -159,16 +159,18 @@ class CBSSolver:
 
         while open_list:
             if time.time() - t0 > self.time_limit_s:
-                return Solution("timeout", 0, (time.time() - t0) * 1000, {}, 0)
+                return Solution("timeout", 0, 0, (time.time() - t0) * 1000, {}, 0)
 
             _, _, node = heapq.heappop(open_list)
             conflict = find_first_conflict(node.paths)
 
             if conflict is None:
                 makespan = max(len(p) for p in node.paths.values()) - 1
+                flowtime = sum(len(p) - 1 for p in node.paths.values())
                 return Solution(
                     status="optimal",
                     makespan=makespan,
+                    flowtime=flowtime,
                     solve_time_ms=(time.time() - t0) * 1000,
                     paths=node.paths,
                     conflicts_avoided=_near_passes(node.paths),
@@ -196,7 +198,7 @@ class CBSSolver:
                 heapq.heappush(open_list, (child.cost, counter, child))
                 counter += 1
 
-        return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)
+        return Solution("infeasible", 0, 0, (time.time() - t0) * 1000, {}, 0)
 
 
 class ECBSSolver:
@@ -220,7 +222,7 @@ class ECBSSolver:
         for drone in self.drones:
             path = astar_spacetime(self.grid, drone.start, drone.goal, set(), max_t)
             if path is None:
-                return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)
+                return Solution("infeasible", 0, 0, (time.time() - t0) * 1000, {}, 0)
             root_paths[drone.id] = path
 
         root = _CTNode(root_constraints, root_paths, sum(len(p) for p in root_paths.values()))
@@ -230,7 +232,7 @@ class ECBSSolver:
 
         while open_list:
             if time.time() - t0 > self.time_limit_s:
-                return Solution("timeout", 0, (time.time() - t0) * 1000, {}, 0)
+                return Solution("timeout", 0, 0, (time.time() - t0) * 1000, {}, 0)
 
             f_min = min(item[0] for item in open_list)
             focal = [(c, nid, n) for c, nid, n in open_list if c <= self.w * f_min]
@@ -242,9 +244,11 @@ class ECBSSolver:
             conflict = find_first_conflict(node.paths)
             if conflict is None:
                 makespan = max(len(p) for p in node.paths.values()) - 1
+                flowtime = sum(len(p) - 1 for p in node.paths.values())
                 return Solution(
                     status="feasible",
                     makespan=makespan,
+                    flowtime=flowtime,
                     solve_time_ms=(time.time() - t0) * 1000,
                     paths=node.paths,
                     conflicts_avoided=_near_passes(node.paths),
@@ -272,4 +276,4 @@ class ECBSSolver:
                 heapq.heappush(open_list, (child.cost, counter, child))
                 counter += 1
 
-        return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)
+        return Solution("infeasible", 0, 0, (time.time() - t0) * 1000, {}, 0)

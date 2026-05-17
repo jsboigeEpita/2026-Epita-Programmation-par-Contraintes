@@ -58,6 +58,7 @@ def create_app() -> Flask:
             "status": sol.status,
             "method": method,
             "makespan": sol.makespan,
+            "flowtime": sol.flowtime,
             "solve_time_ms": round(sol.solve_time_ms, 1),
             "conflicts_avoided": sol.conflicts_avoided,
             "paths": {

@@ -18,6 +18,7 @@ class Drone:
 class Solution:
     status: str
     makespan: int
+    flowtime: int
     solve_time_ms: float
     paths: Dict[int, List[Pos]]
     conflicts_avoided: int
@@ -68,7 +69,7 @@ class MAPFSolver:
         for a, drone in enumerate(self.drones):
             start_idx = pos_to_idx.get(drone.start)
             if start_idx is None:
-                return Solution("infeasible", 0, 0.0, {}, 0)
+                return Solution("infeasible", 0, 0, 0.0, {}, 0)
             model.Add(x[a][start_idx][0] == 1)
 
         for a in range(N):
@@ -93,7 +94,7 @@ class MAPFSolver:
         for a, drone in enumerate(self.drones):
             goal_idx = pos_to_idx.get(drone.goal)
             if goal_idx is None:
-                return Solution("infeasible", 0, 0.0, {}, 0)
+                return Solution("infeasible", 0, 0, 0.0, {}, 0)
             for t in range(T):
                 model.Add(x[a][goal_idx][t + 1] >= x[a][goal_idx][t])
 
@@ -135,7 +136,7 @@ class MAPFSolver:
         }
 
         if status_code not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
-            return Solution(status_map.get(status_code, "unknown"), 0, solve_time_ms, {}, 0)
+            return Solution(status_map.get(status_code, "unknown"), 0, 0, solve_time_ms, {}, 0)
 
         makespan_val = int(solver.ObjectiveValue())
 
@@ -149,9 +150,11 @@ class MAPFSolver:
                         break
             paths[drone.id] = path
 
+        flowtime = sum(int(solver.Value(arr)) for arr in arrival_vars)
         return Solution(
             status=status_map.get(status_code, "unknown"),
             makespan=makespan_val,
+            flowtime=flowtime,
             solve_time_ms=solve_time_ms,
             paths=paths,
             conflicts_avoided=self._near_passes(paths),

@@ -34,8 +34,10 @@ export class UIManager {
 
   isPlacingNoFly() { return this._placingNoFly; }
 
-  addNoFlyFromClick(row, col) {
-    const nf = { min: [row, col], max: [row, col] };
+  addNoFlyFromClick(row, col, alts = 1) {
+    const nf = alts > 1
+      ? { min: [row, col, 0], max: [row, col, alts - 1] }
+      : { min: [row, col], max: [row, col] };
     this._nofly.push(nf);
     this._onAddNoFly(nf);
   }

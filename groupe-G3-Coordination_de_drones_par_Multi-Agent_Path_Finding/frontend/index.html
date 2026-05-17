@@ -343,6 +343,10 @@
     <span class="val" id="h-makespan">—</span>
   </div>
   <div class="hud-row">
+    <span class="hud-lbl">Flowtime</span>
+    <span class="val" id="h-flowtime">—</span>
+  </div>
+  <div class="hud-row">
     <span class="hud-lbl">Solve</span>
     <span class="val" id="h-time">—</span>
   </div>
@@ -455,7 +459,7 @@ async function solve(scenario, nofly = []) {
   const statusEl = document.getElementById('h-status');
   statusEl.textContent = 'Solving…';
   statusEl.classList.add('solving');
-  ['h-makespan', 'h-time', 'h-conflicts', 'h-frame', 'h-method'].forEach(id => {
+  ['h-makespan', 'h-flowtime', 'h-time', 'h-conflicts', 'h-frame', 'h-method'].forEach(id => {
     document.getElementById(id).textContent = '—';
   });
 
@@ -475,6 +479,7 @@ async function solve(scenario, nofly = []) {
   statusEl.classList.remove('solving');
   statusEl.textContent                               = solution.status;
   document.getElementById('h-makespan').textContent  = solution.makespan;
+  document.getElementById('h-flowtime').textContent  = solution.flowtime ?? '—';
   document.getElementById('h-time').textContent      = solution.solve_time_ms + 'ms';
   document.getElementById('h-conflicts').textContent = solution.conflicts_avoided;
   document.getElementById('h-method').textContent    = solution.method ?? method;
@@ -492,7 +497,7 @@ const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 
 renderer.domElement.addEventListener('click', (e) => {
   if (!ui.isPlacingNoFly() || !currentScenario) return;
-  const { rows, cols } = currentScenario.grid;
+  const { rows, cols, alts = 1 } = currentScenario.grid;
   const mouse = new THREE.Vector2(
     (e.clientX / window.innerWidth) * 2 - 1,
     -(e.clientY / window.innerHeight) * 2 + 1
@@ -502,7 +507,7 @@ renderer.domElement.addEventListener('click', (e) => {
   if (raycaster.ray.intersectPlane(groundPlane, pt)) {
     const row = Math.floor(pt.z), col = Math.floor(pt.x);
     if (row >= 0 && col >= 0 && row < rows && col < cols)
-      ui.addNoFlyFromClick(row, col);
+      ui.addNoFlyFromClick(row, col, alts);
   }
 });
 

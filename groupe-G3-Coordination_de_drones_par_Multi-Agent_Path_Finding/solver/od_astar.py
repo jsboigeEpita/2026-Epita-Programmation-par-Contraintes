@@ -67,7 +67,7 @@ class ODAstarSolver:
 
         while open_heap:
             if time.time() - t0 > self.time_limit_s:
-                return Solution("timeout", 0, (time.time() - t0) * 1000, {}, 0)
+                return Solution("timeout", 0, 0, (time.time() - t0) * 1000, {}, 0)
 
             _, g, _, state = heapq.heappop(open_heap)
             positions, prev_positions, agent_idx, t = state
@@ -79,9 +79,11 @@ class ODAstarSolver:
             if agent_idx == 0 and positions == goals:
                 paths = _reconstruct(came_from, state, drone_ids)
                 makespan = max(len(p) for p in paths.values()) - 1
+                flowtime = sum(len(p) - 1 for p in paths.values())
                 return Solution(
                     status="optimal",
                     makespan=makespan,
+                    flowtime=flowtime,
                     solve_time_ms=(time.time() - t0) * 1000,
                     paths=paths,
                     conflicts_avoided=_near_passes(paths),
@@ -131,7 +133,7 @@ class ODAstarSolver:
                         (ng + h(positions), ng, counter, new_state),
                     )
 
-        return Solution("infeasible", 0, (time.time() - t0) * 1000, {}, 0)
+        return Solution("infeasible", 0, 0, (time.time() - t0) * 1000, {}, 0)
 
 
 def _reconstruct(
