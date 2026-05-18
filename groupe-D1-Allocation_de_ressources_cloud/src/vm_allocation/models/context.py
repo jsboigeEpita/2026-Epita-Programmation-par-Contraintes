@@ -232,9 +232,9 @@ class Context[ID_T]:
         The fragmentation score measures how imbalanced the remaining
         resources are across all used servers. A server is considered not
         fragmented when one of its resources becomes saturated. Fragmentation
-        is computed independently for each server using the difference
-        between one and the maximum remaining resource ratio (CPU, RAM,
-        storage, bandwidth), then the median across the datacenter is used.
+        is computed independently for each server using the minimal remaining
+        space ratio (CPU, RAM, storage, bandwidth), then the average of all but
+        the maximum ratio is used.
 
         Returns
         -------
@@ -280,8 +280,6 @@ class Context[ID_T]:
                 remaining_bw,
             ]
 
-            max_ratio = max(free_ratios)
+            fragmentations.append(min(free_ratios))
 
-            fragmentations.append(1 - max_ratio)
-
-        return np.median(np.array(fragmentations))
+        return np.mean(np.sort(np.array(fragmentations))[:-1])
