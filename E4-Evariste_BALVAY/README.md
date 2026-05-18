@@ -25,47 +25,47 @@ Le probleme se modelise naturellement comme un Bin Packing avec contraintes addi
 
 ### Donnees
 
-- Ensemble des validateurs: `V`
-- Ensemble des comites: `C`
-- Ensemble des operateurs: `O`
-- Operateur d'un validateur `v`: `op(v)`
-- Taille cible d'un comite: `target_size`
-- Bornes de taille: `min_size`, `max_size`
-- Horizon temporel discret: `t = 1..T`
+- Ensemble des validateurs: $V$
+- Ensemble des comites: $C$
+- Ensemble des operateurs: $O$
+- Operateur d'un validateur $V$: $op(v)$
+- Taille cible d'un comite: $target\_size$
+- Bornes de taille: $min\_size$, $max\_size$
+- Horizon temporel discret: $t \in \llbracket 1, T \rrbracket$
 
 ### Variables de decision
 
-- `x[v, c, t] in {0,1}`: 1 si le validateur `v` est assigne au comite `c` au temps `t`.
+- $x[v, c, t] \in {0,1}$: $1$ si le validateur $v$ est assigne au comite $c$ au temps $t$, $0$ sinon.
 
 Variables derivees (optionnelles selon le niveau de detail du modele):
 
-- `load[v]`: nombre total d'affectations du validateur `v`.
-- `n_op[o, c, t]`: nombre de validateurs de l'operateur `o` dans le comite `c` au temps `t`.
-- `churn[v, t]`: 1 si l'affectation de `v` change entre `t-1` et `t`.
+- $load[v]$: nombre total d'affectations du validateur $v$.
+- $n\_op[o, c, t]$: nombre de validateurs de l'operateur $o$ dans le comite $c$ au temps $t$.
+- $churn[v, t]$: $1$ si l'affectation de $v$ change entre $t-1$ et $t$.
 
 ### Contraintes principales
 
 1. Affectation unique (ou cardinalite imposee) par pas de temps:
 
-- `sum_c x[v, c, t] = 1` (ou `<= 1` selon le scenario).
+- $\sum_{c} x[v, c, t] = 1$ (ou $\le 1$ selon le scenario).
 
 2. Capacite des comites:
 
-- `min_size <= sum_v x[v, c, t] <= max_size`.
+- $min\_size <= \sum_{v} x[v, c, t] <= max\_size$.
 
 3. Equilibre global des charges:
 
-- `load[v] = sum_{t,c} x[v, c, t]`.
+- $load[v] = \sum_{t,c} x[v, c, t]$.
 - Minimisation d'une mesure de dispersion (variance, ecart absolu moyen, max-min).
 
 4. Anti-affinite operateur:
 
-- Limiter `n_op[o, c, t]` pour chaque operateur/comite/temps.
+- Limiter $n\_op[o, c, t]$ pour chaque operateur/comite/temps.
 - Penaliser les regroupements excessifs d'un meme operateur dans un comite.
 
 5. Dynamique temporelle (si active):
 
-- Stabilité: minimiser `sum_{v,t} churn[v,t]`.
+- Stabilité: minimiser $\sum_{v,t} churn[v,t]$.
 - Support des entrees/sorties: activer/desactiver des validateurs selon leur disponibilite.
 
 ### Fonction objectif (multi-critere)
@@ -115,28 +115,6 @@ avec `alpha, beta, gamma` calibres experimentalement.
   - augmentation rapide du nombre de validateurs.
 
 ## Structure de projet (proposee)
-
-```text
-E4-Evariste_BALVAY/
-	README.md
-	data/
-		raw/
-		processed/
-	src/
-		model_cp_sat.py
-		model_milp.py
-		ethereum_baseline.py
-		dynamics.py
-		metrics.py
-		experiments.py
-	notebooks/
-		exploration.ipynb
-	results/
-		figures/
-		tables/
-	report/
-		paper.pdf
-```
 
 ## Plan d'execution
 
