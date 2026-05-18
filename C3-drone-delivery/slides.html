@@ -509,10 +509,9 @@
             <p class="subtitle">Optimisation de tournees de drones par programmation par contraintes avec Google
                 OR-Tools CP-SAT.</p>
             <div class="cover-chips">
-                <span class="chip"><span class="chip-dot" style="background:var(--accent)"></span>Projet C3</span>
-                <span class="chip"><span class="chip-dot" style="background:var(--green)"></span>VRP — Vehicle Routing
-                    Problem</span>
-                <span class="chip"><span class="chip-dot" style="background:var(--yellow)"></span>10 min</span>
+                <span class="chip"><span class="chip-dot" style="background:var(--accent)"></span>Nathan Champagne</span>
+                <span class="chip"><span class="chip-dot" style="background:var(--accent)"></span>Brieuc Crosson</span>
+                <span class="chip"><span class="chip-dot" style="background:var(--accent)"></span>Adrien Capitaine</span>
             </div>
         </div>
 
@@ -525,39 +524,78 @@
                     <div class="callout">
                         Planifier les tournees de <strong>drones de livraison</strong> depuis un depot central vers des
                         clients, en <strong>minimisant la distance totale</strong>.<br><br>
-                        Variante du <strong>VRP (Vehicle Routing Problem)</strong> — probleme NP-difficile classique.
+                        Variante du <strong>VRP (Vehicle Routing Problem)</strong>, probleme NP-difficile classique.
                     </div>
                     <div class="card">
                         <div class="card-title">Contraintes reelles</div>
                         <div class="list">
                             <div class="list-item">Autonomie batterie limitee</div>
                             <div class="list-item">Capacite de charge : poids ET volume</div>
-                            <div class="list-item yellow">Zones NOTAM (vol interdit) a contourner</div>
+                            <div class="list-item">Zones NOTAM (vol interdit) a contourner</div>
                             <div class="list-item">Chaque client visite exactement une fois</div>
                             <div class="list-item">Retour au depot garanti</div>
                         </div>
                     </div>
                 </div>
-                <div class="card"
-                    style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;min-height:260px;">
-                    <div style="font-size:2.8rem;">&#128738;</div>
-                    <div style="text-align:center;font-size:0.82rem;color:var(--muted);">Depot &rarr; routes optimisees
-                        &rarr; clients</div>
-                    <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;">
-                        <div style="text-align:center;font-size:0.78rem;color:var(--muted);">
-                            <div style="font-size:1.4rem;margin-bottom:4px;">&#128205;</div>Client A
-                        </div>
-                        <div style="text-align:center;font-size:0.78rem;color:var(--muted);">
-                            <div style="font-size:1.4rem;margin-bottom:4px;">&#128205;</div>Client B
-                        </div>
-                        <div style="text-align:center;font-size:0.78rem;color:var(--muted);">
-                            <div style="font-size:1.4rem;margin-bottom:4px;">&#128205;</div>Client C
-                        </div>
-                    </div>
-                    <div
-                        style="background:var(--yellow-bg);border:1px dashed #d97706;border-radius:8px;padding:7px 16px;font-size:0.76rem;color:var(--yellow);font-weight:600;">
-                        Zone NOTAM interdite
-                    </div>
+                <div class="card" style="padding:14px;min-height:260px;display:flex;align-items:center;justify-content:center;">
+                    <svg viewBox="0 0 360 270" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrowB" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                <polygon points="0 0, 6 3, 0 6" fill="#5c63d8"/>
+                            </marker>
+                            <marker id="arrowG" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                <polygon points="0 0, 6 3, 0 6" fill="#16a34a"/>
+                            </marker>
+                        </defs>
+
+                        <!-- NOTAM zone -->
+                        <rect x="120" y="74" width="72" height="122" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3"/>
+                        <text x="156" y="128" text-anchor="middle" font-size="9" fill="#d97706" font-weight="700" font-family="system-ui,sans-serif">NOTAM</text>
+                        <text x="156" y="142" text-anchor="middle" font-size="8" fill="#b45309" font-family="system-ui,sans-serif">vol interdit</text>
+
+                        <!-- Return paths (faded) -->
+                        <path d="M 300,78 Q 255,130 83,125" stroke="#5c63d8" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.25" marker-end="url(#arrowB)"/>
+                        <path d="M 300,192 Q 255,130 83,135" stroke="#16a34a" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.25" marker-end="url(#arrowG)"/>
+
+                        <!-- Drone 1: Depot → A (above NOTAM) → B -->
+                        <path d="M 83,118 Q 78,28 188,38" stroke="#5c63d8" stroke-width="2" fill="none" stroke-dasharray="7,3" marker-end="url(#arrowB)"/>
+                        <path d="M 188,38 L 300,78" stroke="#5c63d8" stroke-width="2" fill="none" stroke-dasharray="7,3" marker-end="url(#arrowB)"/>
+
+                        <!-- Drone 2: Depot → D (below NOTAM) → C -->
+                        <path d="M 83,142 Q 78,242 188,232" stroke="#16a34a" stroke-width="2" fill="none" stroke-dasharray="7,3" marker-end="url(#arrowG)"/>
+                        <path d="M 188,232 L 300,192" stroke="#16a34a" stroke-width="2" fill="none" stroke-dasharray="7,3" marker-end="url(#arrowG)"/>
+
+                        <!-- Depot -->
+                        <rect x="22" y="108" width="62" height="44" rx="8" fill="#eef0fd" stroke="#5c63d8" stroke-width="2"/>
+                        <text x="53" y="127" text-anchor="middle" font-size="9.5" fill="#5c63d8" font-weight="700" font-family="system-ui,sans-serif">DÉPÔT</text>
+                        <text x="53" y="143" text-anchor="middle" font-size="8.5" fill="#9ca3af" font-family="system-ui,sans-serif">base</text>
+
+                        <!-- Client A -->
+                        <circle cx="188" cy="38" r="18" fill="#f7f8fc" stroke="#5c63d8" stroke-width="2"/>
+                        <text x="188" y="43" text-anchor="middle" font-size="12" fill="#5c63d8" font-weight="700" font-family="system-ui,sans-serif">A</text>
+                        <text x="188" y="66" text-anchor="middle" font-size="8" fill="#9ca3af" font-family="system-ui,sans-serif">drone 1</text>
+
+                        <!-- Client B -->
+                        <circle cx="300" cy="78" r="18" fill="#f7f8fc" stroke="#5c63d8" stroke-width="2"/>
+                        <text x="300" y="83" text-anchor="middle" font-size="12" fill="#5c63d8" font-weight="700" font-family="system-ui,sans-serif">B</text>
+                        <text x="300" y="106" text-anchor="middle" font-size="8" fill="#9ca3af" font-family="system-ui,sans-serif">drone 1</text>
+
+                        <!-- Client C -->
+                        <circle cx="300" cy="192" r="18" fill="#f7f8fc" stroke="#16a34a" stroke-width="2"/>
+                        <text x="300" y="197" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="700" font-family="system-ui,sans-serif">C</text>
+                        <text x="300" y="220" text-anchor="middle" font-size="8" fill="#9ca3af" font-family="system-ui,sans-serif">drone 2</text>
+
+                        <!-- Client D -->
+                        <circle cx="188" cy="232" r="18" fill="#f7f8fc" stroke="#16a34a" stroke-width="2"/>
+                        <text x="188" y="237" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="700" font-family="system-ui,sans-serif">D</text>
+                        <text x="188" y="260" text-anchor="middle" font-size="8" fill="#9ca3af" font-family="system-ui,sans-serif">drone 2</text>
+
+                        <!-- Legend -->
+                        <line x1="22" y1="18" x2="44" y2="18" stroke="#5c63d8" stroke-width="2" stroke-dasharray="5,2"/>
+                        <text x="49" y="22" font-size="9" fill="#5c63d8" font-weight="600" font-family="system-ui,sans-serif">Drone 1</text>
+                        <line x1="106" y1="18" x2="128" y2="18" stroke="#16a34a" stroke-width="2" stroke-dasharray="5,2"/>
+                        <text x="133" y="22" font-size="9" fill="#16a34a" font-weight="600" font-family="system-ui,sans-serif">Drone 2</text>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -569,12 +607,12 @@
             <div class="cols">
                 <div style="display:flex;flex-direction:column;gap:16px;">
                     <div class="card">
-                        <div class="card-title">CP-SAT — Google OR-Tools</div>
+                        <div class="card-title">CP-SAT · Google OR-Tools</div>
                         <div class="list">
-                            <div class="list-item accent">Solveur impose par le sujet</div>
-                            <div class="list-item green">Hybride CP + SAT + MILP</div>
-                            <div class="list-item green">Variables booleennes et entieres natives</div>
-                            <div class="list-item green">Propagation de contraintes integree</div>
+                            <div class="list-item green">Solveur open-source de Google</div>
+                            <div class="list-item green">Combinaison CP + SAT</div>
+                            <div class="list-item green">Variables booleennes et entieres nativement supportees</div>
+                            <div class="list-item green">Time limit configurable : toujours une reponse</div>
                         </div>
                     </div>
                     <div class="card">
@@ -583,23 +621,40 @@
                             <div class="list-item green">Contraintes exprimees naturellement</div>
                             <div class="list-item green">Variables booleennes natives (arc actif/non)</div>
                             <div class="list-item green">Garantie OPTIMAL ou FEASIBLE</div>
-                            <div class="list-item green">Time limit configurable — toujours une reponse</div>
                         </div>
                     </div>
                 </div>
-                <div style="display:flex;flex-direction:column;gap:12px;">
-                    <pre><span class="cm"># Variables de decision</span>
-<span class="kw">arc</span>[i,j,k] : <span class="val">BoolVar</span>
-  <span class="cm"># drone k emprunte arc i→j ?</span>
-
-<span class="kw">battery</span>[i,k] : <span class="val">IntVar</span> [0, max_bat]
-<span class="kw">load</span>[i,k]    : <span class="val">IntVar</span> [0, max_w]
-<span class="kw">vol</span>[i,k]     : <span class="val">IntVar</span> [0, max_v]
-
-<span class="cm"># Objectif</span>
-<span class="fn">Minimize</span>( Σ arc[i,j,k] × dist[i,j] )</pre>
-                    <div class="callout" style="margin-bottom:0;">
-                        MILP + propagation de contraintes — bien plus efficace qu'une recherche exhaustive.
+                <div class="card">
+                    <div class="card-title">Pipeline CP-SAT</div>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Modèle déclaratif</h4>
+                                <p>On décrit variables, contraintes et objectif, sans dire <em>comment</em> résoudre.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Propagation de contraintes</h4>
+                                <p>Le solveur réduit les domaines et élimine les combinaisons impossibles avant même de chercher.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Relaxation linéaire</h4>
+                                <p>Calcule une borne basse sur l'objectif, pour savoir quand la solution est prouvée optimale.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>OPTIMAL ou FEASIBLE</h4>
+                                <p>Solution optimale prouvée, ou meilleure solution dans le temps imparti.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -652,7 +707,7 @@
                         <span class="c-dot" style="background:var(--green)"></span>Conservation du flux
                     </div>
                     <div class="c-formula">∀k, ∀j : Σ entrants = Σ sortants</div>
-                    <div class="c-desc">Garantit des routes coherentes — pas de drone qui disparait.</div>
+                    <div class="c-desc">Garantit des routes coherentes, pas de drone qui disparait.</div>
                 </div>
                 <div class="c-card">
                     <div class="c-card-label">
