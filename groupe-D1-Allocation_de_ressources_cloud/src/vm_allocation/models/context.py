@@ -6,6 +6,7 @@ from typing import List
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import numpy as np
 
 from .server import Server
 
@@ -206,3 +207,81 @@ class Context[ID_T]:
             lines.append("")
         lines.append(len(header) * "=")
         return "\n".join(lines)
+
+    def server_usage(self) -> float:
+        """Compute server usage.
+
+        The method computes the proportion of servers currently hosting at
+        least one VM.
+
+        Returns
+        -------
+        float
+            Used server proportion
+        """
+        if not self.servers:
+            return 0.0
+
+        return sum(
+            1 for server in self.servers.values() if len(server.vms) > 0
+        ) / len(self.servers.values())
+
+    def fragmentation(self) -> float:
+        """Compute datacenter fragmentation.
+
+        The fragmentation score measures how imbalanced the remaining
+        resources are across all used servers. A server is considered not
+        fragmented when one of its resources becomes saturated. Fragmentation
+        is computed independently for each server using the difference
+        between one and the maximum remaining resource ratio (CPU, RAM,
+        storage, bandwidth), then the median across the datacenter is used.
+
+        Returns
+        -------
+        float
+            Fragmentation proportion
+        """
+
+        if not self.servers:
+            return 0.0
+
+        fragmentations = []
+
+        for server in self.servers.values():
+            # Skipping empty servers
+            if len(server.vms) == 0:
+                continue
+
+            # Remaining CPU percentage
+            remaining_cpu = (
+                server.cpu_capacity - server.cpu_usage
+            ) / server.cpu_capacity
+
+            # Remaining RAM percentage
+            remaining_ram = (
+                server.ram_capacity - server.ram_usage
+            ) / server.ram_capacity
+
+            # Remaining storage percentage
+            remaining_storage = (
+                server.storage_capacity - server.storage_usage
+            ) / server.storage_capacity
+
+            # Remaining bandwidth percentage
+            remaining_bw = (
+                server.bw_capacity - server.bw_usage
+            ) / server.bw_capacity
+
+            # Group all remaining resource ratios together
+            free_ratios = [
+                remaining_cpu,
+                remaining_ram,
+                remaining_storage,
+                remaining_bw,
+            ]
+
+            max_ratio = max(free_ratios)
+
+            fragmentations.append(1 - max_ratio)
+
+        return np.median(np.array(fragmentations))

@@ -5,7 +5,6 @@ import math
 from fractions import Fraction
 from typing import List
 
-from jupyter_client.manager import F
 from ortools.sat.python import cp_model
 
 from vm_allocation.models import VM, Context, Server, Solver
@@ -24,6 +23,7 @@ class CPSATSolver(Solver):
 
     def __init__(
         self,
+        server_usage_weight: int = 10,
         migration_weight: float = 0.5,
         fragmentation_weight: float = 0.5,
         nb_search_workers: int = 8,
@@ -31,6 +31,7 @@ class CPSATSolver(Solver):
         linearization_level: int = 2,
         log_search_progress: bool = False,
     ):
+        self.server_usage_weight = server_usage_weight
         self.migration_weight = migration_weight
         self.fragmentation_weight = fragmentation_weight
 
@@ -132,16 +133,6 @@ class CPSATSolver(Solver):
                     create_affinity_set(vms[affinity], new_set)
             return new_set
 
-        def create_anti_affinity_set(
-            vm: VM[ID_T], anti_affinity_set: set[ID_T] | None = None
-        ) -> set[ID_T]:
-            new_set = anti_affinity_set or set()
-            for anti_affinity in vm.anti_affinity:
-                if anti_affinity not in new_set:
-                    new_set.add(anti_affinity)
-                    create_anti_affinity_set(vms[anti_affinity], new_set)
-            return new_set
-
         affinity_relations: set[tuple[ID_T, ID_T]] = set()
         anti_affinity_relations: set[tuple[ID_T, ID_T]] = set()
         for vm_id, vm in vms.items():
@@ -161,8 +152,7 @@ class CPSATSolver(Solver):
                         )
                     affinity_relations.add((vm_id, other_vm))
 
-            anti_affinities = create_anti_affinity_set(vm)
-            for other_vm in anti_affinities:
+            for other_vm in vm.anti_affinity:
                 if (
                     other_vm != vm_id
                     and other_vm in vms
@@ -188,28 +178,30 @@ class CPSATSolver(Solver):
             model.add(f <= y[server_id])
             model.add(
                 sum(vm.cpu * x[(vm_id, server_id)] for vm_id, vm in vms.items())
-                >= server.cpu_capacity
+                >= server.cpu_capacity * y[server_id]
             ).OnlyEnforceIf(f.Not())
             model.add(
                 sum(vm.ram * x[(vm_id, server_id)] for vm_id, vm in vms.items())
-                >= server.ram_capacity
+                >= server.ram_capacity * y[server_id]
             ).OnlyEnforceIf(f.Not())
             model.add(
                 sum(
                     vm.storage * x[(vm_id, server_id)]
                     for vm_id, vm in vms.items()
                 )
-                >= server.storage_capacity
+                >= server.storage_capacity * y[server_id]
             ).OnlyEnforceIf(f.Not())
             model.add(
                 sum(vm.bw * x[(vm_id, server_id)] for vm_id, vm in vms.items())
-                >= server.bw_capacity
+                >= server.bw_capacity * y[server_id]
             ).OnlyEnforceIf(f.Not())
 
         # Objective
         # We scale up for integer manipulation
         model.minimize(
-            self.scale * sum(y[server_id] for server_id in servers)
+            self.server_usage_weight
+            * self.scale
+            * sum(y[server_id] for server_id in servers)
             - int(self.scale * self.migration_weight) * sum(d for d in d_list)
             + int(self.scale * self.fragmentation_weight)
             * sum(f for f in f_list)
