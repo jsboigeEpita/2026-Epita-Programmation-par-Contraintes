@@ -1,0 +1,14 @@
+{
+  "name": "toy_example",
+  "items": ["P", "L", "M"],
+  "bidders": ["Alice", "Bob", "Carol", "David", "Eve"],
+  "bids": [
+    {"id": 0, "bidder": "Alice", "items": ["P", "L"],      "price": 25},
+    {"id": 1, "bidder": "Bob",   "items": ["L", "M"],      "price": 22},
+    {"id": 2, "bidder": "Carol", "items": ["P", "M"],      "price": 20},
+    {"id": 3, "bidder": "David", "items": ["P", "L", "M"], "price": 40},
+    {"id": 4, "bidder": "Eve",   "items": ["P"],            "price": 15}
+  ],
+  "budget": {"global": null, "per_bidder": {}},
+  "xor_groups": []
+}

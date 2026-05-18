@@ -1,0 +1,16 @@
+# <type>(<scope>): <subject>   (≤72 chars, imperative mood)
+#
+# Types: feat, fix, docs, test, refactor, perf, chore, build, ci, style, revert
+#
+# Project-management scopes:
+#   docs(plan): open issue #N — <title>
+#   docs(plan): close issue #N
+#   chore(sprint-N): kickoff | review — <outcome>
+#
+# Body (wrap at 72):
+#
+#
+# Footer:
+# Closes #<n>
+# Reviewed-by: Name <email>
+# Co-authored-by: Name <email>
