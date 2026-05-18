@@ -371,10 +371,11 @@ document.getElementById('btn-solve').addEventListener('click', async () => {
       })
     ),
     num_drones: nDrones,
-    battery_capacity: Math.round(dRange * 100 / wind),
+    battery_capacity: Math.round(dRange * 100),
     max_load: Math.round(dWeight * 10),
     max_volume: Math.round(parseFloat(document.getElementById('drone-volume').value) * 10),
     grid_res: parseInt(document.getElementById('grid-res').value),
+    wind_coeff: wind,
   };
 
   try {

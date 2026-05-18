@@ -30,6 +30,7 @@ class MissionRequest(BaseModel):
     max_load: int
     max_volume: int
     grid_res: int
+    wind_coeff: float = 1.0
 
 
 @app.get("/")
@@ -50,12 +51,13 @@ async def solve_mission(req: MissionRequest):
         max_load=req.max_load,
         max_volume=req.max_volume,
         grid_res=req.grid_res,
+        wind_coeff=req.wind_coeff,
     )
     solver = DroneRoutingSolver(instance)
     routes = solver.solve()
     return {
-        "status": "success" if routes else "failed",
-        "routes": routes if routes else [],
+        "status": "success" if routes is not None else "infeasible",
+        "routes": routes if routes is not None else [],
     }
 
 

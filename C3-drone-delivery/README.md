@@ -20,13 +20,13 @@ Le solveur utilise **Google OR-Tools CP-SAT** avec les contraintes suivantes :
 
 | Contrainte | Description |
 |---|---|
-| Couverture | Chaque client est visité au plus une fois |
-| Circuit (`AddCircuit`) | Les routes de chaque drone forment un circuit hamiltonien valide depuis le dépôt |
-| Autonomie | La distance totale par drone est bornée par son autonomie (ajustée par le coefficient de vent) |
-| Capacité poids | La somme des poids livrés ne dépasse pas `max_weight` du drone |
+| Couverture | Chaque client est visité exactement une fois |
+| Conservation de flux | Pour chaque drone et chaque nœud, le nombre d'arcs entrants égale le nombre d'arcs sortants (style MTZ) |
+| Autonomie | La batterie consommée sur chaque arc est déduite du solde courant ; le retour au dépôt doit rester faisable |
+| Capacité poids | La somme des poids livrés ne dépasse pas `max_load` du drone |
 | Capacité volume | La somme des volumes livrés ne dépasse pas `max_volume` du drone |
 
-**Objectif :** maximiser `Σ priorité(client) × 100 000 − distance_totale`
+**Objectif :** minimiser la distance totale parcourue par l'ensemble des drones
 
 ### Contournement des zones NOTAM (WaypointNavigator)
 
@@ -65,14 +65,11 @@ docker compose up --build
 4. **Configurer les drones** — nombre, autonomie (km), capacité poids/volume
 5. **Résoudre** — le solveur tourne (30s max par défaut), les routes s'affichent par couleur sur la carte avec animation
 
-Ou utiliser **Générer instance** pour charger un exemple aléatoire prêt à résoudre.
-
 ## API
 
 | Endpoint | Description |
 |---|---|
 | `POST /solve` | Résoudre un problème (corps : `MissionRequest`) |
-| `GET /generate` | Générer une instance aléatoire |
 
 ## Stack technique
 

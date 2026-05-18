@@ -29,18 +29,12 @@ def make_instance(**kwargs):
 # --- Couverture clients ---
 
 def test_all_clients_served():
-    """Tous les clients doivent être visités exactement une fois."""
+    """Avec des ressources suffisantes, tous les clients doivent être visités."""
     inst = make_instance()
     routes = DroneRoutingSolver(inst).solve()
     assert routes is not None, "Le solveur doit trouver une solution"
-    visited = set()
-    for route in routes:
-        for trip in route["trips"]:
-            # la géométrie contient les waypoints : on vérifie via les demands
-            pass
-    # Vérification indirecte : distance totale > 0 implique des clients visités
-    total_dist = sum(r["total_distance"] for r in routes)
-    assert total_dist > 0
+    total_weight = sum(r["total_weight"] for r in routes)
+    assert total_weight == sum(inst.demands), "Tous les clients doivent être servis"
 
 
 def test_single_client_single_drone():
@@ -67,9 +61,7 @@ def test_battery_too_low_returns_none():
         battery_capacity=100,    # batterie trop faible (dist * 100 >> 100)
     )
     routes = DroneRoutingSolver(inst).solve()
-    # Aucune route viable : soit None, soit liste vide
-    if routes is not None:
-        assert all(len(r["trips"]) == 0 for r in routes)
+    assert routes is None, "Le solveur devrait retourner None pour une instance impossible"
 
 
 def test_battery_exactly_enough():
@@ -140,7 +132,7 @@ def test_volume_capacity_respected():
     assert routes is not None
     for route in routes:
         for trip in route["trips"]:
-            assert trip["volume"] <= 300 / 10, "Volume par trip doit respecter max_volume"
+            assert trip["volume"] <= inst.max_volume, f"Le volume du trip ({trip['volume']}) dépasse max_volume ({inst.max_volume})"
 
 
 # --- Zones NOTAM ---
