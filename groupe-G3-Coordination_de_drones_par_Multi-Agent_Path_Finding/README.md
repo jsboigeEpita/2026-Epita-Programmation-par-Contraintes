@@ -67,7 +67,7 @@ pip install -r requirements.txt
 ### Backend (API Flask)
 
 ```bash
-python api/server.py
+python -m api.server
 # → http://localhost:5050
 ```
 
