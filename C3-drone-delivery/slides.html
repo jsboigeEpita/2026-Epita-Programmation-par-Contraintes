@@ -569,12 +569,12 @@
             <div class="cols">
                 <div style="display:flex;flex-direction:column;gap:16px;">
                     <div class="card">
-                        <div class="card-title">Contexte</div>
+                        <div class="card-title">CP-SAT — Google OR-Tools</div>
                         <div class="list">
-                            <div class="list-item accent">CP-SAT impose par le sujet (OR-Tools)</div>
-                            <div class="list-item yellow">Greedy — rapide mais sous-optimal</div>
-                            <div class="list-item yellow">Meta-heuristiques (genetique, recuit simule)</div>
-                            <div class="list-item yellow">Branch &amp; Bound custom</div>
+                            <div class="list-item accent">Solveur impose par le sujet</div>
+                            <div class="list-item green">Hybride CP + SAT + MILP</div>
+                            <div class="list-item green">Variables booleennes et entieres natives</div>
+                            <div class="list-item green">Propagation de contraintes integree</div>
                         </div>
                     </div>
                     <div class="card">
@@ -588,9 +588,6 @@
                     </div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:12px;">
-                    <div class="card-title"
-                        style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);">
-                        Modele</div>
                     <pre><span class="cm"># Variables de decision</span>
 <span class="kw">arc</span>[i,j,k] : <span class="val">BoolVar</span>
   <span class="cm"># drone k emprunte arc i→j ?</span>
