@@ -1,0 +1,6169 @@
+{
+  "name": "regions_large_seed2",
+  "items": [
+    "r0c0",
+    "r0c1",
+    "r0c2",
+    "r0c3",
+    "r0c4",
+    "r0c5",
+    "r0c6",
+    "r0c7",
+    "r0c8",
+    "r0c9",
+    "r1c0",
+    "r1c1",
+    "r1c2",
+    "r1c3",
+    "r1c4",
+    "r1c5",
+    "r1c6",
+    "r1c7",
+    "r1c8",
+    "r1c9",
+    "r2c0",
+    "r2c1",
+    "r2c2",
+    "r2c3",
+    "r2c4",
+    "r2c5",
+    "r2c6",
+    "r2c7",
+    "r2c8",
+    "r2c9",
+    "r3c0",
+    "r3c1",
+    "r3c2",
+    "r3c3",
+    "r3c4",
+    "r3c5",
+    "r3c6",
+    "r3c7",
+    "r3c8",
+    "r3c9",
+    "r4c0",
+    "r4c1",
+    "r4c2",
+    "r4c3",
+    "r4c4",
+    "r4c5",
+    "r4c6",
+    "r4c7",
+    "r4c8",
+    "r4c9",
+    "r5c0",
+    "r5c1",
+    "r5c2",
+    "r5c3",
+    "r5c4",
+    "r5c5",
+    "r5c6",
+    "r5c7",
+    "r5c8",
+    "r5c9",
+    "r6c0",
+    "r6c1",
+    "r6c2",
+    "r6c3",
+    "r6c4",
+    "r6c5",
+    "r6c6",
+    "r6c7",
+    "r6c8",
+    "r6c9",
+    "r7c0",
+    "r7c1",
+    "r7c2",
+    "r7c3",
+    "r7c4",
+    "r7c5",
+    "r7c6",
+    "r7c7",
+    "r7c8",
+    "r7c9",
+    "r8c0",
+    "r8c1",
+    "r8c2",
+    "r8c3",
+    "r8c4",
+    "r8c5",
+    "r8c6",
+    "r8c7",
+    "r8c8",
+    "r8c9",
+    "r9c0",
+    "r9c1",
+    "r9c2",
+    "r9c3",
+    "r9c4",
+    "r9c5",
+    "r9c6",
+    "r9c7",
+    "r9c8",
+    "r9c9"
+  ],
+  "bidders": [
+    "b0",
+    "b1",
+    "b2",
+    "b3",
+    "b4",
+    "b5",
+    "b6",
+    "b7",
+    "b8",
+    "b9",
+    "b10",
+    "b11",
+    "b12",
+    "b13",
+    "b14",
+    "b15",
+    "b16",
+    "b17",
+    "b18",
+    "b19",
+    "b20",
+    "b21",
+    "b22",
+    "b23",
+    "b24",
+    "b25",
+    "b26",
+    "b27",
+    "b28",
+    "b29"
+  ],
+  "bids": [
+    {
+      "id": 0,
+      "bidder": "b1",
+      "items": [
+        "r5c2",
+        "r5c3"
+      ],
+      "price": 181.89
+    },
+    {
+      "id": 1,
+      "bidder": "b7",
+      "items": [
+        "r1c1",
+        "r2c1",
+        "r3c1"
+      ],
+      "price": 94.44
+    },
+    {
+      "id": 2,
+      "bidder": "b2",
+      "items": [
+        "r0c5"
+      ],
+      "price": 76.24
+    },
+    {
+      "id": 3,
+      "bidder": "b8",
+      "items": [
+        "r2c8"
+      ],
+      "price": 31.25
+    },
+    {
+      "id": 4,
+      "bidder": "b22",
+      "items": [
+        "r9c0",
+        "r9c1"
+      ],
+      "price": 154.95
+    },
+    {
+      "id": 5,
+      "bidder": "b25",
+      "items": [
+        "r0c0"
+      ],
+      "price": 96.04
+    },
+    {
+      "id": 6,
+      "bidder": "b11",
+      "items": [
+        "r1c4",
+        "r1c5",
+        "r1c6",
+        "r2c4",
+        "r2c5",
+        "r2c6",
+        "r3c4",
+        "r3c5",
+        "r3c6"
+      ],
+      "price": 2207.69
+    },
+    {
+      "id": 7,
+      "bidder": "b10",
+      "items": [
+        "r4c7",
+        "r5c7"
+      ],
+      "price": 163.61
+    },
+    {
+      "id": 8,
+      "bidder": "b17",
+      "items": [
+        "r0c4",
+        "r0c5",
+        "r0c6",
+        "r1c4",
+        "r1c5",
+        "r1c6",
+        "r2c4",
+        "r2c5",
+        "r2c6"
+      ],
+      "price": 2358.03
+    },
+    {
+      "id": 9,
+      "bidder": "b24",
+      "items": [
+        "r2c7",
+        "r2c8",
+        "r2c9",
+        "r3c7",
+        "r3c8",
+        "r3c9"
+      ],
+      "price": 883.11
+    },
+    {
+      "id": 10,
+      "bidder": "b7",
+      "items": [
+        "r5c1",
+        "r5c2",
+        "r5c3"
+      ],
+      "price": 373.04
+    },
+    {
+      "id": 11,
+      "bidder": "b0",
+      "items": [
+        "r8c9",
+        "r9c9"
+      ],
+      "price": 141.84
+    },
+    {
+      "id": 12,
+      "bidder": "b24",
+      "items": [
+        "r8c5",
+        "r8c6",
+        "r9c5",
+        "r9c6"
+      ],
+      "price": 313.95
+    },
+    {
+      "id": 13,
+      "bidder": "b4",
+      "items": [
+        "r4c6",
+        "r4c7",
+        "r5c6",
+        "r5c7"
+      ],
+      "price": 559.91
+    },
+    {
+      "id": 14,
+      "bidder": "b20",
+      "items": [
+        "r8c2",
+        "r8c3",
+        "r8c4"
+      ],
+      "price": 401.38
+    },
+    {
+      "id": 15,
+      "bidder": "b21",
+      "items": [
+        "r0c2",
+        "r0c3"
+      ],
+      "price": 42.55
+    },
+    {
+      "id": 16,
+      "bidder": "b5",
+      "items": [
+        "r7c3"
+      ],
+      "price": 56.6
+    },
+    {
+      "id": 17,
+      "bidder": "b16",
+      "items": [
+        "r3c3",
+        "r4c3",
+        "r5c3"
+      ],
+      "price": 452.81
+    },
+    {
+      "id": 18,
+      "bidder": "b22",
+      "items": [
+        "r4c1",
+        "r5c1"
+      ],
+      "price": 226.61
+    },
+    {
+      "id": 19,
+      "bidder": "b18",
+      "items": [
+        "r9c5",
+        "r9c6",
+        "r9c7"
+      ],
+      "price": 240.37
+    },
+    {
+      "id": 20,
+      "bidder": "b8",
+      "items": [
+        "r4c8",
+        "r4c9",
+        "r5c8",
+        "r5c9",
+        "r6c8",
+        "r6c9"
+      ],
+      "price": 982.67
+    },
+    {
+      "id": 21,
+      "bidder": "b24",
+      "items": [
+        "r0c6"
+      ],
+      "price": 70.28
+    },
+    {
+      "id": 22,
+      "bidder": "b13",
+      "items": [
+        "r8c1"
+      ],
+      "price": 16.78
+    },
+    {
+      "id": 23,
+      "bidder": "b7",
+      "items": [
+        "r0c2"
+      ],
+      "price": 15.09
+    },
+    {
+      "id": 24,
+      "bidder": "b24",
+      "items": [
+        "r3c0"
+      ],
+      "price": 39.26
+    },
+    {
+      "id": 25,
+      "bidder": "b16",
+      "items": [
+        "r7c4",
+        "r7c5",
+        "r8c4",
+        "r8c5",
+        "r9c4",
+        "r9c5"
+      ],
+      "price": 923.37
+    },
+    {
+      "id": 26,
+      "bidder": "b17",
+      "items": [
+        "r3c3",
+        "r3c4",
+        "r4c3",
+        "r4c4",
+        "r5c3",
+        "r5c4"
+      ],
+      "price": 1230.34
+    },
+    {
+      "id": 27,
+      "bidder": "b23",
+      "items": [
+        "r8c0",
+        "r8c1",
+        "r9c0",
+        "r9c1"
+      ],
+      "price": 383.93
+    },
+    {
+      "id": 28,
+      "bidder": "b18",
+      "items": [
+        "r6c8",
+        "r7c8",
+        "r8c8"
+      ],
+      "price": 346.97
+    },
+    {
+      "id": 29,
+      "bidder": "b18",
+      "items": [
+        "r7c5"
+      ],
+      "price": 62.92
+    },
+    {
+      "id": 30,
+      "bidder": "b0",
+      "items": [
+        "r5c4",
+        "r6c4",
+        "r7c4"
+      ],
+      "price": 293.51
+    },
+    {
+      "id": 31,
+      "bidder": "b22",
+      "items": [
+        "r0c6",
+        "r0c7",
+        "r1c6",
+        "r1c7"
+      ],
+      "price": 498.62
+    },
+    {
+      "id": 32,
+      "bidder": "b3",
+      "items": [
+        "r3c0",
+        "r3c1"
+      ],
+      "price": 80.04
+    },
+    {
+      "id": 33,
+      "bidder": "b25",
+      "items": [
+        "r6c7",
+        "r7c7"
+      ],
+      "price": 81.69
+    },
+    {
+      "id": 34,
+      "bidder": "b14",
+      "items": [
+        "r9c1",
+        "r9c2",
+        "r9c3"
+      ],
+      "price": 264.59
+    },
+    {
+      "id": 35,
+      "bidder": "b0",
+      "items": [
+        "r5c4",
+        "r6c4"
+      ],
+      "price": 149.26
+    },
+    {
+      "id": 36,
+      "bidder": "b29",
+      "items": [
+        "r3c7",
+        "r4c7",
+        "r5c7"
+      ],
+      "price": 332.1
+    },
+    {
+      "id": 37,
+      "bidder": "b6",
+      "items": [
+        "r5c6",
+        "r5c7",
+        "r5c8"
+      ],
+      "price": 325.69
+    },
+    {
+      "id": 38,
+      "bidder": "b22",
+      "items": [
+        "r5c6",
+        "r6c6"
+      ],
+      "price": 237.49
+    },
+    {
+      "id": 39,
+      "bidder": "b28",
+      "items": [
+        "r1c1",
+        "r1c2"
+      ],
+      "price": 94.92
+    },
+    {
+      "id": 40,
+      "bidder": "b2",
+      "items": [
+        "r6c3",
+        "r6c4",
+        "r7c3",
+        "r7c4",
+        "r8c3",
+        "r8c4"
+      ],
+      "price": 1011.08
+    },
+    {
+      "id": 41,
+      "bidder": "b22",
+      "items": [
+        "r9c7"
+      ],
+      "price": 89.25
+    },
+    {
+      "id": 42,
+      "bidder": "b24",
+      "items": [
+        "r7c4",
+        "r7c5",
+        "r7c6"
+      ],
+      "price": 271.37
+    },
+    {
+      "id": 43,
+      "bidder": "b11",
+      "items": [
+        "r5c4",
+        "r6c4"
+      ],
+      "price": 149.26
+    },
+    {
+      "id": 44,
+      "bidder": "b15",
+      "items": [
+        "r6c7",
+        "r6c8",
+        "r7c7",
+        "r7c8",
+        "r8c7",
+        "r8c8"
+      ],
+      "price": 737.45
+    },
+    {
+      "id": 45,
+      "bidder": "b26",
+      "items": [
+        "r6c3",
+        "r6c4",
+        "r7c3",
+        "r7c4",
+        "r8c3",
+        "r8c4"
+      ],
+      "price": 1011.08
+    },
+    {
+      "id": 46,
+      "bidder": "b5",
+      "items": [
+        "r4c6",
+        "r4c7",
+        "r4c8",
+        "r5c6",
+        "r5c7",
+        "r5c8"
+      ],
+      "price": 1018.27
+    },
+    {
+      "id": 47,
+      "bidder": "b22",
+      "items": [
+        "r1c1",
+        "r1c2",
+        "r1c3",
+        "r2c1",
+        "r2c2",
+        "r2c3",
+        "r3c1",
+        "r3c2",
+        "r3c3"
+      ],
+      "price": 1358.33
+    },
+    {
+      "id": 48,
+      "bidder": "b2",
+      "items": [
+        "r8c2",
+        "r9c2"
+      ],
+      "price": 134.42
+    },
+    {
+      "id": 49,
+      "bidder": "b25",
+      "items": [
+        "r1c0",
+        "r2c0"
+      ],
+      "price": 98.2
+    },
+    {
+      "id": 50,
+      "bidder": "b4",
+      "items": [
+        "r3c5",
+        "r3c6",
+        "r4c5",
+        "r4c6"
+      ],
+      "price": 416.39
+    },
+    {
+      "id": 51,
+      "bidder": "b14",
+      "items": [
+        "r4c1",
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 353.93
+    },
+    {
+      "id": 52,
+      "bidder": "b4",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r2c5",
+        "r2c6",
+        "r3c5",
+        "r3c6"
+      ],
+      "price": 1148.36
+    },
+    {
+      "id": 53,
+      "bidder": "b16",
+      "items": [
+        "r8c4",
+        "r8c5",
+        "r8c6"
+      ],
+      "price": 313.51
+    },
+    {
+      "id": 54,
+      "bidder": "b5",
+      "items": [
+        "r3c6",
+        "r3c7"
+      ],
+      "price": 223.77
+    },
+    {
+      "id": 55,
+      "bidder": "b27",
+      "items": [
+        "r2c7",
+        "r2c8",
+        "r2c9",
+        "r3c7",
+        "r3c8",
+        "r3c9"
+      ],
+      "price": 883.11
+    },
+    {
+      "id": 56,
+      "bidder": "b14",
+      "items": [
+        "r6c2",
+        "r7c2",
+        "r8c2"
+      ],
+      "price": 270.69
+    },
+    {
+      "id": 57,
+      "bidder": "b12",
+      "items": [
+        "r7c4",
+        "r8c4",
+        "r9c4"
+      ],
+      "price": 395.47
+    },
+    {
+      "id": 58,
+      "bidder": "b12",
+      "items": [
+        "r6c7",
+        "r6c8",
+        "r6c9",
+        "r7c7",
+        "r7c8",
+        "r7c9"
+      ],
+      "price": 857.16
+    },
+    {
+      "id": 59,
+      "bidder": "b11",
+      "items": [
+        "r1c3",
+        "r1c4",
+        "r2c3",
+        "r2c4",
+        "r3c3",
+        "r3c4"
+      ],
+      "price": 934.84
+    },
+    {
+      "id": 60,
+      "bidder": "b17",
+      "items": [
+        "r6c6",
+        "r7c6",
+        "r8c6"
+      ],
+      "price": 330.9
+    },
+    {
+      "id": 61,
+      "bidder": "b28",
+      "items": [
+        "r5c7",
+        "r6c7",
+        "r7c7"
+      ],
+      "price": 182.92
+    },
+    {
+      "id": 62,
+      "bidder": "b16",
+      "items": [
+        "r2c1",
+        "r2c2",
+        "r3c1",
+        "r3c2",
+        "r4c1",
+        "r4c2"
+      ],
+      "price": 663.63
+    },
+    {
+      "id": 63,
+      "bidder": "b0",
+      "items": [
+        "r6c3",
+        "r7c3"
+      ],
+      "price": 124.56
+    },
+    {
+      "id": 64,
+      "bidder": "b28",
+      "items": [
+        "r8c3",
+        "r8c4"
+      ],
+      "price": 217.13
+    },
+    {
+      "id": 65,
+      "bidder": "b8",
+      "items": [
+        "r3c7",
+        "r3c8",
+        "r3c9",
+        "r4c7",
+        "r4c8",
+        "r4c9",
+        "r5c7",
+        "r5c8",
+        "r5c9"
+      ],
+      "price": 2170.68
+    },
+    {
+      "id": 66,
+      "bidder": "b25",
+      "items": [
+        "r0c9",
+        "r1c9",
+        "r2c9"
+      ],
+      "price": 177.44
+    },
+    {
+      "id": 67,
+      "bidder": "b21",
+      "items": [
+        "r4c8",
+        "r4c9",
+        "r5c8",
+        "r5c9"
+      ],
+      "price": 500.05
+    },
+    {
+      "id": 68,
+      "bidder": "b18",
+      "items": [
+        "r3c1",
+        "r3c2"
+      ],
+      "price": 101.69
+    },
+    {
+      "id": 69,
+      "bidder": "b11",
+      "items": [
+        "r8c1",
+        "r8c2"
+      ],
+      "price": 130.81
+    },
+    {
+      "id": 70,
+      "bidder": "b24",
+      "items": [
+        "r5c7",
+        "r5c8",
+        "r6c7",
+        "r6c8",
+        "r7c7",
+        "r7c8"
+      ],
+      "price": 808.79
+    },
+    {
+      "id": 71,
+      "bidder": "b8",
+      "items": [
+        "r0c1",
+        "r0c2",
+        "r1c1",
+        "r1c2",
+        "r2c1",
+        "r2c2"
+      ],
+      "price": 619.3
+    },
+    {
+      "id": 72,
+      "bidder": "b19",
+      "items": [
+        "r6c4",
+        "r7c4"
+      ],
+      "price": 184.07
+    },
+    {
+      "id": 73,
+      "bidder": "b21",
+      "items": [
+        "r2c0",
+        "r2c1",
+        "r2c2",
+        "r3c0",
+        "r3c1",
+        "r3c2",
+        "r4c0",
+        "r4c1",
+        "r4c2"
+      ],
+      "price": 1348.46
+    },
+    {
+      "id": 74,
+      "bidder": "b5",
+      "items": [
+        "r7c4",
+        "r7c5",
+        "r8c4",
+        "r8c5"
+      ],
+      "price": 475.87
+    },
+    {
+      "id": 75,
+      "bidder": "b4",
+      "items": [
+        "r8c7",
+        "r8c8"
+      ],
+      "price": 109.27
+    },
+    {
+      "id": 76,
+      "bidder": "b0",
+      "items": [
+        "r8c6",
+        "r9c6"
+      ],
+      "price": 137.77
+    },
+    {
+      "id": 77,
+      "bidder": "b18",
+      "items": [
+        "r4c7",
+        "r5c7"
+      ],
+      "price": 163.61
+    },
+    {
+      "id": 78,
+      "bidder": "b20",
+      "items": [
+        "r8c4",
+        "r8c5"
+      ],
+      "price": 154.59
+    },
+    {
+      "id": 79,
+      "bidder": "b2",
+      "items": [
+        "r4c5",
+        "r4c6",
+        "r5c5",
+        "r5c6"
+      ],
+      "price": 537.31
+    },
+    {
+      "id": 80,
+      "bidder": "b20",
+      "items": [
+        "r6c1",
+        "r6c2",
+        "r6c3",
+        "r7c1",
+        "r7c2",
+        "r7c3"
+      ],
+      "price": 771.29
+    },
+    {
+      "id": 81,
+      "bidder": "b16",
+      "items": [
+        "r6c9",
+        "r7c9",
+        "r8c9"
+      ],
+      "price": 266.42
+    },
+    {
+      "id": 82,
+      "bidder": "b16",
+      "items": [
+        "r1c4",
+        "r1c5",
+        "r1c6"
+      ],
+      "price": 432.08
+    },
+    {
+      "id": 83,
+      "bidder": "b1",
+      "items": [
+        "r8c3",
+        "r8c4"
+      ],
+      "price": 217.13
+    },
+    {
+      "id": 84,
+      "bidder": "b16",
+      "items": [
+        "r1c1",
+        "r2c1"
+      ],
+      "price": 47.74
+    },
+    {
+      "id": 85,
+      "bidder": "b21",
+      "items": [
+        "r3c5",
+        "r3c6",
+        "r4c5",
+        "r4c6"
+      ],
+      "price": 416.39
+    },
+    {
+      "id": 86,
+      "bidder": "b11",
+      "items": [
+        "r7c5",
+        "r7c6"
+      ],
+      "price": 131.28
+    },
+    {
+      "id": 87,
+      "bidder": "b5",
+      "items": [
+        "r4c7",
+        "r4c8",
+        "r5c7",
+        "r5c8"
+      ],
+      "price": 453.1
+    },
+    {
+      "id": 88,
+      "bidder": "b28",
+      "items": [
+        "r7c3",
+        "r7c4",
+        "r7c5"
+      ],
+      "price": 301.02
+    },
+    {
+      "id": 89,
+      "bidder": "b29",
+      "items": [
+        "r2c1",
+        "r2c2",
+        "r3c1",
+        "r3c2"
+      ],
+      "price": 270.81
+    },
+    {
+      "id": 90,
+      "bidder": "b28",
+      "items": [
+        "r3c5",
+        "r3c6"
+      ],
+      "price": 151.82
+    },
+    {
+      "id": 91,
+      "bidder": "b5",
+      "items": [
+        "r2c3",
+        "r3c3"
+      ],
+      "price": 180.11
+    },
+    {
+      "id": 92,
+      "bidder": "b8",
+      "items": [
+        "r6c6",
+        "r6c7",
+        "r6c8",
+        "r7c6",
+        "r7c7",
+        "r7c8",
+        "r8c6",
+        "r8c7",
+        "r8c8"
+      ],
+      "price": 1706.09
+    },
+    {
+      "id": 93,
+      "bidder": "b25",
+      "items": [
+        "r4c8",
+        "r4c9",
+        "r5c8",
+        "r5c9",
+        "r6c8",
+        "r6c9"
+      ],
+      "price": 982.67
+    },
+    {
+      "id": 94,
+      "bidder": "b18",
+      "items": [
+        "r5c6",
+        "r5c7",
+        "r5c8",
+        "r6c6",
+        "r6c7",
+        "r6c8",
+        "r7c6",
+        "r7c7",
+        "r7c8"
+      ],
+      "price": 1850.51
+    },
+    {
+      "id": 95,
+      "bidder": "b24",
+      "items": [
+        "r4c1",
+        "r4c2",
+        "r4c3",
+        "r5c1",
+        "r5c2",
+        "r5c3",
+        "r6c1",
+        "r6c2",
+        "r6c3"
+      ],
+      "price": 1962.93
+    },
+    {
+      "id": 96,
+      "bidder": "b11",
+      "items": [
+        "r7c2",
+        "r7c3",
+        "r8c2",
+        "r8c3"
+      ],
+      "price": 515.19
+    },
+    {
+      "id": 97,
+      "bidder": "b8",
+      "items": [
+        "r7c1",
+        "r7c2",
+        "r8c1",
+        "r8c2"
+      ],
+      "price": 436.17
+    },
+    {
+      "id": 98,
+      "bidder": "b28",
+      "items": [
+        "r6c2",
+        "r6c3"
+      ],
+      "price": 89.94
+    },
+    {
+      "id": 99,
+      "bidder": "b0",
+      "items": [
+        "r2c5",
+        "r2c6"
+      ],
+      "price": 191.85
+    },
+    {
+      "id": 100,
+      "bidder": "b2",
+      "items": [
+        "r6c0",
+        "r6c1",
+        "r6c2",
+        "r7c0",
+        "r7c1",
+        "r7c2",
+        "r8c0",
+        "r8c1",
+        "r8c2"
+      ],
+      "price": 1872.43
+    },
+    {
+      "id": 101,
+      "bidder": "b17",
+      "items": [
+        "r6c8",
+        "r7c8"
+      ],
+      "price": 192.52
+    },
+    {
+      "id": 102,
+      "bidder": "b9",
+      "items": [
+        "r2c5",
+        "r2c6",
+        "r2c7",
+        "r3c5",
+        "r3c6",
+        "r3c7"
+      ],
+      "price": 1016.3
+    },
+    {
+      "id": 103,
+      "bidder": "b10",
+      "items": [
+        "r1c2",
+        "r1c3"
+      ],
+      "price": 122.43
+    },
+    {
+      "id": 104,
+      "bidder": "b25",
+      "items": [
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 182.17
+    },
+    {
+      "id": 105,
+      "bidder": "b13",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r2c5",
+        "r2c6"
+      ],
+      "price": 650.86
+    },
+    {
+      "id": 106,
+      "bidder": "b6",
+      "items": [
+        "r3c0",
+        "r3c1",
+        "r3c2"
+      ],
+      "price": 187.98
+    },
+    {
+      "id": 107,
+      "bidder": "b10",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r1c2",
+        "r1c3",
+        "r1c4"
+      ],
+      "price": 717.93
+    },
+    {
+      "id": 108,
+      "bidder": "b5",
+      "items": [
+        "r7c4",
+        "r7c5"
+      ],
+      "price": 171.01
+    },
+    {
+      "id": 109,
+      "bidder": "b4",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r1c7",
+        "r2c5",
+        "r2c6",
+        "r2c7"
+      ],
+      "price": 1154.95
+    },
+    {
+      "id": 110,
+      "bidder": "b20",
+      "items": [
+        "r6c3",
+        "r6c4",
+        "r6c5",
+        "r7c3",
+        "r7c4",
+        "r7c5",
+        "r8c3",
+        "r8c4",
+        "r8c5"
+      ],
+      "price": 1766.36
+    },
+    {
+      "id": 111,
+      "bidder": "b1",
+      "items": [
+        "r7c5",
+        "r7c6",
+        "r8c5",
+        "r8c6"
+      ],
+      "price": 389.95
+    },
+    {
+      "id": 112,
+      "bidder": "b17",
+      "items": [
+        "r1c7",
+        "r1c8",
+        "r1c9",
+        "r2c7",
+        "r2c8",
+        "r2c9",
+        "r3c7",
+        "r3c8",
+        "r3c9"
+      ],
+      "price": 1687.75
+    },
+    {
+      "id": 113,
+      "bidder": "b12",
+      "items": [
+        "r2c6",
+        "r2c7",
+        "r3c6",
+        "r3c7",
+        "r4c6",
+        "r4c7"
+      ],
+      "price": 1105.29
+    },
+    {
+      "id": 114,
+      "bidder": "b12",
+      "items": [
+        "r0c1",
+        "r0c2",
+        "r1c1",
+        "r1c2",
+        "r2c1",
+        "r2c2"
+      ],
+      "price": 619.3
+    },
+    {
+      "id": 115,
+      "bidder": "b14",
+      "items": [
+        "r1c8",
+        "r2c8",
+        "r3c8"
+      ],
+      "price": 251.81
+    },
+    {
+      "id": 116,
+      "bidder": "b29",
+      "items": [
+        "r6c4"
+      ],
+      "price": 72.96
+    },
+    {
+      "id": 117,
+      "bidder": "b14",
+      "items": [
+        "r4c1",
+        "r5c1",
+        "r6c1"
+      ],
+      "price": 364.97
+    },
+    {
+      "id": 118,
+      "bidder": "b21",
+      "items": [
+        "r2c0",
+        "r3c0"
+      ],
+      "price": 68.24
+    },
+    {
+      "id": 119,
+      "bidder": "b4",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r1c7",
+        "r2c5",
+        "r2c6",
+        "r2c7"
+      ],
+      "price": 1154.95
+    },
+    {
+      "id": 120,
+      "bidder": "b26",
+      "items": [
+        "r0c7",
+        "r0c8",
+        "r1c7",
+        "r1c8",
+        "r2c7",
+        "r2c8"
+      ],
+      "price": 757.44
+    },
+    {
+      "id": 121,
+      "bidder": "b7",
+      "items": [
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 56.42
+    },
+    {
+      "id": 122,
+      "bidder": "b0",
+      "items": [
+        "r8c0",
+        "r8c1",
+        "r8c2"
+      ],
+      "price": 266.74
+    },
+    {
+      "id": 123,
+      "bidder": "b1",
+      "items": [
+        "r0c5",
+        "r0c6",
+        "r0c7"
+      ],
+      "price": 294.79
+    },
+    {
+      "id": 124,
+      "bidder": "b21",
+      "items": [
+        "r2c5",
+        "r3c5",
+        "r4c5"
+      ],
+      "price": 225.81
+    },
+    {
+      "id": 125,
+      "bidder": "b15",
+      "items": [
+        "r8c1"
+      ],
+      "price": 16.78
+    },
+    {
+      "id": 126,
+      "bidder": "b7",
+      "items": [
+        "r3c0",
+        "r3c1"
+      ],
+      "price": 80.04
+    },
+    {
+      "id": 127,
+      "bidder": "b19",
+      "items": [
+        "r6c5",
+        "r6c6",
+        "r6c7"
+      ],
+      "price": 241.27
+    },
+    {
+      "id": 128,
+      "bidder": "b19",
+      "items": [
+        "r2c8",
+        "r2c9",
+        "r3c8",
+        "r3c9",
+        "r4c8",
+        "r4c9"
+      ],
+      "price": 800.87
+    },
+    {
+      "id": 129,
+      "bidder": "b3",
+      "items": [
+        "r3c2",
+        "r3c3",
+        "r3c4"
+      ],
+      "price": 362.41
+    },
+    {
+      "id": 130,
+      "bidder": "b12",
+      "items": [
+        "r5c6",
+        "r5c7"
+      ],
+      "price": 185.2
+    },
+    {
+      "id": 131,
+      "bidder": "b4",
+      "items": [
+        "r6c5",
+        "r7c5"
+      ],
+      "price": 114.22
+    },
+    {
+      "id": 132,
+      "bidder": "b25",
+      "items": [
+        "r8c1",
+        "r9c1"
+      ],
+      "price": 137.25
+    },
+    {
+      "id": 133,
+      "bidder": "b15",
+      "items": [
+        "r8c7",
+        "r8c8",
+        "r9c7",
+        "r9c8"
+      ],
+      "price": 420.59
+    },
+    {
+      "id": 134,
+      "bidder": "b8",
+      "items": [
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 56.42
+    },
+    {
+      "id": 135,
+      "bidder": "b21",
+      "items": [
+        "r9c8"
+      ],
+      "price": 48.06
+    },
+    {
+      "id": 136,
+      "bidder": "b24",
+      "items": [
+        "r3c6"
+      ],
+      "price": 90.42
+    },
+    {
+      "id": 137,
+      "bidder": "b18",
+      "items": [
+        "r2c0",
+        "r2c1",
+        "r2c2"
+      ],
+      "price": 124.07
+    },
+    {
+      "id": 138,
+      "bidder": "b23",
+      "items": [
+        "r7c0",
+        "r7c1",
+        "r7c2",
+        "r8c0",
+        "r8c1",
+        "r8c2"
+      ],
+      "price": 979.54
+    },
+    {
+      "id": 139,
+      "bidder": "b23",
+      "items": [
+        "r9c5"
+      ],
+      "price": 32.03
+    },
+    {
+      "id": 140,
+      "bidder": "b1",
+      "items": [
+        "r1c2",
+        "r2c2",
+        "r3c2"
+      ],
+      "price": 250.43
+    },
+    {
+      "id": 141,
+      "bidder": "b20",
+      "items": [
+        "r2c1",
+        "r2c2",
+        "r2c3",
+        "r3c1",
+        "r3c2",
+        "r3c3",
+        "r4c1",
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 1707.76
+    },
+    {
+      "id": 142,
+      "bidder": "b21",
+      "items": [
+        "r4c3",
+        "r4c4",
+        "r4c5",
+        "r5c3",
+        "r5c4",
+        "r5c5"
+      ],
+      "price": 1088.78
+    },
+    {
+      "id": 143,
+      "bidder": "b5",
+      "items": [
+        "r4c1",
+        "r4c2",
+        "r4c3",
+        "r5c1",
+        "r5c2",
+        "r5c3"
+      ],
+      "price": 1135.88
+    },
+    {
+      "id": 144,
+      "bidder": "b13",
+      "items": [
+        "r0c7",
+        "r0c8",
+        "r0c9",
+        "r1c7",
+        "r1c8",
+        "r1c9"
+      ],
+      "price": 775.08
+    },
+    {
+      "id": 145,
+      "bidder": "b9",
+      "items": [
+        "r4c0",
+        "r5c0",
+        "r6c0"
+      ],
+      "price": 332.64
+    },
+    {
+      "id": 146,
+      "bidder": "b6",
+      "items": [
+        "r4c8",
+        "r4c9",
+        "r5c8",
+        "r5c9"
+      ],
+      "price": 500.05
+    },
+    {
+      "id": 147,
+      "bidder": "b23",
+      "items": [
+        "r8c3",
+        "r8c4",
+        "r8c5",
+        "r9c3",
+        "r9c4",
+        "r9c5"
+      ],
+      "price": 925.38
+    },
+    {
+      "id": 148,
+      "bidder": "b13",
+      "items": [
+        "r2c7",
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 166.15
+    },
+    {
+      "id": 149,
+      "bidder": "b27",
+      "items": [
+        "r6c7",
+        "r6c8",
+        "r7c7",
+        "r7c8"
+      ],
+      "price": 400.77
+    },
+    {
+      "id": 150,
+      "bidder": "b19",
+      "items": [
+        "r3c7",
+        "r3c8",
+        "r3c9",
+        "r4c7",
+        "r4c8",
+        "r4c9"
+      ],
+      "price": 1082.55
+    },
+    {
+      "id": 151,
+      "bidder": "b14",
+      "items": [
+        "r9c5",
+        "r9c6"
+      ],
+      "price": 79.27
+    },
+    {
+      "id": 152,
+      "bidder": "b9",
+      "items": [
+        "r5c9"
+      ],
+      "price": 92.83
+    },
+    {
+      "id": 153,
+      "bidder": "b20",
+      "items": [
+        "r2c4",
+        "r3c4"
+      ],
+      "price": 149.38
+    },
+    {
+      "id": 154,
+      "bidder": "b27",
+      "items": [
+        "r4c1",
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 353.93
+    },
+    {
+      "id": 155,
+      "bidder": "b0",
+      "items": [
+        "r5c0"
+      ],
+      "price": 54.1
+    },
+    {
+      "id": 156,
+      "bidder": "b10",
+      "items": [
+        "r5c7",
+        "r5c8",
+        "r6c7",
+        "r6c8",
+        "r7c7",
+        "r7c8"
+      ],
+      "price": 808.79
+    },
+    {
+      "id": 157,
+      "bidder": "b2",
+      "items": [
+        "r0c4",
+        "r0c5",
+        "r1c4",
+        "r1c5"
+      ],
+      "price": 638.47
+    },
+    {
+      "id": 158,
+      "bidder": "b18",
+      "items": [
+        "r3c2",
+        "r4c2",
+        "r5c2"
+      ],
+      "price": 244.54
+    },
+    {
+      "id": 159,
+      "bidder": "b5",
+      "items": [
+        "r1c7",
+        "r1c8",
+        "r2c7",
+        "r2c8",
+        "r3c7",
+        "r3c8"
+      ],
+      "price": 896.29
+    },
+    {
+      "id": 160,
+      "bidder": "b29",
+      "items": [
+        "r1c7",
+        "r1c8",
+        "r1c9",
+        "r2c7",
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 617.5
+    },
+    {
+      "id": 161,
+      "bidder": "b15",
+      "items": [
+        "r9c4"
+      ],
+      "price": 86.85
+    },
+    {
+      "id": 162,
+      "bidder": "b27",
+      "items": [
+        "r9c5"
+      ],
+      "price": 32.03
+    },
+    {
+      "id": 163,
+      "bidder": "b18",
+      "items": [
+        "r6c6",
+        "r6c7",
+        "r6c8",
+        "r7c6",
+        "r7c7",
+        "r7c8",
+        "r8c6",
+        "r8c7",
+        "r8c8"
+      ],
+      "price": 1706.09
+    },
+    {
+      "id": 164,
+      "bidder": "b7",
+      "items": [
+        "r0c4",
+        "r1c4",
+        "r2c4"
+      ],
+      "price": 327.15
+    },
+    {
+      "id": 165,
+      "bidder": "b21",
+      "items": [
+        "r9c6"
+      ],
+      "price": 28.94
+    },
+    {
+      "id": 166,
+      "bidder": "b26",
+      "items": [
+        "r7c6",
+        "r8c6"
+      ],
+      "price": 149.63
+    },
+    {
+      "id": 167,
+      "bidder": "b12",
+      "items": [
+        "r4c3",
+        "r4c4",
+        "r5c3",
+        "r5c4"
+      ],
+      "price": 610.94
+    },
+    {
+      "id": 168,
+      "bidder": "b7",
+      "items": [
+        "r8c8"
+      ],
+      "price": 68.76
+    },
+    {
+      "id": 169,
+      "bidder": "b26",
+      "items": [
+        "r8c0",
+        "r8c1",
+        "r8c2"
+      ],
+      "price": 266.74
+    },
+    {
+      "id": 170,
+      "bidder": "b1",
+      "items": [
+        "r6c6",
+        "r6c7",
+        "r6c8",
+        "r7c6",
+        "r7c7",
+        "r7c8"
+      ],
+      "price": 851.78
+    },
+    {
+      "id": 171,
+      "bidder": "b7",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r2c5",
+        "r2c6",
+        "r3c5",
+        "r3c6"
+      ],
+      "price": 1148.36
+    },
+    {
+      "id": 172,
+      "bidder": "b16",
+      "items": [
+        "r7c1",
+        "r7c2",
+        "r7c3",
+        "r8c1",
+        "r8c2",
+        "r8c3"
+      ],
+      "price": 903.73
+    },
+    {
+      "id": 173,
+      "bidder": "b22",
+      "items": [
+        "r3c4",
+        "r3c5",
+        "r3c6",
+        "r4c4",
+        "r4c5",
+        "r4c6"
+      ],
+      "price": 966.07
+    },
+    {
+      "id": 174,
+      "bidder": "b0",
+      "items": [
+        "r0c2",
+        "r0c3"
+      ],
+      "price": 42.55
+    },
+    {
+      "id": 175,
+      "bidder": "b20",
+      "items": [
+        "r5c3"
+      ],
+      "price": 84.84
+    },
+    {
+      "id": 176,
+      "bidder": "b17",
+      "items": [
+        "r2c4",
+        "r2c5",
+        "r2c6"
+      ],
+      "price": 306.85
+    },
+    {
+      "id": 177,
+      "bidder": "b24",
+      "items": [
+        "r8c1",
+        "r8c2",
+        "r8c3"
+      ],
+      "price": 281.53
+    },
+    {
+      "id": 178,
+      "bidder": "b21",
+      "items": [
+        "r6c2",
+        "r7c2",
+        "r8c2"
+      ],
+      "price": 270.69
+    },
+    {
+      "id": 179,
+      "bidder": "b1",
+      "items": [
+        "r4c7",
+        "r4c8",
+        "r4c9",
+        "r5c7",
+        "r5c8",
+        "r5c9"
+      ],
+      "price": 972.59
+    },
+    {
+      "id": 180,
+      "bidder": "b1",
+      "items": [
+        "r5c1",
+        "r5c2",
+        "r6c1",
+        "r6c2",
+        "r7c1",
+        "r7c2"
+      ],
+      "price": 902.52
+    },
+    {
+      "id": 181,
+      "bidder": "b19",
+      "items": [
+        "r5c5",
+        "r6c5"
+      ],
+      "price": 148.72
+    },
+    {
+      "id": 182,
+      "bidder": "b25",
+      "items": [
+        "r7c4",
+        "r7c5",
+        "r8c4",
+        "r8c5",
+        "r9c4",
+        "r9c5"
+      ],
+      "price": 923.37
+    },
+    {
+      "id": 183,
+      "bidder": "b16",
+      "items": [
+        "r0c0",
+        "r1c0",
+        "r2c0"
+      ],
+      "price": 274.54
+    },
+    {
+      "id": 184,
+      "bidder": "b10",
+      "items": [
+        "r0c5",
+        "r0c6",
+        "r0c7",
+        "r1c5",
+        "r1c6",
+        "r1c7"
+      ],
+      "price": 1095.5
+    },
+    {
+      "id": 185,
+      "bidder": "b21",
+      "items": [
+        "r0c1",
+        "r0c2",
+        "r0c3",
+        "r1c1",
+        "r1c2",
+        "r1c3",
+        "r2c1",
+        "r2c2",
+        "r2c3"
+      ],
+      "price": 1188.09
+    },
+    {
+      "id": 186,
+      "bidder": "b22",
+      "items": [
+        "r6c6",
+        "r6c7",
+        "r6c8",
+        "r7c6",
+        "r7c7",
+        "r7c8",
+        "r8c6",
+        "r8c7",
+        "r8c8"
+      ],
+      "price": 1706.09
+    },
+    {
+      "id": 187,
+      "bidder": "b13",
+      "items": [
+        "r2c9"
+      ],
+      "price": 12.15
+    },
+    {
+      "id": 188,
+      "bidder": "b1",
+      "items": [
+        "r5c2",
+        "r5c3",
+        "r5c4"
+      ],
+      "price": 290.83
+    },
+    {
+      "id": 189,
+      "bidder": "b9",
+      "items": [
+        "r3c9"
+      ],
+      "price": 91.59
+    },
+    {
+      "id": 190,
+      "bidder": "b25",
+      "items": [
+        "r1c5",
+        "r1c6"
+      ],
+      "price": 253.47
+    },
+    {
+      "id": 191,
+      "bidder": "b3",
+      "items": [
+        "r3c3",
+        "r4c3",
+        "r5c3"
+      ],
+      "price": 452.81
+    },
+    {
+      "id": 192,
+      "bidder": "b17",
+      "items": [
+        "r0c6"
+      ],
+      "price": 70.28
+    },
+    {
+      "id": 193,
+      "bidder": "b2",
+      "items": [
+        "r3c0",
+        "r3c1",
+        "r4c0",
+        "r4c1",
+        "r5c0",
+        "r5c1"
+      ],
+      "price": 921.6
+    },
+    {
+      "id": 194,
+      "bidder": "b16",
+      "items": [
+        "r6c6",
+        "r6c7",
+        "r6c8",
+        "r7c6",
+        "r7c7",
+        "r7c8",
+        "r8c6",
+        "r8c7",
+        "r8c8"
+      ],
+      "price": 1706.09
+    },
+    {
+      "id": 195,
+      "bidder": "b29",
+      "items": [
+        "r6c2"
+      ],
+      "price": 29.96
+    },
+    {
+      "id": 196,
+      "bidder": "b14",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r1c2",
+        "r1c3",
+        "r2c2",
+        "r2c3"
+      ],
+      "price": 543.52
+    },
+    {
+      "id": 197,
+      "bidder": "b16",
+      "items": [
+        "r7c2",
+        "r7c3",
+        "r8c2",
+        "r8c3"
+      ],
+      "price": 515.19
+    },
+    {
+      "id": 198,
+      "bidder": "b15",
+      "items": [
+        "r5c2",
+        "r6c2",
+        "r7c2"
+      ],
+      "price": 224.67
+    },
+    {
+      "id": 199,
+      "bidder": "b0",
+      "items": [
+        "r2c2",
+        "r2c3",
+        "r2c4",
+        "r3c2",
+        "r3c3",
+        "r3c4"
+      ],
+      "price": 903.02
+    },
+    {
+      "id": 200,
+      "bidder": "b20",
+      "items": [
+        "r4c7",
+        "r4c8",
+        "r4c9",
+        "r5c7",
+        "r5c8",
+        "r5c9"
+      ],
+      "price": 972.59
+    },
+    {
+      "id": 201,
+      "bidder": "b15",
+      "items": [
+        "r6c6",
+        "r7c6"
+      ],
+      "price": 168.71
+    },
+    {
+      "id": 202,
+      "bidder": "b8",
+      "items": [
+        "r0c6",
+        "r0c7"
+      ],
+      "price": 140.41
+    },
+    {
+      "id": 203,
+      "bidder": "b19",
+      "items": [
+        "r4c0",
+        "r4c1"
+      ],
+      "price": 207.66
+    },
+    {
+      "id": 204,
+      "bidder": "b29",
+      "items": [
+        "r4c4",
+        "r4c5",
+        "r5c4",
+        "r5c5",
+        "r6c4",
+        "r6c5"
+      ],
+      "price": 875.74
+    },
+    {
+      "id": 205,
+      "bidder": "b7",
+      "items": [
+        "r7c5",
+        "r7c6",
+        "r7c7",
+        "r8c5",
+        "r8c6",
+        "r8c7"
+      ],
+      "price": 623.07
+    },
+    {
+      "id": 206,
+      "bidder": "b16",
+      "items": [
+        "r3c8",
+        "r3c9",
+        "r4c8",
+        "r4c9",
+        "r5c8",
+        "r5c9"
+      ],
+      "price": 1077.18
+    },
+    {
+      "id": 207,
+      "bidder": "b27",
+      "items": [
+        "r7c4",
+        "r8c4",
+        "r9c4"
+      ],
+      "price": 395.47
+    },
+    {
+      "id": 208,
+      "bidder": "b29",
+      "items": [
+        "r1c8",
+        "r1c9",
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 242.4
+    },
+    {
+      "id": 209,
+      "bidder": "b21",
+      "items": [
+        "r6c1",
+        "r6c2",
+        "r6c3"
+      ],
+      "price": 196.76
+    },
+    {
+      "id": 210,
+      "bidder": "b13",
+      "items": [
+        "r7c1",
+        "r7c2",
+        "r8c1",
+        "r8c2",
+        "r9c1",
+        "r9c2"
+      ],
+      "price": 844.8
+    },
+    {
+      "id": 211,
+      "bidder": "b23",
+      "items": [
+        "r5c8",
+        "r5c9",
+        "r6c8",
+        "r6c9"
+      ],
+      "price": 539.23
+    },
+    {
+      "id": 212,
+      "bidder": "b11",
+      "items": [
+        "r3c2"
+      ],
+      "price": 55.92
+    },
+    {
+      "id": 213,
+      "bidder": "b13",
+      "items": [
+        "r2c6",
+        "r2c7",
+        "r3c6",
+        "r3c7"
+      ],
+      "price": 550.8
+    },
+    {
+      "id": 214,
+      "bidder": "b8",
+      "items": [
+        "r6c4",
+        "r6c5",
+        "r6c6",
+        "r7c4",
+        "r7c5",
+        "r7c6"
+      ],
+      "price": 898.08
+    },
+    {
+      "id": 215,
+      "bidder": "b20",
+      "items": [
+        "r5c0",
+        "r5c1",
+        "r6c0",
+        "r6c1",
+        "r7c0",
+        "r7c1"
+      ],
+      "price": 1114.98
+    },
+    {
+      "id": 216,
+      "bidder": "b12",
+      "items": [
+        "r3c7",
+        "r4c7",
+        "r5c7"
+      ],
+      "price": 332.1
+    },
+    {
+      "id": 217,
+      "bidder": "b3",
+      "items": [
+        "r5c5"
+      ],
+      "price": 89.46
+    },
+    {
+      "id": 218,
+      "bidder": "b19",
+      "items": [
+        "r6c2",
+        "r6c3",
+        "r6c4",
+        "r7c2",
+        "r7c3",
+        "r7c4"
+      ],
+      "price": 806.88
+    },
+    {
+      "id": 219,
+      "bidder": "b23",
+      "items": [
+        "r8c9",
+        "r9c9"
+      ],
+      "price": 141.84
+    },
+    {
+      "id": 220,
+      "bidder": "b15",
+      "items": [
+        "r3c7",
+        "r3c8",
+        "r3c9",
+        "r4c7",
+        "r4c8",
+        "r4c9"
+      ],
+      "price": 1082.55
+    },
+    {
+      "id": 221,
+      "bidder": "b28",
+      "items": [
+        "r0c5",
+        "r0c6",
+        "r0c7"
+      ],
+      "price": 294.79
+    },
+    {
+      "id": 222,
+      "bidder": "b0",
+      "items": [
+        "r2c0",
+        "r2c1",
+        "r3c0",
+        "r3c1"
+      ],
+      "price": 165.81
+    },
+    {
+      "id": 223,
+      "bidder": "b0",
+      "items": [
+        "r7c0",
+        "r7c1",
+        "r8c0",
+        "r8c1"
+      ],
+      "price": 479.94
+    },
+    {
+      "id": 224,
+      "bidder": "b28",
+      "items": [
+        "r3c3",
+        "r3c4",
+        "r3c5",
+        "r4c3",
+        "r4c4",
+        "r4c5"
+      ],
+      "price": 1040.79
+    },
+    {
+      "id": 225,
+      "bidder": "b23",
+      "items": [
+        "r2c5",
+        "r2c6",
+        "r3c5",
+        "r3c6",
+        "r4c5",
+        "r4c6"
+      ],
+      "price": 916.83
+    },
+    {
+      "id": 226,
+      "bidder": "b9",
+      "items": [
+        "r7c7",
+        "r7c8",
+        "r7c9",
+        "r8c7",
+        "r8c8",
+        "r8c9"
+      ],
+      "price": 743.69
+    },
+    {
+      "id": 227,
+      "bidder": "b24",
+      "items": [
+        "r8c3",
+        "r9c3"
+      ],
+      "price": 172.05
+    },
+    {
+      "id": 228,
+      "bidder": "b18",
+      "items": [
+        "r5c5",
+        "r6c5"
+      ],
+      "price": 148.72
+    },
+    {
+      "id": 229,
+      "bidder": "b25",
+      "items": [
+        "r8c9"
+      ],
+      "price": 34.58
+    },
+    {
+      "id": 230,
+      "bidder": "b7",
+      "items": [
+        "r7c3",
+        "r7c4",
+        "r7c5"
+      ],
+      "price": 301.02
+    },
+    {
+      "id": 231,
+      "bidder": "b12",
+      "items": [
+        "r3c2",
+        "r3c3",
+        "r3c4",
+        "r4c2",
+        "r4c3",
+        "r4c4"
+      ],
+      "price": 1158.01
+    },
+    {
+      "id": 232,
+      "bidder": "b0",
+      "items": [
+        "r5c2",
+        "r5c3",
+        "r6c2",
+        "r6c3"
+      ],
+      "price": 397.28
+    },
+    {
+      "id": 233,
+      "bidder": "b21",
+      "items": [
+        "r9c2",
+        "r9c3",
+        "r9c4"
+      ],
+      "price": 261.49
+    },
+    {
+      "id": 234,
+      "bidder": "b27",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r1c2",
+        "r1c3",
+        "r1c4"
+      ],
+      "price": 717.93
+    },
+    {
+      "id": 235,
+      "bidder": "b29",
+      "items": [
+        "r3c0",
+        "r3c1",
+        "r3c2"
+      ],
+      "price": 187.98
+    },
+    {
+      "id": 236,
+      "bidder": "b19",
+      "items": [
+        "r3c2",
+        "r3c3"
+      ],
+      "price": 202.54
+    },
+    {
+      "id": 237,
+      "bidder": "b8",
+      "items": [
+        "r0c0",
+        "r0c1",
+        "r0c2",
+        "r1c0",
+        "r1c1",
+        "r1c2"
+      ],
+      "price": 854.4
+    },
+    {
+      "id": 238,
+      "bidder": "b11",
+      "items": [
+        "r0c5",
+        "r0c6"
+      ],
+      "price": 190.47
+    },
+    {
+      "id": 239,
+      "bidder": "b15",
+      "items": [
+        "r1c7",
+        "r2c7"
+      ],
+      "price": 155.25
+    },
+    {
+      "id": 240,
+      "bidder": "b5",
+      "items": [
+        "r1c4",
+        "r1c5"
+      ],
+      "price": 226.99
+    },
+    {
+      "id": 241,
+      "bidder": "b4",
+      "items": [
+        "r1c4",
+        "r1c5",
+        "r1c6",
+        "r2c4",
+        "r2c5",
+        "r2c6"
+      ],
+      "price": 1154.58
+    },
+    {
+      "id": 242,
+      "bidder": "b9",
+      "items": [
+        "r8c3",
+        "r8c4",
+        "r8c5"
+      ],
+      "price": 310.8
+    },
+    {
+      "id": 243,
+      "bidder": "b2",
+      "items": [
+        "r2c9",
+        "r3c9"
+      ],
+      "price": 134.86
+    },
+    {
+      "id": 244,
+      "bidder": "b9",
+      "items": [
+        "r0c5",
+        "r1c5"
+      ],
+      "price": 228.5
+    },
+    {
+      "id": 245,
+      "bidder": "b14",
+      "items": [
+        "r3c9"
+      ],
+      "price": 91.59
+    },
+    {
+      "id": 246,
+      "bidder": "b11",
+      "items": [
+        "r1c3",
+        "r1c4",
+        "r2c3",
+        "r2c4",
+        "r3c3",
+        "r3c4"
+      ],
+      "price": 934.84
+    },
+    {
+      "id": 247,
+      "bidder": "b4",
+      "items": [
+        "r5c1"
+      ],
+      "price": 93.23
+    },
+    {
+      "id": 248,
+      "bidder": "b8",
+      "items": [
+        "r1c8",
+        "r1c9"
+      ],
+      "price": 109.43
+    },
+    {
+      "id": 249,
+      "bidder": "b25",
+      "items": [
+        "r2c5",
+        "r2c6",
+        "r2c7",
+        "r3c5",
+        "r3c6",
+        "r3c7",
+        "r4c5",
+        "r4c6",
+        "r4c7"
+      ],
+      "price": 1983.05
+    },
+    {
+      "id": 250,
+      "bidder": "b4",
+      "items": [
+        "r3c4",
+        "r3c5",
+        "r3c6",
+        "r4c4",
+        "r4c5",
+        "r4c6"
+      ],
+      "price": 966.07
+    },
+    {
+      "id": 251,
+      "bidder": "b17",
+      "items": [
+        "r5c2"
+      ],
+      "price": 55.08
+    },
+    {
+      "id": 252,
+      "bidder": "b23",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4"
+      ],
+      "price": 188.68
+    },
+    {
+      "id": 253,
+      "bidder": "b23",
+      "items": [
+        "r5c7",
+        "r5c8",
+        "r6c7",
+        "r6c8"
+      ],
+      "price": 453.61
+    },
+    {
+      "id": 254,
+      "bidder": "b21",
+      "items": [
+        "r1c2",
+        "r1c3",
+        "r2c2",
+        "r2c3"
+      ],
+      "price": 350.89
+    },
+    {
+      "id": 255,
+      "bidder": "b23",
+      "items": [
+        "r1c2"
+      ],
+      "price": 48.76
+    },
+    {
+      "id": 256,
+      "bidder": "b11",
+      "items": [
+        "r4c9",
+        "r5c9",
+        "r6c9"
+      ],
+      "price": 301.48
+    },
+    {
+      "id": 257,
+      "bidder": "b21",
+      "items": [
+        "r1c3",
+        "r2c3",
+        "r3c3"
+      ],
+      "price": 294.34
+    },
+    {
+      "id": 258,
+      "bidder": "b18",
+      "items": [
+        "r3c5",
+        "r3c6",
+        "r3c7",
+        "r4c5",
+        "r4c6",
+        "r4c7",
+        "r5c5",
+        "r5c6",
+        "r5c7"
+      ],
+      "price": 2064.3
+    },
+    {
+      "id": 259,
+      "bidder": "b2",
+      "items": [
+        "r6c3",
+        "r6c4",
+        "r6c5"
+      ],
+      "price": 219.4
+    },
+    {
+      "id": 260,
+      "bidder": "b13",
+      "items": [
+        "r0c5",
+        "r0c6",
+        "r0c7",
+        "r1c5",
+        "r1c6",
+        "r1c7",
+        "r2c5",
+        "r2c6",
+        "r2c7"
+      ],
+      "price": 2197.17
+    },
+    {
+      "id": 261,
+      "bidder": "b13",
+      "items": [
+        "r8c5",
+        "r8c6",
+        "r8c7",
+        "r9c5",
+        "r9c6",
+        "r9c7"
+      ],
+      "price": 674.44
+    },
+    {
+      "id": 262,
+      "bidder": "b29",
+      "items": [
+        "r1c0",
+        "r1c1",
+        "r1c2"
+      ],
+      "price": 216.52
+    },
+    {
+      "id": 263,
+      "bidder": "b4",
+      "items": [
+        "r2c6",
+        "r2c7",
+        "r3c6",
+        "r3c7",
+        "r4c6",
+        "r4c7"
+      ],
+      "price": 1105.29
+    },
+    {
+      "id": 264,
+      "bidder": "b24",
+      "items": [
+        "r4c9",
+        "r5c9",
+        "r6c9"
+      ],
+      "price": 301.48
+    },
+    {
+      "id": 265,
+      "bidder": "b17",
+      "items": [
+        "r1c8",
+        "r2c8",
+        "r3c8"
+      ],
+      "price": 251.81
+    },
+    {
+      "id": 266,
+      "bidder": "b26",
+      "items": [
+        "r2c3",
+        "r2c4",
+        "r2c5",
+        "r3c3",
+        "r3c4",
+        "r3c5",
+        "r4c3",
+        "r4c4",
+        "r4c5"
+      ],
+      "price": 2004.1
+    },
+    {
+      "id": 267,
+      "bidder": "b21",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r1c7",
+        "r2c5",
+        "r2c6",
+        "r2c7",
+        "r3c5",
+        "r3c6",
+        "r3c7"
+      ],
+      "price": 2245.62
+    },
+    {
+      "id": 268,
+      "bidder": "b4",
+      "items": [
+        "r3c7",
+        "r4c7",
+        "r5c7"
+      ],
+      "price": 332.1
+    },
+    {
+      "id": 269,
+      "bidder": "b21",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r2c5",
+        "r2c6"
+      ],
+      "price": 650.86
+    },
+    {
+      "id": 270,
+      "bidder": "b7",
+      "items": [
+        "r1c6",
+        "r1c7"
+      ],
+      "price": 200.75
+    },
+    {
+      "id": 271,
+      "bidder": "b0",
+      "items": [
+        "r4c5",
+        "r5c5",
+        "r6c5"
+      ],
+      "price": 222.26
+    },
+    {
+      "id": 272,
+      "bidder": "b17",
+      "items": [
+        "r6c3",
+        "r6c4"
+      ],
+      "price": 145.84
+    },
+    {
+      "id": 273,
+      "bidder": "b1",
+      "items": [
+        "r2c2"
+      ],
+      "price": 51.84
+    },
+    {
+      "id": 274,
+      "bidder": "b12",
+      "items": [
+        "r4c6"
+      ],
+      "price": 77.86
+    },
+    {
+      "id": 275,
+      "bidder": "b14",
+      "items": [
+        "r6c0"
+      ],
+      "price": 75.14
+    },
+    {
+      "id": 276,
+      "bidder": "b22",
+      "items": [
+        "r3c6"
+      ],
+      "price": 90.42
+    },
+    {
+      "id": 277,
+      "bidder": "b0",
+      "items": [
+        "r5c2",
+        "r5c3"
+      ],
+      "price": 181.89
+    },
+    {
+      "id": 278,
+      "bidder": "b5",
+      "items": [
+        "r4c3",
+        "r4c4",
+        "r5c3",
+        "r5c4"
+      ],
+      "price": 610.94
+    },
+    {
+      "id": 279,
+      "bidder": "b16",
+      "items": [
+        "r6c7",
+        "r6c8",
+        "r7c7",
+        "r7c8"
+      ],
+      "price": 400.77
+    },
+    {
+      "id": 280,
+      "bidder": "b15",
+      "items": [
+        "r6c2",
+        "r6c3",
+        "r7c2",
+        "r7c3"
+      ],
+      "price": 344.21
+    },
+    {
+      "id": 281,
+      "bidder": "b20",
+      "items": [
+        "r7c8",
+        "r7c9",
+        "r8c8",
+        "r8c9"
+      ],
+      "price": 481.62
+    },
+    {
+      "id": 282,
+      "bidder": "b13",
+      "items": [
+        "r5c1",
+        "r5c2",
+        "r5c3",
+        "r6c1",
+        "r6c2",
+        "r6c3",
+        "r7c1",
+        "r7c2",
+        "r7c3"
+      ],
+      "price": 1841.66
+    },
+    {
+      "id": 283,
+      "bidder": "b18",
+      "items": [
+        "r6c7",
+        "r6c8"
+      ],
+      "price": 164.0
+    },
+    {
+      "id": 284,
+      "bidder": "b23",
+      "items": [
+        "r8c7",
+        "r8c8",
+        "r8c9"
+      ],
+      "price": 189.81
+    },
+    {
+      "id": 285,
+      "bidder": "b16",
+      "items": [
+        "r2c3",
+        "r2c4",
+        "r3c3",
+        "r3c4",
+        "r4c3",
+        "r4c4"
+      ],
+      "price": 1120.77
+    },
+    {
+      "id": 286,
+      "bidder": "b11",
+      "items": [
+        "r3c3",
+        "r3c4",
+        "r3c5"
+      ],
+      "price": 315.12
+    },
+    {
+      "id": 287,
+      "bidder": "b13",
+      "items": [
+        "r3c6",
+        "r3c7",
+        "r3c8"
+      ],
+      "price": 397.16
+    },
+    {
+      "id": 288,
+      "bidder": "b28",
+      "items": [
+        "r4c7"
+      ],
+      "price": 74.36
+    },
+    {
+      "id": 289,
+      "bidder": "b4",
+      "items": [
+        "r5c2",
+        "r6c2",
+        "r7c2"
+      ],
+      "price": 224.67
+    },
+    {
+      "id": 290,
+      "bidder": "b7",
+      "items": [
+        "r6c8",
+        "r7c8",
+        "r8c8"
+      ],
+      "price": 346.97
+    },
+    {
+      "id": 291,
+      "bidder": "b1",
+      "items": [
+        "r4c3",
+        "r4c4",
+        "r4c5",
+        "r5c3",
+        "r5c4",
+        "r5c5"
+      ],
+      "price": 1088.78
+    },
+    {
+      "id": 292,
+      "bidder": "b5",
+      "items": [
+        "r3c3",
+        "r3c4",
+        "r4c3",
+        "r4c4",
+        "r5c3",
+        "r5c4"
+      ],
+      "price": 1230.34
+    },
+    {
+      "id": 293,
+      "bidder": "b18",
+      "items": [
+        "r4c4",
+        "r4c5",
+        "r4c6"
+      ],
+      "price": 318.3
+    },
+    {
+      "id": 294,
+      "bidder": "b19",
+      "items": [
+        "r0c9",
+        "r1c9"
+      ],
+      "price": 128.38
+    },
+    {
+      "id": 295,
+      "bidder": "b12",
+      "items": [
+        "r0c0",
+        "r0c1",
+        "r0c2",
+        "r1c0",
+        "r1c1",
+        "r1c2",
+        "r2c0",
+        "r2c1",
+        "r2c2"
+      ],
+      "price": 1425.63
+    },
+    {
+      "id": 296,
+      "bidder": "b25",
+      "items": [
+        "r8c5",
+        "r9c5"
+      ],
+      "price": 77.04
+    },
+    {
+      "id": 297,
+      "bidder": "b9",
+      "items": [
+        "r0c7",
+        "r0c8",
+        "r0c9",
+        "r1c7",
+        "r1c8",
+        "r1c9",
+        "r2c7",
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 1407.19
+    },
+    {
+      "id": 298,
+      "bidder": "b10",
+      "items": [
+        "r0c3",
+        "r0c4"
+      ],
+      "price": 133.68
+    },
+    {
+      "id": 299,
+      "bidder": "b11",
+      "items": [
+        "r7c4",
+        "r7c5",
+        "r7c6",
+        "r8c4",
+        "r8c5",
+        "r8c6"
+      ],
+      "price": 913.88
+    },
+    {
+      "id": 300,
+      "bidder": "b21",
+      "items": [
+        "r0c5",
+        "r0c6",
+        "r1c5",
+        "r1c6",
+        "r2c5",
+        "r2c6"
+      ],
+      "price": 1222.68
+    },
+    {
+      "id": 301,
+      "bidder": "b0",
+      "items": [
+        "r3c2",
+        "r3c3",
+        "r3c4",
+        "r4c2",
+        "r4c3",
+        "r4c4"
+      ],
+      "price": 1158.01
+    },
+    {
+      "id": 302,
+      "bidder": "b12",
+      "items": [
+        "r7c2",
+        "r7c3",
+        "r7c4",
+        "r8c2",
+        "r8c3",
+        "r8c4",
+        "r9c2",
+        "r9c3",
+        "r9c4"
+      ],
+      "price": 2022.66
+    },
+    {
+      "id": 303,
+      "bidder": "b13",
+      "items": [
+        "r1c2",
+        "r1c3",
+        "r2c2",
+        "r2c3",
+        "r3c2",
+        "r3c3"
+      ],
+      "price": 851.21
+    },
+    {
+      "id": 304,
+      "bidder": "b24",
+      "items": [
+        "r1c8",
+        "r1c9"
+      ],
+      "price": 109.43
+    },
+    {
+      "id": 305,
+      "bidder": "b18",
+      "items": [
+        "r0c5"
+      ],
+      "price": 76.24
+    },
+    {
+      "id": 306,
+      "bidder": "b6",
+      "items": [
+        "r7c6",
+        "r7c7",
+        "r7c8",
+        "r8c6",
+        "r8c7",
+        "r8c8",
+        "r9c6",
+        "r9c7",
+        "r9c8"
+      ],
+      "price": 1530.61
+    },
+    {
+      "id": 307,
+      "bidder": "b21",
+      "items": [
+        "r5c1",
+        "r5c2",
+        "r5c3",
+        "r6c1",
+        "r6c2",
+        "r6c3",
+        "r7c1",
+        "r7c2",
+        "r7c3"
+      ],
+      "price": 1841.66
+    },
+    {
+      "id": 308,
+      "bidder": "b26",
+      "items": [
+        "r3c0"
+      ],
+      "price": 39.26
+    },
+    {
+      "id": 309,
+      "bidder": "b23",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r1c2",
+        "r1c3",
+        "r1c4",
+        "r2c2",
+        "r2c3",
+        "r2c4"
+      ],
+      "price": 1434.38
+    },
+    {
+      "id": 310,
+      "bidder": "b0",
+      "items": [
+        "r1c0",
+        "r1c1",
+        "r2c0",
+        "r2c1"
+      ],
+      "price": 213.31
+    },
+    {
+      "id": 311,
+      "bidder": "b20",
+      "items": [
+        "r5c4",
+        "r6c4",
+        "r7c4"
+      ],
+      "price": 293.51
+    },
+    {
+      "id": 312,
+      "bidder": "b3",
+      "items": [
+        "r2c6",
+        "r2c7",
+        "r2c8",
+        "r3c6",
+        "r3c7",
+        "r3c8"
+      ],
+      "price": 993.1
+    },
+    {
+      "id": 313,
+      "bidder": "b0",
+      "items": [
+        "r2c9"
+      ],
+      "price": 12.15
+    },
+    {
+      "id": 314,
+      "bidder": "b22",
+      "items": [
+        "r0c4",
+        "r0c5",
+        "r0c6",
+        "r1c4",
+        "r1c5",
+        "r1c6"
+      ],
+      "price": 1254.4
+    },
+    {
+      "id": 315,
+      "bidder": "b3",
+      "items": [
+        "r3c0",
+        "r3c1",
+        "r3c2"
+      ],
+      "price": 187.98
+    },
+    {
+      "id": 316,
+      "bidder": "b6",
+      "items": [
+        "r2c9",
+        "r3c9",
+        "r4c9"
+      ],
+      "price": 258.36
+    },
+    {
+      "id": 317,
+      "bidder": "b28",
+      "items": [
+        "r1c9"
+      ],
+      "price": 34.14
+    },
+    {
+      "id": 318,
+      "bidder": "b6",
+      "items": [
+        "r4c5",
+        "r5c5",
+        "r6c5"
+      ],
+      "price": 222.26
+    },
+    {
+      "id": 319,
+      "bidder": "b22",
+      "items": [
+        "r3c2",
+        "r3c3",
+        "r3c4"
+      ],
+      "price": 362.41
+    },
+    {
+      "id": 320,
+      "bidder": "b18",
+      "items": [
+        "r5c7"
+      ],
+      "price": 51.49
+    },
+    {
+      "id": 321,
+      "bidder": "b22",
+      "items": [
+        "r3c6"
+      ],
+      "price": 90.42
+    },
+    {
+      "id": 322,
+      "bidder": "b9",
+      "items": [
+        "r3c9"
+      ],
+      "price": 91.59
+    },
+    {
+      "id": 323,
+      "bidder": "b9",
+      "items": [
+        "r4c8",
+        "r4c9",
+        "r5c8",
+        "r5c9",
+        "r6c8",
+        "r6c9"
+      ],
+      "price": 982.67
+    },
+    {
+      "id": 324,
+      "bidder": "b24",
+      "items": [
+        "r0c4",
+        "r0c5",
+        "r0c6",
+        "r1c4",
+        "r1c5",
+        "r1c6"
+      ],
+      "price": 1254.4
+    },
+    {
+      "id": 325,
+      "bidder": "b2",
+      "items": [
+        "r2c5",
+        "r2c6",
+        "r2c7",
+        "r3c5",
+        "r3c6",
+        "r3c7"
+      ],
+      "price": 1016.3
+    },
+    {
+      "id": 326,
+      "bidder": "b9",
+      "items": [
+        "r6c1",
+        "r6c2",
+        "r7c1",
+        "r7c2",
+        "r8c1",
+        "r8c2"
+      ],
+      "price": 783.3
+    },
+    {
+      "id": 327,
+      "bidder": "b17",
+      "items": [
+        "r9c3",
+        "r9c4",
+        "r9c5"
+      ],
+      "price": 281.44
+    },
+    {
+      "id": 328,
+      "bidder": "b29",
+      "items": [
+        "r2c1",
+        "r2c2",
+        "r2c3",
+        "r3c1",
+        "r3c2",
+        "r3c3",
+        "r4c1",
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 1707.76
+    },
+    {
+      "id": 329,
+      "bidder": "b14",
+      "items": [
+        "r2c7",
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 166.15
+    },
+    {
+      "id": 330,
+      "bidder": "b0",
+      "items": [
+        "r3c7",
+        "r3c8"
+      ],
+      "price": 205.15
+    },
+    {
+      "id": 331,
+      "bidder": "b11",
+      "items": [
+        "r2c6",
+        "r2c7",
+        "r2c8",
+        "r3c6",
+        "r3c7",
+        "r3c8",
+        "r4c6",
+        "r4c7",
+        "r4c8"
+      ],
+      "price": 2043.37
+    },
+    {
+      "id": 332,
+      "bidder": "b6",
+      "items": [
+        "r5c4",
+        "r5c5"
+      ],
+      "price": 170.7
+    },
+    {
+      "id": 333,
+      "bidder": "b13",
+      "items": [
+        "r9c4"
+      ],
+      "price": 86.85
+    },
+    {
+      "id": 334,
+      "bidder": "b15",
+      "items": [
+        "r0c0",
+        "r1c0"
+      ],
+      "price": 205.86
+    },
+    {
+      "id": 335,
+      "bidder": "b3",
+      "items": [
+        "r0c7",
+        "r0c8"
+      ],
+      "price": 132.95
+    },
+    {
+      "id": 336,
+      "bidder": "b29",
+      "items": [
+        "r3c3",
+        "r4c3",
+        "r5c3"
+      ],
+      "price": 452.81
+    },
+    {
+      "id": 337,
+      "bidder": "b26",
+      "items": [
+        "r0c1"
+      ],
+      "price": 95.3
+    },
+    {
+      "id": 338,
+      "bidder": "b12",
+      "items": [
+        "r9c6",
+        "r9c7"
+      ],
+      "price": 153.65
+    },
+    {
+      "id": 339,
+      "bidder": "b20",
+      "items": [
+        "r0c2",
+        "r1c2",
+        "r2c2"
+      ],
+      "price": 185.1
+    },
+    {
+      "id": 340,
+      "bidder": "b3",
+      "items": [
+        "r1c4"
+      ],
+      "price": 75.07
+    },
+    {
+      "id": 341,
+      "bidder": "b16",
+      "items": [
+        "r1c2",
+        "r1c3",
+        "r2c2",
+        "r2c3",
+        "r3c2",
+        "r3c3"
+      ],
+      "price": 851.21
+    },
+    {
+      "id": 342,
+      "bidder": "b24",
+      "items": [
+        "r3c1",
+        "r3c2",
+        "r4c1",
+        "r4c2",
+        "r5c1",
+        "r5c2"
+      ],
+      "price": 873.63
+    },
+    {
+      "id": 343,
+      "bidder": "b5",
+      "items": [
+        "r0c1",
+        "r1c1",
+        "r2c1"
+      ],
+      "price": 211.25
+    },
+    {
+      "id": 344,
+      "bidder": "b28",
+      "items": [
+        "r7c0",
+        "r7c1",
+        "r8c0",
+        "r8c1",
+        "r9c0",
+        "r9c1"
+      ],
+      "price": 929.47
+    },
+    {
+      "id": 345,
+      "bidder": "b20",
+      "items": [
+        "r3c5",
+        "r4c5",
+        "r5c5"
+      ],
+      "price": 224.53
+    },
+    {
+      "id": 346,
+      "bidder": "b21",
+      "items": [
+        "r4c1"
+      ],
+      "price": 81.08
+    },
+    {
+      "id": 347,
+      "bidder": "b5",
+      "items": [
+        "r6c4"
+      ],
+      "price": 72.96
+    },
+    {
+      "id": 348,
+      "bidder": "b27",
+      "items": [
+        "r4c9",
+        "r5c9"
+      ],
+      "price": 195.73
+    },
+    {
+      "id": 349,
+      "bidder": "b19",
+      "items": [
+        "r6c3",
+        "r6c4"
+      ],
+      "price": 145.84
+    },
+    {
+      "id": 350,
+      "bidder": "b18",
+      "items": [
+        "r7c7"
+      ],
+      "price": 28.7
+    },
+    {
+      "id": 351,
+      "bidder": "b3",
+      "items": [
+        "r5c0",
+        "r5c1",
+        "r6c0",
+        "r6c1"
+      ],
+      "price": 524.91
+    },
+    {
+      "id": 352,
+      "bidder": "b14",
+      "items": [
+        "r7c3",
+        "r7c4"
+      ],
+      "price": 162.79
+    },
+    {
+      "id": 353,
+      "bidder": "b25",
+      "items": [
+        "r0c8",
+        "r0c9",
+        "r1c8",
+        "r1c9",
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 641.81
+    },
+    {
+      "id": 354,
+      "bidder": "b12",
+      "items": [
+        "r7c4",
+        "r8c4"
+      ],
+      "price": 208.41
+    },
+    {
+      "id": 355,
+      "bidder": "b9",
+      "items": [
+        "r3c2",
+        "r3c3",
+        "r4c2",
+        "r4c3",
+        "r5c2",
+        "r5c3"
+      ],
+      "price": 1089.61
+    },
+    {
+      "id": 356,
+      "bidder": "b28",
+      "items": [
+        "r1c0",
+        "r2c0",
+        "r3c0"
+      ],
+      "price": 183.69
+    },
+    {
+      "id": 357,
+      "bidder": "b8",
+      "items": [
+        "r2c6",
+        "r2c7",
+        "r2c8",
+        "r3c6",
+        "r3c7",
+        "r3c8",
+        "r4c6",
+        "r4c7",
+        "r4c8"
+      ],
+      "price": 2043.37
+    },
+    {
+      "id": 358,
+      "bidder": "b28",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r1c2",
+        "r1c3",
+        "r1c4"
+      ],
+      "price": 717.93
+    },
+    {
+      "id": 359,
+      "bidder": "b22",
+      "items": [
+        "r0c3",
+        "r1c3",
+        "r2c3"
+      ],
+      "price": 162.75
+    },
+    {
+      "id": 360,
+      "bidder": "b1",
+      "items": [
+        "r2c2",
+        "r2c3",
+        "r3c2",
+        "r3c3",
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 966.08
+    },
+    {
+      "id": 361,
+      "bidder": "b15",
+      "items": [
+        "r1c6",
+        "r1c7",
+        "r1c8",
+        "r2c6",
+        "r2c7",
+        "r2c8"
+      ],
+      "price": 883.68
+    },
+    {
+      "id": 362,
+      "bidder": "b17",
+      "items": [
+        "r1c6",
+        "r2c6",
+        "r3c6"
+      ],
+      "price": 389.1
+    },
+    {
+      "id": 363,
+      "bidder": "b9",
+      "items": [
+        "r3c4"
+      ],
+      "price": 70.7
+    },
+    {
+      "id": 364,
+      "bidder": "b1",
+      "items": [
+        "r7c8"
+      ],
+      "price": 56.07
+    },
+    {
+      "id": 365,
+      "bidder": "b23",
+      "items": [
+        "r0c0",
+        "r0c1",
+        "r1c0",
+        "r1c1"
+      ],
+      "price": 528.03
+    },
+    {
+      "id": 366,
+      "bidder": "b9",
+      "items": [
+        "r8c3",
+        "r8c4",
+        "r8c5",
+        "r9c3",
+        "r9c4",
+        "r9c5"
+      ],
+      "price": 925.38
+    },
+    {
+      "id": 367,
+      "bidder": "b26",
+      "items": [
+        "r7c7",
+        "r8c7"
+      ],
+      "price": 57.19
+    },
+    {
+      "id": 368,
+      "bidder": "b16",
+      "items": [
+        "r2c4",
+        "r3c4",
+        "r4c4"
+      ],
+      "price": 338.36
+    },
+    {
+      "id": 369,
+      "bidder": "b19",
+      "items": [
+        "r8c1",
+        "r8c2",
+        "r8c3"
+      ],
+      "price": 281.53
+    },
+    {
+      "id": 370,
+      "bidder": "b16",
+      "items": [
+        "r5c0"
+      ],
+      "price": 54.1
+    },
+    {
+      "id": 371,
+      "bidder": "b19",
+      "items": [
+        "r4c6",
+        "r4c7",
+        "r4c8",
+        "r5c6",
+        "r5c7",
+        "r5c8",
+        "r6c6",
+        "r6c7",
+        "r6c8"
+      ],
+      "price": 2125.61
+    },
+    {
+      "id": 372,
+      "bidder": "b10",
+      "items": [
+        "r2c1",
+        "r2c2",
+        "r2c3",
+        "r3c1",
+        "r3c2",
+        "r3c3",
+        "r4c1",
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 1707.76
+    },
+    {
+      "id": 373,
+      "bidder": "b18",
+      "items": [
+        "r9c5"
+      ],
+      "price": 32.03
+    },
+    {
+      "id": 374,
+      "bidder": "b22",
+      "items": [
+        "r3c9",
+        "r4c9"
+      ],
+      "price": 194.12
+    },
+    {
+      "id": 375,
+      "bidder": "b1",
+      "items": [
+        "r0c0",
+        "r0c1"
+      ],
+      "price": 248.75
+    },
+    {
+      "id": 376,
+      "bidder": "b24",
+      "items": [
+        "r6c2",
+        "r6c3",
+        "r7c2",
+        "r7c3",
+        "r8c2",
+        "r8c3"
+      ],
+      "price": 850.84
+    },
+    {
+      "id": 377,
+      "bidder": "b22",
+      "items": [
+        "r6c1",
+        "r6c2",
+        "r6c3"
+      ],
+      "price": 196.76
+    },
+    {
+      "id": 378,
+      "bidder": "b10",
+      "items": [
+        "r8c3",
+        "r8c4",
+        "r8c5"
+      ],
+      "price": 310.8
+    },
+    {
+      "id": 379,
+      "bidder": "b3",
+      "items": [
+        "r5c7",
+        "r5c8",
+        "r6c7",
+        "r6c8"
+      ],
+      "price": 453.61
+    },
+    {
+      "id": 380,
+      "bidder": "b23",
+      "items": [
+        "r7c3",
+        "r7c4",
+        "r8c3",
+        "r8c4",
+        "r9c3",
+        "r9c4"
+      ],
+      "price": 1090.29
+    },
+    {
+      "id": 381,
+      "bidder": "b10",
+      "items": [
+        "r0c9",
+        "r1c9",
+        "r2c9"
+      ],
+      "price": 177.44
+    },
+    {
+      "id": 382,
+      "bidder": "b23",
+      "items": [
+        "r6c6",
+        "r7c6",
+        "r8c6"
+      ],
+      "price": 330.9
+    },
+    {
+      "id": 383,
+      "bidder": "b13",
+      "items": [
+        "r4c6",
+        "r4c7",
+        "r5c6",
+        "r5c7",
+        "r6c6",
+        "r6c7"
+      ],
+      "price": 1051.34
+    },
+    {
+      "id": 384,
+      "bidder": "b24",
+      "items": [
+        "r0c0",
+        "r0c1"
+      ],
+      "price": 248.75
+    },
+    {
+      "id": 385,
+      "bidder": "b5",
+      "items": [
+        "r5c3",
+        "r5c4",
+        "r5c5",
+        "r6c3",
+        "r6c4",
+        "r6c5",
+        "r7c3",
+        "r7c4",
+        "r7c5"
+      ],
+      "price": 1840.81
+    },
+    {
+      "id": 386,
+      "bidder": "b6",
+      "items": [
+        "r5c4",
+        "r5c5",
+        "r5c6"
+      ],
+      "price": 355.65
+    },
+    {
+      "id": 387,
+      "bidder": "b29",
+      "items": [
+        "r1c5",
+        "r2c5"
+      ],
+      "price": 246.73
+    },
+    {
+      "id": 388,
+      "bidder": "b21",
+      "items": [
+        "r2c2",
+        "r2c3",
+        "r3c2",
+        "r3c3",
+        "r4c2",
+        "r4c3"
+      ],
+      "price": 966.08
+    },
+    {
+      "id": 389,
+      "bidder": "b8",
+      "items": [
+        "r8c8",
+        "r8c9",
+        "r9c8",
+        "r9c9"
+      ],
+      "price": 429.27
+    },
+    {
+      "id": 390,
+      "bidder": "b28",
+      "items": [
+        "r4c5",
+        "r4c6",
+        "r5c5",
+        "r5c6",
+        "r6c5",
+        "r6c6"
+      ],
+      "price": 998.64
+    },
+    {
+      "id": 391,
+      "bidder": "b16",
+      "items": [
+        "r7c6",
+        "r7c7",
+        "r7c8",
+        "r8c6",
+        "r8c7",
+        "r8c8",
+        "r9c6",
+        "r9c7",
+        "r9c8"
+      ],
+      "price": 1530.61
+    },
+    {
+      "id": 392,
+      "bidder": "b26",
+      "items": [
+        "r6c1",
+        "r7c1"
+      ],
+      "price": 165.56
+    },
+    {
+      "id": 393,
+      "bidder": "b16",
+      "items": [
+        "r5c6"
+      ],
+      "price": 90.97
+    },
+    {
+      "id": 394,
+      "bidder": "b15",
+      "items": [
+        "r1c6",
+        "r1c7",
+        "r1c8",
+        "r2c6",
+        "r2c7",
+        "r2c8",
+        "r3c6",
+        "r3c7",
+        "r3c8"
+      ],
+      "price": 2045.78
+    },
+    {
+      "id": 395,
+      "bidder": "b12",
+      "items": [
+        "r4c7",
+        "r4c8",
+        "r4c9",
+        "r5c7",
+        "r5c8",
+        "r5c9"
+      ],
+      "price": 972.59
+    },
+    {
+      "id": 396,
+      "bidder": "b0",
+      "items": [
+        "r5c6",
+        "r5c7",
+        "r6c6",
+        "r6c7",
+        "r7c6",
+        "r7c7"
+      ],
+      "price": 837.7
+    },
+    {
+      "id": 397,
+      "bidder": "b29",
+      "items": [
+        "r1c0",
+        "r2c0",
+        "r3c0"
+      ],
+      "price": 183.69
+    },
+    {
+      "id": 398,
+      "bidder": "b5",
+      "items": [
+        "r0c4",
+        "r0c5",
+        "r1c4",
+        "r1c5",
+        "r2c4",
+        "r2c5"
+      ],
+      "price": 1176.25
+    },
+    {
+      "id": 399,
+      "bidder": "b27",
+      "items": [
+        "r6c4",
+        "r6c5",
+        "r6c6"
+      ],
+      "price": 303.4
+    },
+    {
+      "id": 400,
+      "bidder": "b12",
+      "items": [
+        "r6c8",
+        "r7c8",
+        "r8c8"
+      ],
+      "price": 346.97
+    },
+    {
+      "id": 401,
+      "bidder": "b8",
+      "items": [
+        "r6c4",
+        "r6c5",
+        "r7c4",
+        "r7c5",
+        "r8c4",
+        "r8c5"
+      ],
+      "price": 870.91
+    },
+    {
+      "id": 402,
+      "bidder": "b0",
+      "items": [
+        "r4c0",
+        "r5c0"
+      ],
+      "price": 172.59
+    },
+    {
+      "id": 403,
+      "bidder": "b7",
+      "items": [
+        "r2c5"
+      ],
+      "price": 90.26
+    },
+    {
+      "id": 404,
+      "bidder": "b27",
+      "items": [
+        "r3c5",
+        "r3c6",
+        "r3c7",
+        "r4c5",
+        "r4c6",
+        "r4c7"
+      ],
+      "price": 938.07
+    },
+    {
+      "id": 405,
+      "bidder": "b13",
+      "items": [
+        "r0c0",
+        "r1c0",
+        "r2c0"
+      ],
+      "price": 274.54
+    },
+    {
+      "id": 406,
+      "bidder": "b4",
+      "items": [
+        "r1c6",
+        "r1c7"
+      ],
+      "price": 200.75
+    },
+    {
+      "id": 407,
+      "bidder": "b10",
+      "items": [
+        "r3c6",
+        "r3c7"
+      ],
+      "price": 223.77
+    },
+    {
+      "id": 408,
+      "bidder": "b2",
+      "items": [
+        "r6c5",
+        "r6c6",
+        "r7c5",
+        "r7c6",
+        "r8c5",
+        "r8c6"
+      ],
+      "price": 804.75
+    },
+    {
+      "id": 409,
+      "bidder": "b3",
+      "items": [
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 56.42
+    },
+    {
+      "id": 410,
+      "bidder": "b22",
+      "items": [
+        "r7c4",
+        "r7c5",
+        "r8c4",
+        "r8c5"
+      ],
+      "price": 475.87
+    },
+    {
+      "id": 411,
+      "bidder": "b28",
+      "items": [
+        "r6c7",
+        "r7c7",
+        "r8c7"
+      ],
+      "price": 125.0
+    },
+    {
+      "id": 412,
+      "bidder": "b8",
+      "items": [
+        "r4c3",
+        "r4c4",
+        "r5c3",
+        "r5c4",
+        "r6c3",
+        "r6c4"
+      ],
+      "price": 1084.33
+    },
+    {
+      "id": 413,
+      "bidder": "b23",
+      "items": [
+        "r0c4",
+        "r0c5",
+        "r1c4",
+        "r1c5"
+      ],
+      "price": 638.47
+    },
+    {
+      "id": 414,
+      "bidder": "b17",
+      "items": [
+        "r5c3",
+        "r5c4",
+        "r6c3",
+        "r6c4"
+      ],
+      "price": 453.86
+    },
+    {
+      "id": 415,
+      "bidder": "b19",
+      "items": [
+        "r0c1",
+        "r0c2",
+        "r1c1",
+        "r1c2",
+        "r2c1",
+        "r2c2"
+      ],
+      "price": 619.3
+    },
+    {
+      "id": 416,
+      "bidder": "b4",
+      "items": [
+        "r5c4"
+      ],
+      "price": 41.85
+    },
+    {
+      "id": 417,
+      "bidder": "b27",
+      "items": [
+        "r3c1",
+        "r4c1",
+        "r5c1"
+      ],
+      "price": 314.58
+    },
+    {
+      "id": 418,
+      "bidder": "b4",
+      "items": [
+        "r7c5",
+        "r7c6",
+        "r8c5",
+        "r8c6",
+        "r9c5",
+        "r9c6"
+      ],
+      "price": 665.54
+    },
+    {
+      "id": 419,
+      "bidder": "b17",
+      "items": [
+        "r3c1"
+      ],
+      "price": 22.3
+    },
+    {
+      "id": 420,
+      "bidder": "b10",
+      "items": [
+        "r7c7",
+        "r7c8",
+        "r8c7",
+        "r8c8",
+        "r9c7",
+        "r9c8"
+      ],
+      "price": 765.35
+    },
+    {
+      "id": 421,
+      "bidder": "b22",
+      "items": [
+        "r5c4",
+        "r5c5",
+        "r5c6",
+        "r6c4",
+        "r6c5",
+        "r6c6",
+        "r7c4",
+        "r7c5",
+        "r7c6"
+      ],
+      "price": 1977.15
+    },
+    {
+      "id": 422,
+      "bidder": "b5",
+      "items": [
+        "r0c6",
+        "r0c7",
+        "r1c6",
+        "r1c7"
+      ],
+      "price": 498.62
+    },
+    {
+      "id": 423,
+      "bidder": "b27",
+      "items": [
+        "r2c3",
+        "r2c4",
+        "r3c3",
+        "r3c4",
+        "r4c3",
+        "r4c4"
+      ],
+      "price": 1120.77
+    },
+    {
+      "id": 424,
+      "bidder": "b20",
+      "items": [
+        "r6c4",
+        "r6c5",
+        "r6c6",
+        "r7c4",
+        "r7c5",
+        "r7c6"
+      ],
+      "price": 898.08
+    },
+    {
+      "id": 425,
+      "bidder": "b15",
+      "items": [
+        "r5c6",
+        "r5c7"
+      ],
+      "price": 185.2
+    },
+    {
+      "id": 426,
+      "bidder": "b23",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r1c2",
+        "r1c3",
+        "r1c4",
+        "r2c2",
+        "r2c3",
+        "r2c4"
+      ],
+      "price": 1434.38
+    },
+    {
+      "id": 427,
+      "bidder": "b26",
+      "items": [
+        "r8c3",
+        "r8c4",
+        "r8c5",
+        "r9c3",
+        "r9c4",
+        "r9c5"
+      ],
+      "price": 925.38
+    },
+    {
+      "id": 428,
+      "bidder": "b19",
+      "items": [
+        "r5c8",
+        "r5c9",
+        "r6c8",
+        "r6c9",
+        "r7c8",
+        "r7c9"
+      ],
+      "price": 1084.88
+    },
+    {
+      "id": 429,
+      "bidder": "b7",
+      "items": [
+        "r2c4",
+        "r2c5",
+        "r2c6",
+        "r3c4",
+        "r3c5",
+        "r3c6"
+      ],
+      "price": 948.18
+    },
+    {
+      "id": 430,
+      "bidder": "b19",
+      "items": [
+        "r1c0",
+        "r2c0",
+        "r3c0"
+      ],
+      "price": 183.69
+    },
+    {
+      "id": 431,
+      "bidder": "b23",
+      "items": [
+        "r7c0",
+        "r7c1",
+        "r7c2",
+        "r8c0",
+        "r8c1",
+        "r8c2",
+        "r9c0",
+        "r9c1",
+        "r9c2"
+      ],
+      "price": 1803.94
+    },
+    {
+      "id": 432,
+      "bidder": "b29",
+      "items": [
+        "r0c1",
+        "r1c1",
+        "r2c1"
+      ],
+      "price": 211.25
+    },
+    {
+      "id": 433,
+      "bidder": "b18",
+      "items": [
+        "r2c6",
+        "r2c7",
+        "r3c6",
+        "r3c7",
+        "r4c6",
+        "r4c7"
+      ],
+      "price": 1105.29
+    },
+    {
+      "id": 434,
+      "bidder": "b6",
+      "items": [
+        "r4c6",
+        "r4c7",
+        "r4c8",
+        "r5c6",
+        "r5c7",
+        "r5c8",
+        "r6c6",
+        "r6c7",
+        "r6c8"
+      ],
+      "price": 2125.61
+    },
+    {
+      "id": 435,
+      "bidder": "b11",
+      "items": [
+        "r0c7",
+        "r0c8",
+        "r0c9"
+      ],
+      "price": 267.01
+    },
+    {
+      "id": 436,
+      "bidder": "b27",
+      "items": [
+        "r2c2",
+        "r2c3"
+      ],
+      "price": 117.65
+    },
+    {
+      "id": 437,
+      "bidder": "b8",
+      "items": [
+        "r7c3",
+        "r8c3",
+        "r9c3"
+      ],
+      "price": 302.31
+    },
+    {
+      "id": 438,
+      "bidder": "b11",
+      "items": [
+        "r4c0"
+      ],
+      "price": 78.66
+    },
+    {
+      "id": 439,
+      "bidder": "b4",
+      "items": [
+        "r1c1",
+        "r1c2",
+        "r2c1",
+        "r2c2"
+      ],
+      "price": 260.92
+    },
+    {
+      "id": 440,
+      "bidder": "b7",
+      "items": [
+        "r3c6",
+        "r3c7",
+        "r4c6",
+        "r4c7",
+        "r5c6",
+        "r5c7"
+      ],
+      "price": 1167.04
+    },
+    {
+      "id": 441,
+      "bidder": "b19",
+      "items": [
+        "r7c3",
+        "r8c3",
+        "r9c3"
+      ],
+      "price": 302.31
+    },
+    {
+      "id": 442,
+      "bidder": "b3",
+      "items": [
+        "r1c5",
+        "r1c6",
+        "r1c7"
+      ],
+      "price": 406.33
+    },
+    {
+      "id": 443,
+      "bidder": "b25",
+      "items": [
+        "r5c7"
+      ],
+      "price": 51.49
+    },
+    {
+      "id": 444,
+      "bidder": "b12",
+      "items": [
+        "r7c8",
+        "r8c8"
+      ],
+      "price": 162.28
+    },
+    {
+      "id": 445,
+      "bidder": "b9",
+      "items": [
+        "r1c0",
+        "r1c1",
+        "r1c2",
+        "r2c0",
+        "r2c1",
+        "r2c2",
+        "r3c0",
+        "r3c1",
+        "r3c2"
+      ],
+      "price": 1123.2
+    },
+    {
+      "id": 446,
+      "bidder": "b17",
+      "items": [
+        "r5c8",
+        "r6c8",
+        "r7c8"
+      ],
+      "price": 334.7
+    },
+    {
+      "id": 447,
+      "bidder": "b8",
+      "items": [
+        "r3c6"
+      ],
+      "price": 90.42
+    },
+    {
+      "id": 448,
+      "bidder": "b24",
+      "items": [
+        "r2c4",
+        "r2c5",
+        "r3c4",
+        "r3c5"
+      ],
+      "price": 439.91
+    },
+    {
+      "id": 449,
+      "bidder": "b23",
+      "items": [
+        "r8c7",
+        "r8c8"
+      ],
+      "price": 109.27
+    },
+    {
+      "id": 450,
+      "bidder": "b5",
+      "items": [
+        "r8c1",
+        "r8c2",
+        "r9c1",
+        "r9c2"
+      ],
+      "price": 397.06
+    },
+    {
+      "id": 451,
+      "bidder": "b5",
+      "items": [
+        "r6c5",
+        "r6c6",
+        "r6c7",
+        "r7c5",
+        "r7c6",
+        "r7c7",
+        "r8c5",
+        "r8c6",
+        "r8c7"
+      ],
+      "price": 1360.08
+    },
+    {
+      "id": 452,
+      "bidder": "b2",
+      "items": [
+        "r7c6",
+        "r7c7",
+        "r8c6",
+        "r8c7",
+        "r9c6",
+        "r9c7"
+      ],
+      "price": 693.21
+    },
+    {
+      "id": 453,
+      "bidder": "b26",
+      "items": [
+        "r1c7",
+        "r2c7",
+        "r3c7"
+      ],
+      "price": 321.81
+    },
+    {
+      "id": 454,
+      "bidder": "b15",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r1c2",
+        "r1c3",
+        "r1c4"
+      ],
+      "price": 717.93
+    },
+    {
+      "id": 455,
+      "bidder": "b8",
+      "items": [
+        "r6c5",
+        "r6c6",
+        "r7c5",
+        "r7c6",
+        "r8c5",
+        "r8c6"
+      ],
+      "price": 804.75
+    },
+    {
+      "id": 456,
+      "bidder": "b28",
+      "items": [
+        "r5c4",
+        "r5c5",
+        "r5c6",
+        "r6c4",
+        "r6c5",
+        "r6c6",
+        "r7c4",
+        "r7c5",
+        "r7c6"
+      ],
+      "price": 1977.15
+    },
+    {
+      "id": 457,
+      "bidder": "b19",
+      "items": [
+        "r7c6",
+        "r7c7",
+        "r7c8",
+        "r8c6",
+        "r8c7",
+        "r8c8",
+        "r9c6",
+        "r9c7",
+        "r9c8"
+      ],
+      "price": 1530.61
+    },
+    {
+      "id": 458,
+      "bidder": "b14",
+      "items": [
+        "r2c2",
+        "r2c3",
+        "r2c4",
+        "r3c2",
+        "r3c3",
+        "r3c4",
+        "r4c2",
+        "r4c3",
+        "r4c4"
+      ],
+      "price": 2032.89
+    },
+    {
+      "id": 459,
+      "bidder": "b7",
+      "items": [
+        "r3c1",
+        "r4c1",
+        "r5c1"
+      ],
+      "price": 314.58
+    },
+    {
+      "id": 460,
+      "bidder": "b2",
+      "items": [
+        "r1c6",
+        "r1c7"
+      ],
+      "price": 200.75
+    },
+    {
+      "id": 461,
+      "bidder": "b18",
+      "items": [
+        "r5c6",
+        "r6c6"
+      ],
+      "price": 237.49
+    },
+    {
+      "id": 462,
+      "bidder": "b5",
+      "items": [
+        "r6c6"
+      ],
+      "price": 91.71
+    },
+    {
+      "id": 463,
+      "bidder": "b20",
+      "items": [
+        "r8c4"
+      ],
+      "price": 91.69
+    },
+    {
+      "id": 464,
+      "bidder": "b26",
+      "items": [
+        "r1c2"
+      ],
+      "price": 48.76
+    },
+    {
+      "id": 465,
+      "bidder": "b7",
+      "items": [
+        "r3c1",
+        "r3c2",
+        "r3c3"
+      ],
+      "price": 284.97
+    },
+    {
+      "id": 466,
+      "bidder": "b11",
+      "items": [
+        "r5c0"
+      ],
+      "price": 54.1
+    },
+    {
+      "id": 467,
+      "bidder": "b17",
+      "items": [
+        "r2c5",
+        "r2c6",
+        "r2c7",
+        "r3c5",
+        "r3c6",
+        "r3c7",
+        "r4c5",
+        "r4c6",
+        "r4c7"
+      ],
+      "price": 1983.05
+    },
+    {
+      "id": 468,
+      "bidder": "b2",
+      "items": [
+        "r4c3",
+        "r4c4",
+        "r4c5",
+        "r5c3",
+        "r5c4",
+        "r5c5",
+        "r6c3",
+        "r6c4",
+        "r6c5"
+      ],
+      "price": 1946.98
+    },
+    {
+      "id": 469,
+      "bidder": "b5",
+      "items": [
+        "r3c7",
+        "r4c7",
+        "r5c7"
+      ],
+      "price": 332.1
+    },
+    {
+      "id": 470,
+      "bidder": "b2",
+      "items": [
+        "r6c4",
+        "r6c5",
+        "r6c6",
+        "r7c4",
+        "r7c5",
+        "r7c6",
+        "r8c4",
+        "r8c5",
+        "r8c6"
+      ],
+      "price": 1887.6
+    },
+    {
+      "id": 471,
+      "bidder": "b25",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r0c4",
+        "r1c2",
+        "r1c3",
+        "r1c4"
+      ],
+      "price": 717.93
+    },
+    {
+      "id": 472,
+      "bidder": "b29",
+      "items": [
+        "r1c5",
+        "r2c5",
+        "r3c5"
+      ],
+      "price": 345.86
+    },
+    {
+      "id": 473,
+      "bidder": "b1",
+      "items": [
+        "r0c6",
+        "r0c7",
+        "r0c8",
+        "r1c6",
+        "r1c7",
+        "r1c8"
+      ],
+      "price": 942.5
+    },
+    {
+      "id": 474,
+      "bidder": "b4",
+      "items": [
+        "r5c7",
+        "r5c8"
+      ],
+      "price": 146.36
+    },
+    {
+      "id": 475,
+      "bidder": "b4",
+      "items": [
+        "r1c8",
+        "r1c9"
+      ],
+      "price": 109.43
+    },
+    {
+      "id": 476,
+      "bidder": "b19",
+      "items": [
+        "r0c7"
+      ],
+      "price": 37.73
+    },
+    {
+      "id": 477,
+      "bidder": "b16",
+      "items": [
+        "r7c7",
+        "r7c8",
+        "r7c9",
+        "r8c7",
+        "r8c8",
+        "r8c9"
+      ],
+      "price": 743.69
+    },
+    {
+      "id": 478,
+      "bidder": "b16",
+      "items": [
+        "r4c9",
+        "r5c9"
+      ],
+      "price": 195.73
+    },
+    {
+      "id": 479,
+      "bidder": "b18",
+      "items": [
+        "r1c0",
+        "r2c0"
+      ],
+      "price": 98.2
+    },
+    {
+      "id": 480,
+      "bidder": "b15",
+      "items": [
+        "r5c0",
+        "r6c0",
+        "r7c0"
+      ],
+      "price": 360.65
+    },
+    {
+      "id": 481,
+      "bidder": "b11",
+      "items": [
+        "r9c2"
+      ],
+      "price": 19.56
+    },
+    {
+      "id": 482,
+      "bidder": "b13",
+      "items": [
+        "r5c2",
+        "r5c3",
+        "r5c4",
+        "r6c2",
+        "r6c3",
+        "r6c4",
+        "r7c2",
+        "r7c3",
+        "r7c4"
+      ],
+      "price": 1715.36
+    },
+    {
+      "id": 483,
+      "bidder": "b3",
+      "items": [
+        "r1c1",
+        "r1c2",
+        "r1c3",
+        "r2c1",
+        "r2c2",
+        "r2c3"
+      ],
+      "price": 553.51
+    },
+    {
+      "id": 484,
+      "bidder": "b6",
+      "items": [
+        "r0c4",
+        "r1c4",
+        "r2c4"
+      ],
+      "price": 327.15
+    },
+    {
+      "id": 485,
+      "bidder": "b22",
+      "items": [
+        "r0c6",
+        "r0c7",
+        "r0c8"
+      ],
+      "price": 276.07
+    },
+    {
+      "id": 486,
+      "bidder": "b13",
+      "items": [
+        "r7c7",
+        "r7c8"
+      ],
+      "price": 110.21
+    },
+    {
+      "id": 487,
+      "bidder": "b29",
+      "items": [
+        "r0c3",
+        "r0c4",
+        "r0c5"
+      ],
+      "price": 286.51
+    },
+    {
+      "id": 488,
+      "bidder": "b14",
+      "items": [
+        "r5c2",
+        "r5c3",
+        "r6c2",
+        "r6c3",
+        "r7c2",
+        "r7c3"
+      ],
+      "price": 802.69
+    },
+    {
+      "id": 489,
+      "bidder": "b22",
+      "items": [
+        "r5c1",
+        "r5c2",
+        "r6c1",
+        "r6c2",
+        "r7c1",
+        "r7c2"
+      ],
+      "price": 902.52
+    },
+    {
+      "id": 490,
+      "bidder": "b11",
+      "items": [
+        "r1c1",
+        "r2c1"
+      ],
+      "price": 47.74
+    },
+    {
+      "id": 491,
+      "bidder": "b12",
+      "items": [
+        "r0c2",
+        "r0c3",
+        "r1c2",
+        "r1c3",
+        "r2c2",
+        "r2c3"
+      ],
+      "price": 543.52
+    },
+    {
+      "id": 492,
+      "bidder": "b24",
+      "items": [
+        "r4c7",
+        "r4c8",
+        "r5c7",
+        "r5c8"
+      ],
+      "price": 453.1
+    },
+    {
+      "id": 493,
+      "bidder": "b19",
+      "items": [
+        "r9c5"
+      ],
+      "price": 32.03
+    },
+    {
+      "id": 494,
+      "bidder": "b26",
+      "items": [
+        "r2c4",
+        "r2c5",
+        "r2c6",
+        "r3c4",
+        "r3c5",
+        "r3c6",
+        "r4c4",
+        "r4c5",
+        "r4c6"
+      ],
+      "price": 1965.91
+    },
+    {
+      "id": 495,
+      "bidder": "b10",
+      "items": [
+        "r0c6",
+        "r1c6"
+      ],
+      "price": 215.44
+    },
+    {
+      "id": 496,
+      "bidder": "b6",
+      "items": [
+        "r1c8",
+        "r1c9",
+        "r2c8",
+        "r2c9"
+      ],
+      "price": 242.4
+    },
+    {
+      "id": 497,
+      "bidder": "b24",
+      "items": [
+        "r5c4",
+        "r5c5",
+        "r6c4",
+        "r6c5"
+      ],
+      "price": 435.51
+    },
+    {
+      "id": 498,
+      "bidder": "b12",
+      "items": [
+        "r4c6",
+        "r5c6"
+      ],
+      "price": 219.48
+    },
+    {
+      "id": 499,
+      "bidder": "b11",
+      "items": [
+        "r7c2"
+      ],
+      "price": 55.38
+    }
+  ],
+  "budget": {
+    "global": null,
+    "per_bidder": {}
+  },
+  "xor_groups": [
+    [
+      0,
+      83,
+      111,
+      123,
+      140,
+      170,
+      179,
+      180,
+      188,
+      273,
+      291,
+      360,
+      364,
+      375,
+      473
+    ],
+    [
+      1,
+      10,
+      23,
+      121,
+      126,
+      164,
+      168,
+      171,
+      205,
+      230,
+      270,
+      290,
+      403,
+      429,
+      440,
+      459,
+      465
+    ],
+    [
+      2,
+      40,
+      48,
+      79,
+      100,
+      157,
+      193,
+      243,
+      259,
+      325,
+      408,
+      452,
+      460,
+      468,
+      470
+    ],
+    [
+      3,
+      20,
+      65,
+      71,
+      92,
+      97,
+      134,
+      202,
+      214,
+      237,
+      248,
+      357,
+      389,
+      401,
+      412,
+      437,
+      447,
+      455
+    ],
+    [
+      4,
+      18,
+      31,
+      38,
+      41,
+      47,
+      173,
+      186,
+      276,
+      314,
+      319,
+      321,
+      359,
+      374,
+      377,
+      410,
+      421,
+      485,
+      489
+    ],
+    [
+      5,
+      33,
+      49,
+      66,
+      93,
+      104,
+      132,
+      182,
+      190,
+      229,
+      249,
+      296,
+      353,
+      443,
+      471
+    ],
+    [
+      6,
+      43,
+      59,
+      69,
+      86,
+      96,
+      212,
+      238,
+      246,
+      256,
+      286,
+      299,
+      331,
+      435,
+      438,
+      466,
+      481,
+      490,
+      499
+    ],
+    [
+      7,
+      103,
+      107,
+      156,
+      184,
+      298,
+      372,
+      378,
+      381,
+      407,
+      420,
+      495
+    ],
+    [
+      8,
+      26,
+      60,
+      101,
+      112,
+      176,
+      192,
+      251,
+      265,
+      272,
+      327,
+      362,
+      414,
+      419,
+      446,
+      467
+    ],
+    [
+      9,
+      12,
+      21,
+      24,
+      42,
+      70,
+      95,
+      136,
+      177,
+      227,
+      264,
+      304,
+      324,
+      342,
+      376,
+      384,
+      448,
+      492,
+      497
+    ],
+    [
+      11,
+      30,
+      35,
+      63,
+      76,
+      99,
+      122,
+      155,
+      174,
+      199,
+      222,
+      223,
+      232,
+      271,
+      277,
+      301,
+      310,
+      313,
+      330,
+      396,
+      402
+    ],
+    [
+      13,
+      50,
+      52,
+      75,
+      109,
+      119,
+      131,
+      241,
+      247,
+      250,
+      263,
+      268,
+      289,
+      406,
+      416,
+      418,
+      439,
+      474,
+      475
+    ],
+    [
+      14,
+      78,
+      80,
+      110,
+      141,
+      153,
+      175,
+      200,
+      215,
+      281,
+      311,
+      339,
+      345,
+      424,
+      463
+    ],
+    [
+      15,
+      67,
+      73,
+      85,
+      118,
+      124,
+      135,
+      142,
+      165,
+      178,
+      185,
+      209,
+      233,
+      254,
+      257,
+      267,
+      269,
+      300,
+      307,
+      346,
+      388
+    ],
+    [
+      16,
+      46,
+      54,
+      74,
+      87,
+      91,
+      108,
+      143,
+      159,
+      240,
+      278,
+      292,
+      343,
+      347,
+      385,
+      398,
+      422,
+      450,
+      451,
+      462,
+      469
+    ],
+    [
+      17,
+      25,
+      53,
+      62,
+      81,
+      82,
+      84,
+      172,
+      183,
+      194,
+      197,
+      206,
+      279,
+      285,
+      341,
+      368,
+      370,
+      391,
+      393,
+      477,
+      478
+    ],
+    [
+      19,
+      28,
+      29,
+      68,
+      77,
+      94,
+      137,
+      158,
+      163,
+      228,
+      258,
+      283,
+      293,
+      305,
+      320,
+      350,
+      373,
+      433,
+      461,
+      479
+    ],
+    [
+      22,
+      105,
+      144,
+      148,
+      187,
+      210,
+      213,
+      260,
+      261,
+      282,
+      287,
+      303,
+      333,
+      383,
+      405,
+      482,
+      486
+    ],
+    [
+      27,
+      138,
+      139,
+      147,
+      211,
+      219,
+      225,
+      252,
+      253,
+      255,
+      284,
+      309,
+      365,
+      380,
+      382,
+      413,
+      426,
+      431,
+      449
+    ],
+    [
+      32,
+      129,
+      191,
+      217,
+      312,
+      315,
+      335,
+      340,
+      351,
+      379,
+      409,
+      442,
+      483
+    ],
+    [
+      34,
+      51,
+      56,
+      115,
+      117,
+      151,
+      196,
+      245,
+      275,
+      329,
+      352,
+      458,
+      488
+    ],
+    [
+      36,
+      89,
+      116,
+      160,
+      195,
+      204,
+      208,
+      235,
+      262,
+      328,
+      336,
+      387,
+      397,
+      432,
+      472,
+      487
+    ],
+    [
+      37,
+      106,
+      146,
+      306,
+      316,
+      318,
+      332,
+      386,
+      434,
+      484,
+      496
+    ],
+    [
+      39,
+      61,
+      64,
+      88,
+      90,
+      98,
+      221,
+      224,
+      288,
+      317,
+      344,
+      356,
+      358,
+      390,
+      411,
+      456
+    ],
+    [
+      44,
+      125,
+      133,
+      161,
+      198,
+      201,
+      220,
+      239,
+      280,
+      334,
+      361,
+      394,
+      425,
+      454,
+      480
+    ],
+    [
+      45,
+      120,
+      166,
+      169,
+      266,
+      308,
+      337,
+      367,
+      392,
+      427,
+      453,
+      464,
+      494
+    ],
+    [
+      55,
+      149,
+      154,
+      162,
+      207,
+      234,
+      348,
+      399,
+      404,
+      417,
+      423,
+      436
+    ],
+    [
+      57,
+      58,
+      113,
+      114,
+      130,
+      167,
+      216,
+      231,
+      274,
+      295,
+      302,
+      338,
+      354,
+      395,
+      400,
+      444,
+      491,
+      498
+    ],
+    [
+      72,
+      127,
+      128,
+      150,
+      181,
+      203,
+      218,
+      236,
+      294,
+      349,
+      369,
+      371,
+      415,
+      428,
+      430,
+      441,
+      457,
+      476,
+      493
+    ],
+    [
+      102,
+      145,
+      152,
+      189,
+      226,
+      242,
+      244,
+      297,
+      322,
+      323,
+      326,
+      355,
+      363,
+      366,
+      445
+    ]
+  ]
+}
