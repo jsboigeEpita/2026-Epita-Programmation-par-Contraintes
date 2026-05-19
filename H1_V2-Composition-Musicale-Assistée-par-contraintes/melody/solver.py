@@ -82,18 +82,25 @@ def build_model(
 
     # C4. Sauts melodiques bornes : |pitch[t+1] - pitch[t]| <= max_interval.
     #     Empeche les melodies "en zigzag" injouables.
+    # C5. Pas de note identique consecutive : |pitch[t+1] - pitch[t]| >= 1.
+    # C6. Interdiction du TRITON (saut de 6 demi-tons).
+    #     Le triton (ex: Do -> Fa#) est l'intervalle le plus dissonant
+    #     de la musique tonale. Au Moyen Age on l'appelait "diabolus in musica"
+    #     (le diable en musique) car il sonne tellement faux qu'il etait
+    #     interdit dans la musique liturgique. On le banit donc explicitement.
     for t in range(n_notes - 1):
         diff = model.NewIntVar(-24, 24, f"diff_{t}")
         model.Add(diff == pitch[t + 1] - pitch[t])
         # AddAbsEquality : abs_diff vaut |diff|
         abs_diff = model.NewIntVar(0, 24, f"abs_diff_{t}")
         model.AddAbsEquality(abs_diff, diff)
+
+        # C4 : sauts bornes
         model.Add(abs_diff <= max_interval)
-        # On interdit aussi de rester strictement sur la meme note.
-        # Sans ca, le solveur pourrait repeter une note 16 fois (valide
-        # mais inecoutable). On laissera la possibilite via une soft
-        # constraint plus loin si on veut autoriser les repetitions.
+        # C5 : pas deux notes consecutives identiques
         model.Add(abs_diff >= 1)
+        # C6 : interdiction du triton
+        model.Add(abs_diff != 6)
 
     return model, pitch
 
@@ -255,6 +262,112 @@ def add_soft_direction_changes(model, pitch, weight: int) -> list:
     return costs
 
 
+def add_soft_strong_beat_consonance(model, pitch, weight: int,
+                                    scale_name: str = "C_major") -> list:
+    """
+    Soft constraint : "favoriser les notes consonantes sur les temps forts".
+
+    En musique classique, les temps forts (1er et 3e temps d'une mesure 4/4)
+    sont les moments OU L'OREILLE attend une note stable. On y favorise donc
+    les notes consonantes : la tonique (I), la mediante (III) et la dominante (V),
+    qui forment ensemble l'accord parfait de la gamme (Do-Mi-Sol en Do majeur).
+
+    Sur chaque temps fort (positions 0, 2, 4, 6, 8, ...), on paye un cout si
+    la note n'est PAS I, III ou V.
+
+    Pourquoi c'est interessant a presenter :
+    - Cette contrainte modelise la "pesanteur metrique" : les temps forts
+      portent plus de poids harmonique que les temps faibles.
+    - On peut tout a fait avoir une note dissonante sur un temps fort dans
+      certains styles (jazz), d'ou le choix de soft plutot que hard.
+
+    Note : on assume une metrique 4/4 implicite ou chaque "noire" du solveur
+    correspond a un temps de la mesure. Les temps forts sont donc les
+    positions paires (0, 2, 4, ...).
+    """
+    from melody.music_theory import SCALES
+
+    # Pitch classes des degres I, III, V (= la triade)
+    pcs = SCALES[scale_name]["pcs"]
+    triad_pcs = [pcs[0], pcs[2], pcs[4]]   # I, III, V
+
+    # Liste des hauteurs MIDI dont le pc est dans la triade
+    triad_pitches = [p for p in range(0, 128) if p % 12 in triad_pcs]
+
+    costs = []
+    for t in range(0, len(pitch), 2):     # positions paires uniquement
+        # is_on_triad = 1 si pitch[t] appartient a la triade
+        is_on_triad = model.NewBoolVar(f"triad_{t}")
+        # On exprime ca avec AddAllowedAssignments sur la variable.
+        # Astuce : on cree une variable indicatrice via un BoolVar et
+        # une contrainte "if-then" classique.
+        model.AddAllowedAssignments(
+            [pitch[t]], [(p,) for p in triad_pitches]
+        ).OnlyEnforceIf(is_on_triad)
+        # Si is_on_triad = 0, le pitch peut etre n'importe quoi (le solveur
+        # choisira la valeur qui minimise le cout total)
+        # On veut : cost = weight si is_on_triad == 0, sinon 0
+        cost = model.NewIntVar(0, weight, f"triad_cost_{t}")
+        model.Add(cost == weight * (1 - is_on_triad))
+        costs.append(cost)
+    return costs
+
+
+def add_soft_arch_contour(model, pitch, weight: int) -> list:
+    """
+    Soft constraint : "favoriser un contour melodique en arche".
+
+    Une melodie "naturelle" a souvent un contour en arche : elle monte
+    progressivement vers un sommet (la "note culminante", typiquement
+    aux 2/3 de la melodie), puis redescend vers la tonique finale.
+    C'est un principe esthetique classique (regle des "trois quarts").
+
+    On modelise ca simplement : on veut que la note la plus aigue de la
+    melodie soit dans la 2e moitie de la melodie, pas trop tot ni trop tard.
+
+    Cible : la note culminante doit etre entre la position n/3 et 2n/3.
+    Cout : on paye 'weight' par position d'ecart au centre cible.
+
+    C'est une preference forte chez Mozart et plus generalement dans la
+    musique classique. Sans contrainte, le solveur tend a placer le pic
+    n'importe ou.
+    """
+    n = len(pitch)
+    target_lo = n // 3
+    target_hi = (2 * n) // 3
+
+    # Trouver l'argmax de pitch (position du max)
+    # En CP-SAT, pour exprimer "argmax", on cree des booleens et on contraint :
+    # argmax_t = 1 si pitch[t] == max(pitch)
+    max_val = model.NewIntVar(0, 127, "arch_max")
+    model.AddMaxEquality(max_val, pitch)
+
+    # Pour chaque position, est-elle l'argmax ?
+    is_peak = []
+    for t in range(n):
+        b = model.NewBoolVar(f"peak_{t}")
+        model.Add(pitch[t] == max_val).OnlyEnforceIf(b)
+        model.Add(pitch[t] != max_val).OnlyEnforceIf(b.Not())
+        is_peak.append(b)
+
+    # Exactement un pic (en cas d'egalite, on prend le premier)
+    # On simplifie : on cherche juste la presence du pic dans la zone cible.
+    # Cout = weight si AUCUN pic n'est dans [target_lo, target_hi]
+    in_zone_bools = is_peak[target_lo:target_hi + 1]
+    if not in_zone_bools:
+        return []
+
+    peak_in_zone = model.NewBoolVar("peak_in_zone")
+    model.AddBoolOr(in_zone_bools).OnlyEnforceIf(peak_in_zone)
+    # Si peak_in_zone = 0, alors AUCUN des bools de la zone n'est vrai
+    for b in in_zone_bools:
+        model.AddImplication(peak_in_zone.Not(), b.Not())
+
+    cost = model.NewIntVar(0, weight, "arch_cost")
+    model.Add(cost == weight * (1 - peak_in_zone))
+    return [cost]
+
+
 # ===========================================================================
 # 3. PROFILS STYLISTIQUES
 # ===========================================================================
@@ -264,25 +377,33 @@ def add_soft_direction_changes(model, pitch, weight: int) -> list:
 
 PROFILES = {
     # Mouvement conjoint tres favorise -> melodies "fluides"
+    # Avec consonance forte et arche typique -> tres "classique/comptine"
     "fluide": {
         "smoothness":     5,
         "range":          1,
         "direction":      1,
         "no_oscillation": 3,
+        "strong_beat":    4,   # tres consonant sur les temps forts
+        "arch":           3,   # contour en arche prononce
     },
     # Sauts autorises, ambitus large -> melodies "aventureuses"
+    # Moins de respect des conventions classiques
     "aventureux": {
         "smoothness":     1,
         "range":          5,
         "direction":      3,
         "no_oscillation": 2,
+        "strong_beat":    1,   # peu de contrainte sur la consonance
+        "arch":           1,   # contour libre
     },
-    # Mouvements monotones tolerable, range moyen -> melodies "minimalistes"
+    # Stable, peu d'ambitus -> melodies "minimalistes"
     "minimaliste": {
         "smoothness":     3,
         "range":          0,
         "direction":      0,
         "no_oscillation": 1,
+        "strong_beat":    2,   # consonance moderee
+        "arch":           0,   # pas de contour particulier
     },
 }
 
@@ -327,6 +448,12 @@ def solve(
         all_costs += add_soft_direction_changes(model, pitch, weights["direction"])
     if weights["no_oscillation"] > 0:
         all_costs += add_soft_no_oscillation(model, pitch, weights["no_oscillation"])
+    if weights.get("strong_beat", 0) > 0:
+        all_costs += add_soft_strong_beat_consonance(
+            model, pitch, weights["strong_beat"], scale_name=scale_name
+        )
+    if weights.get("arch", 0) > 0:
+        all_costs += add_soft_arch_contour(model, pitch, weights["arch"])
 
     # 3. Fonction objectif : minimiser la somme des couts
     if all_costs:
@@ -399,6 +526,12 @@ def _solve_with_blocklist(blocklist: list[list[int]], **kwargs) -> list[int] | N
         all_costs += add_soft_direction_changes(model, pitch, weights["direction"])
     if weights["no_oscillation"] > 0:
         all_costs += add_soft_no_oscillation(model, pitch, weights["no_oscillation"])
+    if weights.get("strong_beat", 0) > 0:
+        all_costs += add_soft_strong_beat_consonance(
+            model, pitch, weights["strong_beat"], scale_name=scale_name
+        )
+    if weights.get("arch", 0) > 0:
+        all_costs += add_soft_arch_contour(model, pitch, weights["arch"])
 
     # Pour chaque melodie deja generee, on ajoute "au moins une note differe"
     for prev_melody in blocklist:
@@ -410,6 +543,222 @@ def _solve_with_blocklist(blocklist: list[list[int]], **kwargs) -> list[int] | N
             model.Add(pitch[t] == prev_melody[t]).OnlyEnforceIf(b.Not())
             diff_bools.append(b)
         # Au moins un des booleens doit etre vrai = au moins une note differe
+        model.AddBoolOr(diff_bools)
+
+    if all_costs:
+        model.Minimize(sum(all_costs))
+
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = time_limit
+    solver.parameters.random_seed = random_seed
+    solver.parameters.randomize_search = True
+
+    status = solver.Solve(model)
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        return None
+    return [solver.Value(p) for p in pitch]
+
+
+# ===========================================================================
+# 5. MODE VARIATION : completer une melodie partielle
+# ===========================================================================
+#
+# Au lieu de generer une melodie from-scratch, on fournit un "theme" partiel
+# (certaines notes fixees, d'autres a None) et le solveur complete les trous
+# en respectant toutes les contraintes du modele.
+#
+# C'est un PROBLEME INVERSE classique en CP : on impose des valeurs sur
+# certaines variables, et on laisse le solveur explorer pour les autres.
+#
+# Cas d'usage :
+#   - Composer une variation sur un theme connu
+#   - Completer une melodie ou il manque des notes
+#   - Forcer une "note pivot" au milieu pour donner une direction
+
+def solve_with_fixed_notes(
+    fixed_notes: list[int | None],
+    scale_name: str = "C_major",
+    profile: str = "fluide",
+    time_limit: float = 10.0,
+    random_seed: int = 0,
+) -> list[int] | None:
+    """
+    Resout en imposant certaines notes pre-determinees.
+
+    Parametres
+    ----------
+    fixed_notes : list[int | None]
+        Liste de la longueur de la melodie. Chaque element vaut :
+          - un entier MIDI (60, 62, ...) -> cette note est FIXEE
+          - None -> cette note est LIBRE, le solveur la choisit
+        Exemple : [60, None, None, 60, 65, None, None, 60]
+        -> melodie de 8 notes, on impose les notes 0, 3, 4, 7
+
+    scale_name, profile, time_limit, random_seed : voir solve()
+
+    Retourne
+    --------
+    list[int] | None : la melodie complete (avec les fixes + les libres)
+
+    Exemple d'utilisation
+    ---------------------
+    >>> # Imposer le debut de "Au clair de la lune" et laisser le solveur
+    >>> # completer une suite coherente
+    >>> theme = [60, 60, 60, 62, 64, None, 62, None, 60, None, 64, None,
+    ...          62, None, None, 60]
+    >>> melody = solve_with_fixed_notes(theme)
+    """
+    n_notes = len(fixed_notes)
+
+    # 1. On construit le modele complet (memes hard constraints que d'habitude)
+    model, pitch = build_model(n_notes=n_notes, scale_name=scale_name)
+
+    # 2. On AJOUTE les contraintes d'egalite pour les notes fixees
+    # C'est ca le "mode variation" : on impose pitch[t] == valeur sur
+    # les positions specifiees.
+    for t, fixed_value in enumerate(fixed_notes):
+        if fixed_value is not None:
+            model.Add(pitch[t] == fixed_value)
+
+    # 3. Soft constraints (memes que solve)
+    weights = PROFILES[profile]
+    all_costs = []
+    if weights["smoothness"] > 0:
+        all_costs += add_soft_smoothness(model, pitch, weights["smoothness"])
+    if weights["range"] > 0:
+        all_costs += add_soft_range(model, pitch, weights["range"])
+    if weights["direction"] > 0:
+        all_costs += add_soft_direction_changes(model, pitch, weights["direction"])
+    if weights["no_oscillation"] > 0:
+        all_costs += add_soft_no_oscillation(model, pitch, weights["no_oscillation"])
+    if weights.get("strong_beat", 0) > 0:
+        all_costs += add_soft_strong_beat_consonance(
+            model, pitch, weights["strong_beat"], scale_name=scale_name
+        )
+    if weights.get("arch", 0) > 0:
+        all_costs += add_soft_arch_contour(model, pitch, weights["arch"])
+
+    if all_costs:
+        model.Minimize(sum(all_costs))
+
+    # 4. Resolution
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = time_limit
+    solver.parameters.random_seed = random_seed
+    solver.parameters.randomize_search = True
+
+    status = solver.Solve(model)
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        # Si pas de solution : les notes fixees sont peut-etre incompatibles
+        # avec les hard constraints (ex: deux notes fixees a un triton d'ecart,
+        # ou la premiere note fixee qui n'est pas la tonique).
+        return None
+    return [solver.Value(p) for p in pitch]
+
+
+def generate_variations(theme: list[int], n_variations: int = 4,
+                        keep_positions: list[int] | None = None,
+                        **kwargs) -> list[list[int]]:
+    """
+    Genere n variations d'un theme en gardant certaines notes pivots.
+
+    Parametres
+    ----------
+    theme : list[int]
+        La melodie originale (theme de base).
+    n_variations : int
+        Nombre de variations a generer.
+    keep_positions : list[int] | None
+        Indices des notes du theme a conserver dans toutes les variations.
+        Par defaut : on garde la premiere, la derniere et les positions
+        multiples de 4 (= les "notes pivots" sur les temps forts).
+
+    Retourne
+    --------
+    list[list[int]] : les variations generees (sans le theme original).
+    """
+    n = len(theme)
+    if keep_positions is None:
+        # Par defaut : on garde le debut, la fin, l'avant-derniere (cadence)
+        # et quelques positions "pivots" (toutes les 4 notes).
+        # On veut laisser environ 50-70% des notes LIBRES pour avoir
+        # de la diversite dans les variations.
+        keep_positions = [0, n - 1, n - 2] + list(range(0, n, 4))
+        keep_positions = sorted(set(keep_positions))
+
+    # Construire le pattern "note fixee / note libre"
+    fixed_notes = [
+        theme[t] if t in keep_positions else None
+        for t in range(n)
+    ]
+
+    # Pour avoir DES variations differentes (pas toujours la meme solution
+    # optimale), on utilise la meme astuce blocklist que solve_many() :
+    # apres chaque variation trouvee, on lui interdit de reapparaitre.
+    variations = []
+    blocklist = [theme]  # on interdit aussi le theme original
+
+    for seed in range(200):
+        if len(variations) >= n_variations:
+            break
+        var = _variation_with_blocklist(
+            fixed_notes=fixed_notes,
+            blocklist=blocklist,
+            random_seed=seed,
+            **kwargs,
+        )
+        if var is not None and var not in variations and var != theme:
+            variations.append(var)
+            blocklist.append(var)
+    return variations
+
+
+def _variation_with_blocklist(
+    fixed_notes: list[int | None],
+    blocklist: list[list[int]],
+    scale_name: str = "C_major",
+    profile: str = "fluide",
+    time_limit: float = 5.0,
+    random_seed: int = 0,
+) -> list[int] | None:
+    """
+    Comme solve_with_fixed_notes(), mais en interdisant aussi les
+    melodies de blocklist. Utilise en interne par generate_variations().
+    """
+    n_notes = len(fixed_notes)
+    model, pitch = build_model(n_notes=n_notes, scale_name=scale_name)
+
+    # Imposer les notes fixees
+    for t, fixed_value in enumerate(fixed_notes):
+        if fixed_value is not None:
+            model.Add(pitch[t] == fixed_value)
+
+    # Soft constraints
+    weights = PROFILES[profile]
+    all_costs = []
+    if weights["smoothness"] > 0:
+        all_costs += add_soft_smoothness(model, pitch, weights["smoothness"])
+    if weights["range"] > 0:
+        all_costs += add_soft_range(model, pitch, weights["range"])
+    if weights["direction"] > 0:
+        all_costs += add_soft_direction_changes(model, pitch, weights["direction"])
+    if weights["no_oscillation"] > 0:
+        all_costs += add_soft_no_oscillation(model, pitch, weights["no_oscillation"])
+    if weights.get("strong_beat", 0) > 0:
+        all_costs += add_soft_strong_beat_consonance(
+            model, pitch, weights["strong_beat"], scale_name=scale_name
+        )
+    if weights.get("arch", 0) > 0:
+        all_costs += add_soft_arch_contour(model, pitch, weights["arch"])
+
+    # Interdire toutes les melodies de blocklist
+    for prev in blocklist:
+        diff_bools = []
+        for t in range(n_notes):
+            b = model.NewBoolVar(f"var_diff_{len(blocklist)}_{t}")
+            model.Add(pitch[t] != prev[t]).OnlyEnforceIf(b)
+            model.Add(pitch[t] == prev[t]).OnlyEnforceIf(b.Not())
+            diff_bools.append(b)
         model.AddBoolOr(diff_bools)
 
     if all_costs:

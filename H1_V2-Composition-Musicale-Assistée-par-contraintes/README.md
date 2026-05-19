@@ -8,7 +8,7 @@
 
 Ce projet génère des **mélodies monodiques** (une seule voix) qui respectent les règles de base de la musique tonale, en utilisant le solveur **OR-Tools CP-SAT**.
 
-L'idée centrale : une mélodie correcte est une suite de notes qui satisfait simultanément un ensemble de règles musicales (rester dans une gamme, éviter les sauts trop grands, finir sur la tonique, etc.). C'est très exactement un **problème de satisfaction de contraintes** au sens du cours, et on le résout comme tel.
+L'idée centrale : une mélodie correcte est une suite de notes qui satisfait simultanément un ensemble de règles musicales (rester dans une gamme, éviter les sauts trop grands, finir sur la tonique, etc.).
 
 À la sortie, on obtient des fichiers MIDI écoutables, dans 3 styles différents (`fluide`, `aventureux`, `minimaliste`), en plusieurs tonalités (Do majeur, Sol majeur, La mineur).
 
@@ -23,17 +23,14 @@ Il existe deux grandes façons de générer de la musique automatiquement :
 
 On choisit la deuxième, qui est l'objet du cours. La créativité émerge ici non pas d'un modèle appris, mais de la **combinaison de contraintes strictes et de préférences pondérées**. On peut formuler ça simplement : on définit ce que veut dire "une mélodie correcte" via des contraintes, et on demande au solveur d'en trouver une qui maximise nos préférences stylistiques.
 
-### Périmètre volontairement restreint
+### Périmètre abordé
 
-Pour rester dans le temps imparti, on s'est fixé un périmètre clair :
-
-- **Une seule voix** (pas de polyphonie, pas de contrepoint à plusieurs voix)
-- **Hauteurs uniquement** (toutes les notes durent une noire — pas de rythme variable)
-- **Un seul solveur** : OR-Tools CP-SAT (le solveur du cours)
+- **Une seule voix**
+- **Hauteurs**
+- **solveur** : OR-Tools CP-SAT
 - **Trois tonalités** : Do majeur, Sol majeur, La mineur
-- **Pas d'évaluation humaine formelle** — on vérifie objectivement le respect des règles et on laisse le jury écouter
 
-Ce périmètre nous permet de **bien expliquer chaque ligne de code** plutôt que d'empiler des features superficielles. C'est aussi cohérent avec la promesse pédagogique du cours : montrer un CSP simple, son modèle, ses contraintes, son optimisation.
+Ce périmètre nous permet de **bien expliquer chaque ligne de code** plutôt que d'empiler des features superficielles.
 
 ---
 
@@ -45,39 +42,13 @@ Ce périmètre nous permet de **bien expliquer chaque ligne de code** plutôt qu
 | **CSP-5 — Optimization** | `Minimize`, fonction objectif, `AddAbsEquality`, `AddMaxEquality` |
 | **CSP-7 — Soft Constraints** | Weighted CSP, variables de coût, somme pondérée |
 
-On a volontairement laissé de côté Search-4 (recherche locale) : il serait pertinent pour des problèmes très grands, mais pour des mélodies de 16-24 notes, CP-SAT termine en moins de 10 secondes — la recherche locale n'apporterait rien ici.
-
 ---
-
-## Architecture du code
-
-```
-h1-melody-csp/
-│
-├── README.md                          ← ce fichier
-├── requirements.txt
-├── H1-Melody-Generation.ipynb         ← notebook pédagogique principal
-│
-├── melody/                            ← le code, organisé en 3 modules
-│   ├── __init__.py
-│   ├── music_theory.py                ← constantes musicales et helpers MIDI
-│   ├── solver.py                      ← le cœur CP-SAT (variables, contraintes, profils)
-│   └── export.py                      ← export MIDI et piano-roll matplotlib
-│
-└── outputs/                           ← MIDI générés par le notebook
-    └── demo_*.mid
-```
-
-**Volume** : environ 400 lignes de Python au total (commentaires inclus).
-**Dépendances** : seulement `ortools`, `midiutil`, `matplotlib`. Pas de music21, pas de framework lourd.
 
 ### Organisation des modules
 
-- `music_theory.py` — tout le **savoir musical** : gammes, pitch classes, conversion MIDI ↔ noms de notes. Aucune logique CP ici.
-- `solver.py` — tout le **savoir CP** : construction du modèle, hard et soft constraints, fonction `solve()`. Aucune logique musicale "en dur" : tout passe par les helpers de `music_theory.py`.
-- `export.py` — sortie : fichier MIDI et visualisation piano-roll.
-
-Cette séparation est volontaire et défendable à la soutenance : on peut **changer de gamme sans toucher au solveur**, et **changer de solveur sans toucher à la théorie musicale**.
+- `music_theory.py` : gammes, pitch classes, conversion MIDI..
+- `solver.py` : construction du modèle, hard et soft constraints
+- `export.py` : fichier MIDI et visualisation piano-roll.
 
 ---
 
@@ -97,17 +68,17 @@ Plutôt que d'utiliser $D_t = [0, 127]$ (toutes les hauteurs MIDI) et de poser e
 
 $$D_t = \{p \in [55, 79] \mid p \bmod 12 \in \text{gamme}\}$$
 
-Soit environ 15 hauteurs au lieu de 128. C'est la première grosse réduction de l'espace de recherche, et elle se fait *gratuitement* via `NewIntVarFromDomain`.
+Soit environ 15 hauteurs au lieu de 128.
 
 ### Hard constraints
 
-| # | Contrainte | Encodage CP |
-|---|---|---|
-| C1 | Première note = tonique | `AddAllowedAssignments([p_0], tonic_values)` |
-| C2 | Dernière note = tonique | `AddAllowedAssignments([p_{n-1}], tonic_values)` |
-| C3 | Avant-dernière = V ou VII (cadence) | `AddAllowedAssignments([p_{n-2}], cadence_values)` |
-| C4 | Sauts ≤ une quinte | `AddAbsEquality(|p_{t+1} - p_t|) <= 7` |
-| C5 | Pas deux notes identiques consécutives | `|p_{t+1} - p_t| >= 1` |
+| # | Contrainte |
+|---|---|
+| C1 | Première note = tonique |
+| C2 | Dernière note = tonique |
+| C3 | Avant-dernière = V ou VII (cadence) |
+| C4 | Sauts ≤ une quinte |
+| C5 | Pas deux notes identiques consécutives |
 
 C1 et C2 ancrent la mélodie sur sa tonique. C3 force une cadence finale (V→I ou VII→I), ce qui donne l'impression musicale d'une phrase qui se termine vraiment. C4 borne les sauts pour rester chantable. C5 évite les répétitions immédiates triviales.
 
@@ -115,12 +86,12 @@ C1 et C2 ancrent la mélodie sur sa tonique. C3 force une cadence finale (V→I 
 
 Pour chaque préférence, on crée des **variables de coût** que le solveur minimise.
 
-| Préférence | Coût | Effet |
-|---|---|---|
-| `smoothness` | proportionnel à `max(0, |saut| - 2)` | favorise le mouvement conjoint |
-| `range` | proportionnel à `max(0, 12 - ambitus)` | force à couvrir au moins une octave |
-| `direction` | constant à chaque continuation de direction | encourage le changement de direction |
-| `no_oscillation` | constant si `p_{t+2} == p_t` | évite les motifs A-B-A-B |
+| Préférence | Effet |
+|---|---|
+| `smoothness` | favorise le mouvement conjoint |
+| `range` | force à couvrir au moins une octave |
+| `direction` | encourage le changement de direction |
+| `no_oscillation` | évite les motifs A-B-A-B |
 
 Tous ces coûts sont sommés, et l'objectif est :
 
@@ -138,7 +109,7 @@ Un **profil** est juste un jeu de poids. On en a défini trois :
 | **aventureux** | 1 | 5 | 3 | 2 |
 | **minimaliste** | 3 | 0 | 0 | 1 |
 
-C'est le point de démonstration scientifique principal : **changer les poids change le style** de manière prévisible. Pour s'en convaincre, on calcule pour chaque profil l'ambitus moyen et la taille moyenne des sauts, et on retrouve ce qu'on attendait : `fluide` a des sauts plus petits que `aventureux`, etc.
+C'est le point de démonstration scientifique principal : **changer les poids change le style** de manière prévisible.
 
 ---
 
@@ -154,8 +125,6 @@ Pour générer plusieurs mélodies réellement différentes, on utilise la fonct
 for prev in blocklist:
     model.AddBoolOr([pitch[t] != prev[t] for t in range(n)])
 ```
-
-Cette technique est dans l'esprit du cours (cf. CSP-5 sur la dominance breaking et l'énumération de solutions) et donne immédiatement de la diversité.
 
 ---
 
@@ -205,7 +174,7 @@ Le notebook contient :
 ### Écouter les MIDI générés
 
 - **VLC** ou **MuseScore** (gratuit) sur l'ordinateur
-- En ligne : https://onlinesequencer.net/import (drag-and-drop du `.mid`)
+- En ligne : https://cifkao.github.io/html-midi-player/
 
 ---
 
@@ -213,21 +182,9 @@ Le notebook contient :
 
 Comme on n'est pas musiciens professionnels, on ne se prononce pas sur "la beauté" des mélodies. À la place, on vérifie **objectivement** que chaque mélodie générée respecte les 6 règles définies (5 hard constraints + une vérification d'unicité).
 
-Le notebook contient une fonction `check_melody()` qui passe la mélodie au crible et affiche `[OK]` ou `[ECHEC]` pour chaque règle. Sur toutes nos générations, toutes les hard constraints sont validées — c'est garanti par le solveur, mais c'est rassurant à montrer en démo.
+Le notebook contient une fonction `check_melody()` qui passe la mélodie au crible et affiche `[OK]` ou `[ECHEC]` pour chaque règle. Sur toutes nos générations, toutes les hard constraints sont validées.
 
 Côté soft constraints, on observe statistiquement (taille moyenne des sauts, ambitus) que les profils produisent bien les effets attendus.
-
-L'évaluation "à l'oreille" est faite par le jury pendant la soutenance.
-
----
-
-## Limitations assumées
-
-- **Pas de polyphonie** : on ne traite qu'une voix. Ajouter une basse demanderait de nouvelles contraintes de consonance entre voix, ce qui sort de notre périmètre.
-- **Rythme fixe** : toutes les notes durent une noire. Ajouter le rythme demanderait des variables `duration[t]` et des contraintes métriques (somme des durées = nombre de mesures).
-- **Tonalité fixe** : pas de modulation en cours de mélodie. Ajouter ça reviendrait à modéliser une variable `key[t]` qui change le domaine de chaque note dynamiquement — possible mais complexe.
-
-Ces limitations sont des perspectives d'extension naturelles, pas des défauts du modèle. Elles montrent que notre approche est **modulaire** : on peut ajouter chacune de ces dimensions sans casser ce qui existe.
 
 ---
 
@@ -245,7 +202,3 @@ Ces limitations sont des perspectives d'extension naturelles, pas des défauts d
 ### Articles
 - Anders, T. (2009). *Composing Music by Composing Rules: Computer-Assisted Composition Using Constraint Programming*. PhD Thesis, Queen Mary University of London.
 - Truchet, C., & Codognet, P. (2004). *Musical Constraint Satisfaction Problems Applied to Harmony*. Constraints, 9(1), 23–44.
-
----
-
-*Projet réalisé dans le cadre du cours de Programmation par Contraintes, EPITA SCIA, promo 2026.*
