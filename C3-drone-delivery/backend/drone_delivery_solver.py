@@ -2,7 +2,7 @@ import numpy as np
 import heapq
 from ortools.sat.python import cp_model
 from dataclasses import dataclass
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict
 from shapely.geometry import Point, LineString, Polygon
 
 @dataclass
@@ -17,7 +17,6 @@ class DroneInstance:
     max_load: int           # Max weight capacity
     max_volume: int         # Max volume capacity
     wind_coeff: float = 1.0
-    unloading_time: int = 5
     grid_res: int = 30
 
 class WaypointNavigator:
