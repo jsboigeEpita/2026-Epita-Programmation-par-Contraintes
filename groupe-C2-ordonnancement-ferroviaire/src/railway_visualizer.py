@@ -304,6 +304,24 @@ def plot_railway_network(
             zorder=7,
         )
 
+    # ------------------------------------------------------------------ #
+    # 8. Légende                                                          #
+    # ------------------------------------------------------------------ #
+    legend_elements = [
+        Line2D([0], [0], color=line_colors[line], lw=2.5, label=line)
+        for line in line_names
+    ]
+
+    leg = ax.legend(
+        handles=legend_elements,
+        loc="lower right",
+        framealpha=0.22,
+        facecolor="#1a2035",
+        edgecolor="#3a4a6a",
+        labelcolor="white",
+        fontsize=9,
+    )
+
     plt.tight_layout()
 
     if save_path:
@@ -323,8 +341,8 @@ if __name__ == "__main__":
     import sys
     sys.path.insert(0, "/mnt/user-data/uploads")
 
-    from src.railway_network import RailwayNetwork
-    from src.railway_generator import generate_railway_network
+    from railway_network import RailwayNetwork
+    from railway_generator import generate_railway_network
 
     net = generate_railway_network(n_stations=8, n_lines=4, T=60, seed=42)
     plot_railway_network(net, title="Réseau Ferroviaire (seed=42)", show=False,

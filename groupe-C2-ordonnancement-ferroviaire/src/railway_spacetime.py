@@ -184,6 +184,15 @@ def plot_spacetime(
                 ax.text(dep, y - 0.15, str(dep), color=color, fontsize=6,
                         ha="center", va="top", fontfamily="monospace", zorder=8)
 
+    # Légende
+    elems = [
+        Line2D([0], [0], color=line_colors[line], lw=2, label=line)
+        for line in line_names
+    ]
+    leg = ax.legend(handles=elems, loc="lower right", fontsize=9,
+                    framealpha=0.25, facecolor="#1a2035", edgecolor="#3a4a6a",
+                    labelcolor="white")
+
     plt.tight_layout(pad=1.2)
 
     if save_path:
@@ -202,8 +211,8 @@ if __name__ == "__main__":
     import sys
     sys.path.insert(0, "/mnt/user-data/uploads")
 
-    from src.railway_generator import generate_railway_network
-    from src.railway_solver import solve
+    from railway_generator import generate_railway_network
+    from railway_solver import solve
 
     net = generate_railway_network(6, 3, 60, seed=1)
     solution = solve(net, time_limit_seconds=15.0)

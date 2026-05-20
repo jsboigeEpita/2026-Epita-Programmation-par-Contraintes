@@ -1,28 +1,24 @@
 """
 railway_generator.py
 --------------------
-Generates a coherent, (likely) solvable RailwayNetwork instance from
-high-level parameters: number of stations, number of lines, and period T.
+Generates a coherent, (likely) solvable RailwayNetwork instance.
 
 Design principles
 -----------------
-1. **Lines first** : lines are generated first as random simple paths over
-   the pool of station names. Everything else (stations, segments) is then
-   derived strictly from the lines, so there can never be an orphan station
-   or an orphan segment.
-2. **Feasibility budget** : travel and dwell times are scaled so that the
-   total travel time along any line stays well below T.
-3. **Voie unique sparsity** : single-track segments are assigned with low
-   probability (~25 %) to avoid excessive NoOverlap conflicts.
-4. **Platform count** : each station gets at least as many platforms as the
-   number of lines that stop there, so Cumulative is always satisfiable.
-5. **Connections** : generated only between lines that share a station, with
-   wide transfer windows to avoid over-constraining.
+1. **Lines first** : everything (stations, segments) is derived strictly from
+   the lines — no orphan station or segment is possible.
+2. **Full coverage** : every station in the pool is visited by at least one
+   line. Lines are built by first distributing stations across lines to ensure
+   full coverage, then padding remaining slots randomly.
+3. **Feasibility budget** : travel/dwell times scaled to stay well below T.
+4. **Voie unique sparsity** : ~25 % single-track by default.
+5. **Platform count** : >= lines stopping there (Cumulative always feasible).
+6. **Connections** : only between lines sharing a station, wide windows.
 """
 
 import random
 from typing import Optional
-from src.railway_network import RailwayNetwork
+from railway_network import RailwayNetwork
 
 
 def generate_railway_network(
@@ -34,28 +30,17 @@ def generate_railway_network(
     connection_prob: float = 0.4,
 ) -> RailwayNetwork:
     """
-    Generate a random but coherent RailwayNetwork.
+    Generate a random but coherent RailwayNetwork where every requested
+    station appears in at least one line.
 
     Parameters
     ----------
-    n_stations : int
-        Number of stations in the pool to draw from (>= 3).
-    n_lines : int
-        Number of train lines (>= 1).
-    T : int
-        Timetable period in minutes (e.g. 60).
-    seed : int, optional
-        Random seed for reproducibility.
-    single_track_prob : float
-        Probability that a given segment is single-track (default 0.25).
-    connection_prob : float
-        Probability that a shared station between two lines yields a
-        transfer constraint (default 0.4).
-
-    Returns
-    -------
-    RailwayNetwork
-        A validated, coherent instance ready to be passed to the solver.
+    n_stations : int   Number of stations (>= 3).
+    n_lines    : int   Number of lines (>= 1).
+    T          : int   Timetable period in minutes (>= 20).
+    seed       : int   Optional random seed.
+    single_track_prob : float  P(segment is single-track).
+    connection_prob   : float  P(shared station yields a transfer constraint).
     """
     if n_stations < 3:
         raise ValueError("n_stations must be >= 3.")
@@ -66,35 +51,59 @@ def generate_railway_network(
 
     rng = random.Random(seed)
 
-    # Pool of candidate station names (not all will necessarily be used).
-    all_station_names = [f"S{i}" for i in range(n_stations)]
+    all_stations = [f"S{i}" for i in range(n_stations)]
+    min_len = 3
+    max_len = min(6, n_stations)
 
     # ------------------------------------------------------------------ #
-    # 1. Generate lines                                                    #
-    #    Lines are simple paths (no repeated station) drawn by sampling   #
-    #    without replacement from the station pool.                       #
-    #    Lines come FIRST; stations and segments are derived from them.   #
+    # 1. Build lines with guaranteed full station coverage                 #
+    #                                                                      #
+    # Strategy:                                                            #
+    #   a) Shuffle stations and distribute them into lines so every        #
+    #      station is assigned to exactly one "home" line first.           #
+    #   b) Each line then gets padded with random extra stations up to     #
+    #      its target length.                                              #
+    #   c) This guarantees 100 % station coverage regardless of n_lines   #
+    #      or n_stations.                                                  #
     # ------------------------------------------------------------------ #
-    min_line_len = 3
-    max_line_len = min(6, n_stations)
+
+    # Assign each station a "home" line round-robin (after shuffling)
+    shuffled = all_stations[:]
+    rng.shuffle(shuffled)
+    home: dict[str, list[str]] = {f"L{i}": [] for i in range(n_lines)}
+    for idx, station in enumerate(shuffled):
+        home[f"L{idx % n_lines}"].append(station)
 
     lines: dict[str, tuple[str, ...]] = {}
     for i in range(n_lines):
-        target_len = rng.randint(min_line_len, max_line_len)
-        path = rng.sample(all_station_names, min(target_len, n_stations))
-        lines[f"L{i}"] = tuple(path)
+        line_name = f"L{i}"
+        base = home[line_name][:]           # stations this line must cover
+        target_len = rng.randint(min_len, max_len)
+
+        # Pad with random stations not already in this line
+        extras = [s for s in all_stations if s not in base]
+        rng.shuffle(extras)
+        slots = max(0, target_len - len(base))
+        path = base + extras[:slots]
+
+        # Shuffle the path order (a line is an ordered route)
+        rng.shuffle(path)
+
+        # Ensure minimum length of 2
+        if len(path) < 2:
+            fallback = [s for s in all_stations if s not in path]
+            path += fallback[:2 - len(path)]
+
+        lines[line_name] = tuple(path)
 
     # ------------------------------------------------------------------ #
-    # 2. Derive stations from lines                                        #
-    #    Only stations actually visited by at least one line exist.       #
+    # 2. Derive stations from lines (all n_stations are covered)          #
     # ------------------------------------------------------------------ #
     lines_through: dict[str, int] = {}
     for route in lines.values():
         for s in route:
             lines_through[s] = lines_through.get(s, 0) + 1
 
-    # Platform count: at least as many platforms as lines stopping here,
-    # then randomly reduce by 1 on some stations to add mild pressure.
     stations: dict[str, int] = {}
     for s, n_lines_here in lines_through.items():
         capacity = max(1, n_lines_here)
@@ -104,39 +113,32 @@ def generate_railway_network(
 
     # ------------------------------------------------------------------ #
     # 3. Derive segments from lines                                        #
-    #    Only edges actually traversed by at least one line are created.  #
-    #    Travel times are scaled to fit comfortably within T.             #
     # ------------------------------------------------------------------ #
-    avg_segs_per_line = max(2, n_stations // 2)
-    travel_budget_per_seg = max(3, int(0.60 * T / avg_segs_per_line))
-    t_min_travel = max(2, int(travel_budget_per_seg * 0.6))
-    t_max_travel = travel_budget_per_seg
+    avg_segs = max(2, n_stations // 2)
+    budget   = max(3, int(0.60 * T / avg_segs))
+    t_min_t  = max(2, int(budget * 0.6))
+    t_max_t  = budget
 
     segments: dict[frozenset, tuple[int, int, bool]] = {}
     for route in lines.values():
         for i in range(len(route) - 1):
             key = frozenset({route[i], route[i + 1]})
             if key not in segments:
-                t_min = t_min_travel + rng.randint(
-                    0, max(0, t_max_travel - t_min_travel) // 2
-                )
-                t_max = t_min + rng.randint(1, max(1, t_max_travel - t_min))
+                t_min = t_min_t + rng.randint(0, max(0, t_max_t - t_min_t) // 2)
+                t_max = t_min + rng.randint(1, max(1, t_max_t - t_min))
                 single = rng.random() < single_track_prob
                 segments[key] = (t_min, t_max, single)
 
     # ------------------------------------------------------------------ #
     # 4. Dwell times                                                       #
     # ------------------------------------------------------------------ #
-    dwell_budget = max(3, int(0.10 * T))
-    dwell_time = (1, dwell_budget)
+    dwell_time = (1, max(3, int(0.10 * T)))
 
     # ------------------------------------------------------------------ #
-    # 5. Transfer / correspondence constraints                             #
-    #    For each pair of lines sharing a station, maybe add a transfer.  #
+    # 5. Transfer constraints                                              #
     # ------------------------------------------------------------------ #
     connections: list[tuple[str, str, str, int, int]] = []
     line_names = list(lines.keys())
-
     for i in range(len(line_names)):
         for j in range(i + 1, len(line_names)):
             la, lb = line_names[i], line_names[j]
@@ -162,31 +164,17 @@ def generate_railway_network(
     return net
 
 
-# --------------------------------------------------------------------------- #
-# CLI / quick demo                                                             #
-# --------------------------------------------------------------------------- #
 if __name__ == "__main__":
     import sys
-
     n_stations = int(sys.argv[1]) if len(sys.argv) > 1 else 6
     n_lines    = int(sys.argv[2]) if len(sys.argv) > 2 else 3
     T          = int(sys.argv[3]) if len(sys.argv) > 3 else 60
     seed       = int(sys.argv[4]) if len(sys.argv) > 4 else 42
 
     net = generate_railway_network(n_stations, n_lines, T, seed=seed)
-
-    print(f"=== Generated RailwayNetwork (seed={seed}) ===")
-    print(f"  Period T     : {net.T} min")
-    print(f"  Stations ({len(net.stations)}) : {dict(net.stations)}")
-    print(f"  Dwell time   : {net.dwell_time}")
-    print(f"\n  Lines ({len(net.lines)}):")
+    print(f"Stations ({len(net.stations)}): {list(net.stations)}")
+    print(f"Lignes   ({len(net.lines)}):")
     for name, route in net.lines.items():
-        print(f"    {name}: {' -> '.join(route)}")
-    print(f"\n  Segments ({len(net.segments)}):")
-    for key, (tmin, tmax, single) in net.segments.items():
-        a, b = sorted(key)
-        track = "SINGLE" if single else "double"
-        print(f"    {a} -- {b}: [{tmin}, {tmax}] min  ({track} track)")
-    print(f"\n  Connections ({len(net.connections)}):")
-    for la, lb, st, tmin, tmax in net.connections:
-        print(f"    {la} -> {lb} at {st}: [{tmin}, {tmax}] min")
+        print(f"  {name}: {' -> '.join(route)}")
+    print(f"Segments ({len(net.segments)})")
+    print(f"Connexions ({len(net.connections)})")
