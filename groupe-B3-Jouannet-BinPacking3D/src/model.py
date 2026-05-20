@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
-from typing import List, Optional
+from dataclasses import dataclass
+from typing import List
 from ortools.sat.python import cp_model
 
 
@@ -33,21 +33,29 @@ def solve(items: List[Item], container: Container, time_limit: int = 60) -> dict
     Résout le 3D Bin Packing avec CP-SAT (OR-Tools).
 
     Modélisation :
-    - bin_var[i]  : quel conteneur reçoit l'objet i  (IntVar 0..n-1)
-    - x[i],y[i],z[i] : position de l'objet i dans son conteneur
-    - Pour chaque paire (i,j) dans le même conteneur :
-        au moins une des 6 séparations axiales doit tenir.
+    - bin_var[i]     : quel conteneur reçoit l'objet i  (IntVar 0..n-1)
+    - x[i],y[i],z[i]: position de l'objet i dans son conteneur
+
+    Non-chevauchement : pour chaque paire (i,j) dans le même conteneur,
+    au moins une des 6 séparations axiales doit tenir (disjonction sur 6 bool).
+
+    Fragilité : un objet fragile est placé en haut du conteneur
+    (z[i] = H - h[i]), ce qui garantit qu'aucun objet ne peut être au-dessus.
+
+    Poids : pour chaque conteneur b, la somme des poids des objets assignés
+    ne dépasse pas max_weight.
 
     Objectif : minimiser le nombre de conteneurs utilisés.
+    Cassage de symétrie : les indices de conteneurs sont croissants.
     """
     n = len(items)
     if n == 0:
         return {'status': 'OPTIMAL', 'num_bins': 0, 'assignment': [], 'positions': []}
 
     model = cp_model.CpModel()
-    max_bins = n  # pire cas : un objet par conteneur
+    max_bins = n
 
-    # ── Variables de décision ────────────────────────────────────────────────
+    # ── Variables principales ─────────────────────────────────────────────────
 
     bin_var = [model.NewIntVar(0, max_bins - 1, f'bin_{i}') for i in range(n)]
 
@@ -55,20 +63,25 @@ def solve(items: List[Item], container: Container, time_limit: int = 60) -> dict
     y = [model.NewIntVar(0, container.D - items[i].d, f'y_{i}') for i in range(n)]
     z = [model.NewIntVar(0, container.H - items[i].h, f'z_{i}') for i in range(n)]
 
-    # ── Cassage de symétrie ──────────────────────────────────────────────────
-    # Les indices de conteneurs sont utilisés dans l'ordre croissant.
-    # Sans ça, permuter deux conteneurs vides donne la même solution → explosion.
+    # ── Cassage de symétrie ───────────────────────────────────────────────────
     model.Add(bin_var[0] == 0)
     for i in range(1, n):
         model.Add(bin_var[i] <= bin_var[i - 1] + 1)
 
-    # ── Non-chevauchement ────────────────────────────────────────────────────
+    # ── Fragilité ─────────────────────────────────────────────────────────────
+    # Un objet fragile est forcé tout en haut → rien ne peut être posé dessus.
+    for i in range(n):
+        if items[i].fragile:
+            model.Add(z[i] == container.H - items[i].h)
+
+    # ── Non-chevauchement ─────────────────────────────────────────────────────
+    # Pour chaque paire (i,j) : si même conteneur → séparés sur au moins 1 axe.
     for i in range(n):
         for j in range(i + 1, n):
             wi, di, hi = items[i].w, items[i].d, items[i].h
             wj, dj, hj = items[j].w, items[j].d, items[j].h
 
-            # same_ij ↔ (bin_var[i] == bin_var[j])
+            # same ↔ (bin_var[i] == bin_var[j])
             same = model.NewBoolVar(f'same_{i}_{j}')
             diff = model.NewIntVar(-(max_bins - 1), max_bins - 1, f'diff_{i}_{j}')
             abs_diff = model.NewIntVar(0, max_bins - 1, f'adiff_{i}_{j}')
@@ -77,7 +90,6 @@ def solve(items: List[Item], container: Container, time_limit: int = 60) -> dict
             model.Add(abs_diff == 0).OnlyEnforceIf(same)
             model.Add(abs_diff >= 1).OnlyEnforceIf(same.Not())
 
-            # Si même conteneur → au moins une des 6 séparations tient
             sep = [model.NewBoolVar(f'sep_{i}_{j}_{k}') for k in range(6)]
             model.Add(x[i] + wi <= x[j]).OnlyEnforceIf([same, sep[0]])
             model.Add(x[j] + wj <= x[i]).OnlyEnforceIf([same, sep[1]])
@@ -87,41 +99,33 @@ def solve(items: List[Item], container: Container, time_limit: int = 60) -> dict
             model.Add(z[j] + hj <= z[i]).OnlyEnforceIf([same, sep[5]])
             model.AddBoolOr(sep).OnlyEnforceIf(same)
 
-    # ── Contrainte de fragilité (optionnel) ──────────────────────────────────
-    # Un objet fragile ne peut pas avoir d'autre objet posé dessus.
-    for i in range(n):
-        if items[i].fragile:
-            for j in range(n):
-                if i == j:
-                    continue
-                same = model.NewBoolVar(f'frag_same_{i}_{j}')
-                diff = model.NewIntVar(-(max_bins - 1), max_bins - 1, f'frag_diff_{i}_{j}')
-                abs_diff = model.NewIntVar(0, max_bins - 1, f'frag_adiff_{i}_{j}')
-                model.Add(diff == bin_var[i] - bin_var[j])
-                model.AddAbsEquality(abs_diff, diff)
-                model.Add(abs_diff == 0).OnlyEnforceIf(same)
-                model.Add(abs_diff >= 1).OnlyEnforceIf(same.Not())
-                # j ne peut pas être au-dessus de i (z[j] >= z[i] + h[i])
-                model.Add(z[j] + items[j].h <= z[i]).OnlyEnforceIf(same)
-
-    # ── Contrainte de poids (optionnel) ──────────────────────────────────────
+    # ── Poids par conteneur ────────────────────────────────────────────────────
+    # in_bin[i][b] = 1 si l'objet i est dans le conteneur b.
     if container.max_weight < float('inf'):
-        max_w_int = int(container.max_weight * 1000)
+        scale = 1000
+        max_w_int = int(container.max_weight * scale)
+        weights_int = [int(items[i].weight * scale) for i in range(n)]
+
         for b in range(max_bins):
-            in_bin = [model.NewBoolVar(f'inbin_{i}_{b}') for i in range(n)]
+            in_b = [model.NewBoolVar(f'ib_{i}_{b}') for i in range(n)]
             for i in range(n):
-                model.Add(bin_var[i] == b).OnlyEnforceIf(in_bin[i])
-                model.Add(bin_var[i] != b).OnlyEnforceIf(in_bin[i].Not())
+                # in_b[i] = 1  ↔  bin_var[i] == b
+                model.Add(bin_var[i] == b).OnlyEnforceIf(in_b[i])
+                diff_b = model.NewIntVar(-(max_bins - 1), max_bins - 1, f'dib_{i}_{b}')
+                abs_b = model.NewIntVar(0, max_bins - 1, f'aib_{i}_{b}')
+                model.Add(diff_b == bin_var[i] - b)
+                model.AddAbsEquality(abs_b, diff_b)
+                model.Add(abs_b >= 1).OnlyEnforceIf(in_b[i].Not())
             model.Add(
-                sum(int(items[i].weight * 1000) * in_bin[i] for i in range(n)) <= max_w_int
+                sum(weights_int[i] * in_b[i] for i in range(n)) <= max_w_int
             )
 
-    # ── Objectif ─────────────────────────────────────────────────────────────
+    # ── Objectif ──────────────────────────────────────────────────────────────
     max_bin_used = model.NewIntVar(0, max_bins - 1, 'max_bin_used')
     model.AddMaxEquality(max_bin_used, bin_var)
     model.Minimize(max_bin_used + 1)
 
-    # ── Résolution ───────────────────────────────────────────────────────────
+    # ── Résolution ────────────────────────────────────────────────────────────
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit
     solver.parameters.log_search_progress = False
@@ -139,4 +143,8 @@ def solve(items: List[Item], container: Container, time_limit: int = 60) -> dict
             'solve_time': solver.WallTime(),
         }
 
-    return {'status': solver.StatusName(status), 'num_bins': None, 'solve_time': solver.WallTime()}
+    return {
+        'status': solver.StatusName(status),
+        'num_bins': None,
+        'solve_time': solver.WallTime(),
+    }
