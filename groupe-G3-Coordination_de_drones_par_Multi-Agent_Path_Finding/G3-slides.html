@@ -1,0 +1,867 @@
+<!DOCTYPE html><html lang="fr"><head>
+
+
+
+
+
+
+<meta charset="utf-8">
+<title>MAPF — Coordination de drones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<script src="image-slot.js"></script>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Bonjour à tous. Nous allons vous présenter notre projet de Programmation par Contraintes : la Coordination de drones par Multi-Agent Path Finding. Je suis Matteo Atkinson, et voici Paul Witkowski. Le sujet : une flotte de drones, chacun avec un départ et une cible, et on veut calculer les trajectoires qui amènent tout le monde à destination sans collision. On pose le problème, on parle des algorithmes, et ensuite démo live.",
+
+  "Le projet : un solveur Python couplé à un visualiseur 3D. On charge un scénario — une ville avec bâtiments et plusieurs drones, chacun avec son départ et sa cible — on choisit une méthode, et on visualise les trajectoires calculées. La problématique : comment coordonner N drones dans un espace partagé en garantissant l'absence de collision, et comment un solveur de contraintes généraliste comme CP-SAT se compare aux algorithmes spécialisés MAPF de la littérature ?",
+
+  "Le problème se résume en deux conflits à éviter. Conflit de sommet : deux drones ne peuvent pas être dans la même cellule au même pas de temps. Conflit d'arête, ou échange : deux drones ne peuvent pas se croiser sur la même arête en swappant leurs positions — physiquement, ils se rentrent dedans. Tout le reste découle de ces deux contraintes. C'est NP-difficile dans le cas général.",
+
+  "Trois briques. Un solveur Python avec quatre algorithmes derrière une interface commune. Une API Flask qui charge les scénarios et dispatche vers la méthode choisie. Et un visualiseur 3D Three.js qui anime les drones sur leurs trajectoires. Trois briques découplées — c'est ce qui nous a permis d'itérer vite.",
+
+  "CP-SAT. L'approche par programmation par contraintes — celle du cours. On déclare des variables 'agent a en position p au temps t', on encode les règles comme contraintes, et OR-Tools cherche la solution. Avantages : déclaratif, optimum garanti, code lisible. Inconvénients : le nombre de contraintes scale en quadratique, donc timeout au-delà de ~8 drones sur notre scénario big_city. C'est notre baseline.",
+
+  "CBS — Conflict-Based Search. Idée : on planifie chaque drone tout seul avec un A* en espace-temps, puis on résout les conflits un à un. À chaque conflit, on crée deux branches — l'une interdit la cellule à l'agent A, l'autre à l'agent B — et on re-planifie. Avantages : optimal, beaucoup plus rapide que CP-SAT s'il y a peu de conflits, conceptuellement simple. Inconvénient : l'arbre peut exploser dans les couloirs étroits. Sharon et al. 2015.",
+
+  "ECBS — Enhanced CBS. C'est CBS, mais on remplace 'le moins cher' par 'le moins conflictuel parmi les pas trop chers'. Concrètement : on prend tous les nœuds dont le coût est dans w fois le minimum — w égal 1.3 chez nous — et on étend celui qui a le moins de conflits. Avantages : ×10 à ×100 plus rapide que CBS, sous la seconde sur big_city, w contrôle le compromis. Inconvénient : solution bornée à w fois l'optimum, plus strictement optimale. C'est la méthode qu'on utilise par défaut dans la démo. Felner et al. 2017.",
+
+  "OD-A* — A* avec Décomposition d'Opérateurs. Un seul A* sur l'espace JOINT — un état = la position de tous les drones — mais on bouge les agents un à un dans un ordre fixe. Dès qu'un coup intermédiaire crée un conflit avec un agent déjà placé, on coupe la branche. Heuristique : somme des distances BFS, admissible, donc A* reste optimal. Avantages : optimal, branchement bien plus petit que A* multi-agent naïf. Inconvénient : la mémoire et le temps explosent au-delà de 6-7 drones parce qu'on garde tout l'état joint.",
+
+  "En résumé : quatre méthodes, deux familles. Programmation par contraintes pour CP-SAT, recherche heuristique pour les trois autres. Trois sur quatre garantissent l'optimum exact ; ECBS est borné à w fois l'optimum. En pratique : CP-SAT timeout dès 8 drones, CBS et OD-A* tiennent jusqu'à 6-7, ECBS scale beaucoup mieux. Toutes partagent la même interface — on peut switcher d'algorithme dans le front sans rien changer ailleurs.",
+
+  "Et maintenant, la démo. Backend Flask sur 5050, front Three.js sur 8080. On vous montre comment les drones se coordonnent sur plusieurs scénarios, et on compare CBS, ECBS et OD-A* en direct grâce au sélecteur de méthode. Merci !"
+]
+</script>
+
+<style>
+  :root {
+    --bg:        #faf9f6;
+    --bg-soft:   #f3f1ea;
+    --bg-card:   #ffffff;
+    --ink:       #1a1a1a;
+    --ink-soft:  #4a4a4a;
+    --ink-mute:  #8a8a86;
+    --rule:      #e5e2da;
+    --rule-soft: #ececea;
+    --accent:    oklch(55% 0.13 250);
+    --accent-soft: oklch(95% 0.02 250);
+    --warn:      oklch(60% 0.13 60);
+
+    --type-display: 104px;
+    --type-title:   68px;
+    --type-subtitle: 44px;
+    --type-body:    34px;
+    --type-small:   28px;
+    --type-mono:    26px;
+    --type-label:   24px;
+
+    --pad-top:    96px;
+    --pad-bottom: 88px;
+    --pad-x:      120px;
+
+    --gap-title:  56px;
+    --gap-block:  44px;
+    --gap-item:   28px;
+
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  html, body { margin: 0; padding: 0; background: #1a1a1a; }
+  body { font-family: var(--sans); color: var(--ink); }
+
+  deck-stage > section {
+    background: var(--bg);
+    color: var(--ink);
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--sans);
+    font-weight: 400;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--type-label);
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0;
+  }
+
+  .slide-num {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--ink-mute);
+    letter-spacing: 0.08em;
+  }
+
+  .slide-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--gap-title);
+  }
+
+  h1.title {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: var(--type-title);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h2.subtitle {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: var(--type-subtitle);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--ink-soft);
+    margin: 0;
+    text-wrap: pretty;
+    max-width: 1500px;
+  }
+
+  p.body {
+    font-size: var(--type-body);
+    line-height: 1.4;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 1400px;
+    text-wrap: pretty;
+  }
+
+  .mono { font-family: var(--mono); }
+
+  /* ---------- Slide 2: cadre & problématique ---------- */
+  .cadre-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 80px;
+    flex: 1;
+    margin-top: var(--gap-block);
+    align-items: stretch;
+  }
+  .cadre-block {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 36px;
+    border-top: 1px solid var(--ink);
+  }
+  .cadre-tag {
+    font-family: var(--mono);
+    font-size: 24px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .cadre-text {
+    font-size: 30px;
+    line-height: 1.4;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .cadre-text em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .cadre-shot {
+    width: 560px;
+    height: 560px;
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+    margin-top: 8px;
+    background: var(--bg-soft);
+  }
+
+  /* ---------- Slide 1: title ---------- */
+  .s-title {
+    justify-content: space-between;
+  }
+  .s-title .display {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: var(--type-display);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin: 0;
+    max-width: 1600px;
+    text-wrap: balance;
+  }
+  .s-title .display em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .s-title .meta {
+    display: grid;
+    grid-template-columns: minmax(0, 500px);
+    gap: 60px;
+    border-top: 1px solid var(--rule);
+    padding-top: 36px;
+    font-family: var(--mono);
+    font-size: var(--type-mono);
+  }
+  .s-title .meta .k {
+    color: var(--ink-mute);
+    font-size: var(--type-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .s-title .meta .v {
+    color: var(--ink);
+    line-height: 1.45;
+  }
+
+  /* ---------- Slide 2: problem — big conflict cards only ---------- */
+  .conflict-grid-big {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    flex: 1;
+    margin-top: var(--gap-block);
+  }
+  .conflict-card-big {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 44px 48px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .conflict-card-big .label {
+    font-family: var(--mono);
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .conflict-card-big .name {
+    font-size: 56px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .conflict-card-big .desc {
+    font-size: var(--type-small);
+    line-height: 1.4;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .conflict-card-big .figure {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-soft);
+    border-radius: 4px;
+    padding: 24px;
+    min-height: 280px;
+  }
+  .conflict-card-big svg { width: 100%; height: 100%; max-height: 280px; }
+
+  /* ---------- Slide 3: stack (simpler) ---------- */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    margin-top: var(--gap-block);
+    flex: 1;
+    align-items: stretch;
+  }
+  .stack-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 56px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 28px;
+    text-align: left;
+  }
+  .stack-card .tag {
+    font-family: var(--mono);
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .stack-card h3 {
+    margin: 0;
+    font-size: 52px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .stack-card p {
+    margin: 0;
+    font-size: var(--type-small);
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Algorithm slides ---------- */
+  .algo-slide .slide-head .eyebrow .alg-tag {
+    color: var(--ink);
+    margin-left: 24px;
+    font-family: var(--mono);
+  }
+  .algo-lede {
+    font-size: 38px;
+    line-height: 1.3;
+    color: var(--ink-soft);
+    margin: 18px 0 0 0;
+    max-width: 1600px;
+    text-wrap: pretty;
+    font-weight: 400;
+  }
+  .algo-lede em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .algo-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 36px;
+    flex: 1;
+    margin-top: var(--gap-block);
+    align-items: stretch;
+  }
+  .algo-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .algo-card .ahead {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 24px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .algo-card .marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--rule);
+  }
+  .algo-card.pros .marker { background: var(--accent); }
+  .algo-card.cons .marker { background: var(--warn); }
+  .algo-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .algo-card ul li {
+    font-size: 28px;
+    line-height: 1.35;
+    color: var(--ink);
+    padding-left: 24px;
+    position: relative;
+    text-wrap: pretty;
+  }
+  .algo-card ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 12px;
+    height: 1px;
+    background: var(--ink-mute);
+  }
+  .algo-card.specs .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .algo-card.specs .row .kk {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .algo-card.specs .row .vv {
+    font-family: var(--mono);
+    font-size: 26px;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+
+  /* ---------- Slide 8: comparison table ---------- */
+  .solver-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 28px;
+    margin-top: var(--gap-block);
+  }
+  .solver-table th, .solver-table td {
+    text-align: left;
+    padding: 26px 22px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: middle;
+  }
+  .solver-table thead th {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 18px;
+  }
+  .solver-table td.name {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--ink);
+    width: 18%;
+  }
+  .solver-table td.kind {
+    color: var(--ink-soft);
+    width: 26%;
+    font-size: 26px;
+  }
+  .solver-table td.opt {
+    width: 22%;
+  }
+  .solver-table td.scale {
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 24px;
+  }
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 24px;
+    letter-spacing: 0.06em;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+  .pill.ok { color: var(--accent); border-color: var(--accent); }
+  .pill.bound { color: var(--warn); border-color: var(--warn); }
+
+  /* ---------- Slide 9: demo handoff ---------- */
+  .s-demo {
+    justify-content: space-between;
+  }
+  .s-demo .big {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: var(--type-display);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin: 0;
+    max-width: 1500px;
+  }
+  .s-demo .big em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .s-demo .endpoints {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    border-top: 1px solid var(--rule);
+    padding-top: 36px;
+  }
+  .s-demo .endpoints .ep {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .s-demo .endpoints .role {
+    font-family: var(--mono);
+    font-size: var(--type-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .s-demo .endpoints .what {
+    font-size: 32px;
+    color: var(--ink);
+  }
+  .s-demo .endpoints .url {
+    font-family: var(--mono);
+    font-size: 26px;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body style="">
+
+<deck-stage width="1920" height="1080" style="--deck-rail-w: 188px;">
+
+  <!-- ───────────────────────────── 1. TITLE ───────────────────────────── -->
+  <section class="s-title" data-label="01 Title">
+    <div>
+      <p class="eyebrow">G3 · Programmation par Contraintes · EPITA 2026</p>
+    </div>
+
+    <h1 class="display">Coordination de drones par <em>Multi-Agent Path&nbsp;Finding</em>.</h1>
+
+    <div class="meta">
+      <div>
+        <div class="k">Auteurs</div>
+        <div class="v">Matteo Atkinson<br>Paul Witkowski</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 2. CADRE & PROBLÉMATIQUE ───────────────────────────── -->
+  <section data-label="02 Cadre">
+    <div class="slide-head">
+      <p class="eyebrow">Contexte</p>
+      <span class="slide-num">02 / 10</span>
+    </div>
+
+    <h1 class="title">Cadre &amp; problématique.</h1>
+
+    <div class="cadre-grid">
+      <div class="cadre-block" style="width: 820px; height: 820px;">
+        <span class="cadre-tag">Le projet</span>
+        <p class="cadre-text">Un solveur Python couplé à un visualiseur 3D : on charge un scénario (ville, bâtiments, drones avec départ &amp; cible), on choisit une méthode, et on rejoue les trajectoires&nbsp;calculées.</p>
+        <image-slot class="cadre-shot" id="projet-shot" shape="rounded" radius="4" fit="contain" placeholder="Capture du visualiseur 3D" style="margin: -22px 0px 0px"></image-slot>
+      </div>
+      <div class="cadre-block">
+        <span class="cadre-tag">Problématique</span>
+        <p class="cadre-text">Comment coordonner <em>N drones</em> dans un espace partagé en garantissant l'absence de collision, et comment un solveur de contraintes généraliste se compare aux <em>algorithmes spécialisés MAPF</em> de la littérature&nbsp;?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 3. PROBLEM ───────────────────────────── -->
+  <section class="s-problem" data-label="03 Problème">
+    <div class="slide-head">
+      <p class="eyebrow">Le problème</p>
+      <span class="slide-num">03 / 10</span>
+    </div>
+
+    <h1 class="title">Router chaque drone vers son objectif — sans aucune collision.</h1>
+
+    <div class="conflict-grid-big">
+      <div class="conflict-card-big">
+        <span class="label">Type de conflit · 01</span>
+        <h3 class="name">Sommet</h3>
+        <div class="figure">
+          <svg viewBox="0 0 220 140" fill="none">
+            <g stroke="#e5e2da" stroke-width="1">
+              <path d="M40 30 H180 M40 70 H180 M40 110 H180"></path>
+              <path d="M40 30 V110 M110 30 V110 M180 30 V110"></path>
+            </g>
+            <circle cx="110" cy="70" r="18" fill="oklch(55% 0.13 250)"></circle>
+            <circle cx="110" cy="70" r="18" fill="oklch(60% 0.13 60)" fill-opacity="0.55"></circle>
+          </svg>
+        </div>
+        <p class="desc">Deux drones occupent la même cellule au même pas de temps.</p>
+      </div>
+
+      <div class="conflict-card-big">
+        <span class="label">Type de conflit · 02</span>
+        <h3 class="name">Arête (échange)</h3>
+        <div class="figure">
+          <svg viewBox="0 0 220 140" fill="none">
+            <g stroke="#e5e2da" stroke-width="1">
+              <path d="M40 30 H180 M40 70 H180 M40 110 H180"></path>
+              <path d="M40 30 V110 M110 30 V110 M180 30 V110"></path>
+            </g>
+            <path d="M82 64 L138 64" stroke="oklch(55% 0.13 250)" stroke-width="2.5" marker-end="url(#arrA)"></path>
+            <path d="M138 76 L82 76" stroke="oklch(60% 0.13 60)" stroke-width="2.5" marker-end="url(#arrB)"></path>
+            <circle cx="75" cy="70" r="9" fill="oklch(55% 0.13 250)"></circle>
+            <circle cx="145" cy="70" r="9" fill="oklch(60% 0.13 60)"></circle>
+            <defs>
+              <marker id="arrA" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0 0 L6 3 L0 6 Z" fill="oklch(55% 0.13 250)"></path>
+              </marker>
+              <marker id="arrB" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0 0 L6 3 L0 6 Z" fill="oklch(60% 0.13 60)"></path>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+        <p class="desc">Deux drones traversent la même arête en sens opposé entre t et t+1.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 3. STACK ───────────────────────────── -->
+  <section data-label="04 Stack">
+    <div class="slide-head">
+      <p class="eyebrow">Ce qu'on a construit</p>
+      <span class="slide-num">04 / 10</span>
+    </div>
+
+    <h1 class="title">Un solveur, une API, un visualiseur 3D.</h1>
+
+    <div class="stack-grid">
+      <div class="stack-card">
+        <span class="tag">01 · CŒUR</span>
+        <h3>Solveur</h3>
+        <p>Quatre algorithmes MAPF interchangeables, derrière une interface commune.</p>
+      </div>
+
+      <div class="stack-card">
+        <span class="tag">02 · SERVICE</span>
+        <h3>API</h3>
+        <p>Backend Flask qui charge les scénarios et dispatche vers la méthode choisie.</p>
+      </div>
+
+      <div class="stack-card">
+        <span class="tag">03 · DÉMO</span>
+        <h3>Visualiseur 3D</h3>
+        <p>Front Three.js — sélecteur de scénario, drones animés, rejouage.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 4. CP-SAT ───────────────────────────── -->
+  <section class="algo-slide" data-label="05 CP-SAT">
+    <div class="slide-head">
+      <p class="eyebrow">Algorithme · 01<span class="alg-tag">cpsat</span></p>
+      <span class="slide-num">05 / 10</span>
+    </div>
+
+    <h1 class="title">CP-SAT</h1>
+    <p class="algo-lede">On <em>décrit</em> le problème comme un modèle de contraintes ; OR-Tools cherche la solution.</p>
+
+    <div class="algo-cards">
+      <div class="algo-card pros">
+        <div class="ahead"><span class="marker"></span>Avantages</div>
+        <ul>
+          <li>Approche purement déclarative</li>
+          <li style="">Optimum garanti (makespan)</li>
+          <li style="">Modèle court et lisible</li>
+        </ul>
+      </div>
+      <div class="algo-card cons">
+        <div class="ahead"><span class="marker"></span>Inconvénients</div>
+        <ul>
+          <li>Scaling quadratique des contraintes</li>
+          <li style="">Timeout dès ~14 drones</li>
+          <li style=""><br></li>
+        </ul>
+      </div>
+      <div class="algo-card specs">
+        <div class="ahead"><span class="marker"></span>Caractéristiques</div>
+        <div class="row">
+          <div><div class="kk">Famille</div><div class="vv">CP / SAT</div></div>
+          <div><div class="kk">Solveur</div><div class="vv">OR-Tools CP-SAT</div></div>
+          <div><div class="kk">Optimalité</div><div class="vv">optimale</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 5. CBS ───────────────────────────── -->
+  <section class="algo-slide" data-label="06 CBS">
+    <div class="slide-head">
+      <p class="eyebrow">Algorithme · 02<span class="alg-tag">cbs</span></p>
+      <span class="slide-num">06 / 10</span>
+    </div>
+
+    <h1 class="title">Conflict-Based Search</h1>
+    <p class="algo-lede">On planifie chaque drone <em>seul</em>, puis on résout les conflits un à un en branchant.</p>
+
+    <div class="algo-cards">
+      <div class="algo-card pros">
+        <div class="ahead"><span class="marker"></span>Avantages</div>
+        <ul>
+          <li>Optimal en somme de coûts</li>
+          <li>Beaucoup plus rapide que CP-SAT s'il y a peu de conflits</li>
+          <li>Algorithme conceptuellement simple</li>
+        </ul>
+      </div>
+      <div class="algo-card cons">
+        <div class="ahead"><span class="marker"></span>Inconvénients</div>
+        <ul>
+          <li>L'arbre de contraintes explose dans les couloirs étroits</li>
+          <li>Coût en mémoire élevé</li>
+        </ul>
+      </div>
+      <div class="algo-card specs">
+        <div class="ahead"><span class="marker"></span>Caractéristiques</div>
+        <div class="row">
+          <div><div class="kk">Famille</div><div class="vv">Recherche · 2 niveaux</div></div>
+          <div><div class="kk">Source</div><div class="vv">Sharon et&nbsp;al. 2015</div></div>
+          <div><div class="kk">Optimalité</div><div class="vv">optimale (somme)</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 6. ECBS ───────────────────────────── -->
+  <section class="algo-slide" data-label="07 ECBS">
+    <div class="slide-head">
+      <p class="eyebrow">Algorithme · 03<span class="alg-tag">ecbs</span></p>
+      <span class="slide-num">07 / 10</span>
+    </div>
+
+    <h1 class="title">Enhanced CBS</h1>
+    <p class="algo-lede">CBS, mais on étend la branche <em>la moins conflictuelle</em> plutôt que la moins chère.</p>
+
+    <div class="algo-cards">
+      <div class="algo-card pros">
+        <div class="ahead"><span class="marker"></span>Avantages</div>
+        <ul>
+          <li style="">×10 plus rapide que CBS dans le meilleur cas</li>
+          <li>Borne d'optimalité contrôlable via w</li>
+          <li style="">Reste très rapide sur les grands scénarios</li>
+        </ul>
+      </div>
+      <div class="algo-card cons">
+        <div class="ahead"><span class="marker"></span>Inconvénients</div>
+        <ul>
+          <li>Solution sous-optimale : ≤ w × optimum</li>
+          <li style="">Choix basé sur une heuristique inadmissible</li>
+        </ul>
+      </div>
+      <div class="algo-card specs">
+        <div class="ahead"><span class="marker"></span>Caractéristiques</div>
+        <div class="row">
+          <div><div class="kk">Famille</div><div class="vv">CBS + FOCAL</div></div>
+          <div><div class="kk">Source</div><div class="vv">Felner et&nbsp;al. 2017</div></div>
+          <div><div class="kk">Optimalité</div><div class="vv" style="">w-bornée&nbsp;</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 7. OD-A* ───────────────────────────── -->
+  <section class="algo-slide" data-label="08 OD-A*">
+    <div class="slide-head">
+      <p class="eyebrow">Algorithme · 04<span class="alg-tag">od_astar</span></p>
+      <span class="slide-num">08 / 10</span>
+    </div>
+
+    <h1 class="title">A* avec Décomposition d'Opérateurs</h1>
+    <p class="algo-lede">Un A* sur l'espace <em>joint</em>, en déplaçant les agents un à un pour élaguer.</p>
+
+    <div class="algo-cards">
+      <div class="algo-card pros">
+        <div class="ahead"><span class="marker"></span>Avantages</div>
+        <ul>
+          <li>Optimal en somme de coûts</li>
+          <li>Branchement bien réduit vs A* multi-agent naïf</li>
+        </ul>
+      </div>
+      <div class="algo-card cons">
+        <div class="ahead"><span class="marker"></span>Inconvénients</div>
+        <ul>
+          <li style="">Mémoire et temps explosent au-delà de ~20 drones</li>
+          <li>Garde tout l'état joint en mémoire</li>
+        </ul>
+      </div>
+      <div class="algo-card specs">
+        <div class="ahead"><span class="marker"></span>Caractéristiques</div>
+        <div class="row">
+          <div><div class="kk">Famille</div><div class="vv">A* sur espace joint</div></div>
+          <div><div class="kk">Heuristique</div><div class="vv">Σ BFS (admissible)</div></div>
+          <div><div class="kk">Optimalité</div><div class="vv">optimale (somme)</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────────── 8. COMPARISON ───────────────────────────── -->
+  <section data-label="09 Comparaison">
+    <div class="slide-head">
+      <p class="eyebrow">Comparaison des méthodes</p>
+      <span class="slide-num">09 / 10</span>
+    </div>
+
+    <h1 class="title">Quatre solveurs, une seule interface.</h1>
+
+    <table class="solver-table">
+      <thead>
+        <tr>
+          <th>Méthode</th>
+          <th>Famille</th>
+          <th>Garantie</th>
+          <th>Passage à l'échelle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">cpsat</td>
+          <td class="kind">Programmation par contraintes</td>
+          <td class="opt"><span class="pill ok">Optimale</span></td>
+          <td class="scale" style="">timeout dès ~14 drones</td>
+        </tr>
+        <tr>
+          <td class="name">cbs</td>
+          <td class="kind">Recherche · deux niveaux</td>
+          <td class="opt"><span class="pill ok">Optimale</span></td>
+          <td class="scale">bon si peu de conflits</td>
+        </tr>
+        <tr>
+          <td class="name">ecbs</td>
+          <td class="kind">Recherche · sous-optimal borné</td>
+          <td class="opt"><span class="pill bound">w-bornée</span></td>
+          <td class="scale">&lt; 1 s sur big_city</td>
+        </tr>
+        <tr>
+          <td class="name">od_astar</td>
+          <td class="kind">A* sur l'espace joint</td>
+          <td class="opt"><span class="pill ok">Optimale</span></td>
+          <td class="scale" style="">limité à ~20 drones</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ───────────────────────────── 9. DEMO ───────────────────────────── -->
+  <section class="s-demo" data-label="10 Démo" data-deck-last-visible="">
+    <div>
+      <p class="eyebrow">Place à la démo</p>
+    </div>
+
+    <h1 class="big">Voyons-les <em>voler</em>.</h1>
+
+    <div class="endpoints">
+      <div class="ep">
+        <span class="role">Backend</span>
+        <span class="what">API Flask · dispatch des solveurs</span>
+        <span class="url">http://localhost:5050</span>
+      </div>
+      <div class="ep">
+        <span class="role">Frontend</span>
+        <span class="what">Visualiseur Three.js · choix du scénario</span>
+        <span class="url">http://localhost:8080</span>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+
+
+</body></html>
