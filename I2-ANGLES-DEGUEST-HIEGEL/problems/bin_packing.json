@@ -1,0 +1,18 @@
+{
+  "name": "bin_packing",
+  "type": "bin_packing",
+  "description": "Bin packing : ranger 8 objets dans un minimum de bacs de capacité 10.",
+  "parameters": {
+    "bin_capacity": 10,
+    "items": [
+      {"id": 0, "name": "Objet A", "size": 4},
+      {"id": 1, "name": "Objet B", "size": 7},
+      {"id": 2, "name": "Objet C", "size": 3},
+      {"id": 3, "name": "Objet D", "size": 6},
+      {"id": 4, "name": "Objet E", "size": 2},
+      {"id": 5, "name": "Objet F", "size": 5},
+      {"id": 6, "name": "Objet G", "size": 8},
+      {"id": 7, "name": "Objet H", "size": 1}
+    ]
+  }
+}

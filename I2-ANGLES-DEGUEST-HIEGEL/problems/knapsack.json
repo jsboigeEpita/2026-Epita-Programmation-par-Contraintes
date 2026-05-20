@@ -1,0 +1,18 @@
+{
+  "name": "knapsack",
+  "type": "knapsack",
+  "description": "Sac à dos 0/1 : sélectionner des objets pour maximiser la valeur totale sous contrainte de capacité.",
+  "parameters": {
+    "capacity": 50,
+    "items": [
+      {"id": 0, "name": "Laptop",      "weight": 23, "value": 105},
+      {"id": 1, "name": "Casque",      "weight": 5,  "value": 35},
+      {"id": 2, "name": "Appareil photo", "weight": 14, "value": 70},
+      {"id": 3, "name": "Livres",      "weight": 12, "value": 36},
+      {"id": 4, "name": "Tablette",    "weight": 9,  "value": 54},
+      {"id": 5, "name": "Veste",       "weight": 11, "value": 22},
+      {"id": 6, "name": "Chargeur",    "weight": 4,  "value": 28},
+      {"id": 7, "name": "Chaussures",  "weight": 8,  "value": 16}
+    ]
+  }
+}
