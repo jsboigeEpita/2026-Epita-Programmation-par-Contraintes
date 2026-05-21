@@ -1,12 +1,3 @@
-"""Resolution bi-objectif : front de Pareto entre nombre de stations et cycle effectif.
-
-On combine :
-- SALBP-1 : minimise m (nombre de stations) a cycle C fixe
-- SALBP-2 : minimise C a m fixe
-
-Pour chaque valeur m candidate, on resoud SALBP-2 et on obtient le cycle minimal
-atteignable. L'ensemble des points (m, C*) non domines forme le front de Pareto.
-"""
 import time
 from dataclasses import dataclass, field
 
@@ -49,15 +40,6 @@ def compute_pareto_front(
     extra_stations: int = 4,
     time_limit_per_point: float = 10.0,
 ) -> ParetoFront:
-    """Construit le front de Pareto entre m (stations) et C (cycle).
-
-    1. Resoud SALBP-1 pour trouver m_min, le nombre minimal de stations
-       compatible avec le cycle de l'instance.
-    2. Pour m dans [m_min, m_min + extra_stations], resoud SALBP-2
-       (cycle minimal pour ce m).
-    3. Conserve les points non domines (par construction ici, chaque m
-       distinct produit un point Pareto-optimal).
-    """
     start = time.perf_counter()
     front = ParetoFront(instance_name=instance.name)
 
@@ -67,11 +49,10 @@ def compute_pareto_front(
         return front
 
     m_min = base.n_stations
-    cycle_initial = base.cycle_time
     front.points.append(
         ParetoPoint(
             n_stations=m_min,
-            cycle_time=cycle_initial,
+            cycle_time=base.cycle_time,
             assignment=dict(base.assignment),
             optimal=base.optimal,
             time_ms=base.time_ms,
@@ -85,9 +66,8 @@ def compute_pareto_front(
         )
         if sol is None:
             continue
-        prev_cycle = front.points[-1].cycle_time
-        if sol.cycle_time > prev_cycle:
-            continue  # solution dominee
+        if sol.cycle_time > front.points[-1].cycle_time:
+            continue
         front.points.append(
             ParetoPoint(
                 n_stations=m,
@@ -108,12 +88,6 @@ def weighted_sum(
     beta: float = 0.1,
     time_limit: float = 30.0,
 ) -> tuple[int, int, dict[int, int], bool, float] | None:
-    """Optimisation bi-objectif par somme ponderee.
-
-    Minimise alpha * m + beta * cycle_effectif, ou cycle_effectif est la
-    charge maximale parmi les stations. alpha grand favorise SALBP-1,
-    beta grand favorise l'equilibrage.
-    """
     m_max = len(instance.tasks)
     model = cp_model.CpModel()
 
