@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from ortools.sat.python import cp_model
 
-from cp_explainer.schemas import (
+from cp_explainer.core.schemas import (
     ConstraintAnalysis,
     CounterfactualEntry,
     SensitivityEntry,

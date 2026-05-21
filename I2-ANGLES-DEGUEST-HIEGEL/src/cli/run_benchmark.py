@@ -9,7 +9,9 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
+SRC = ROOT / "src"
+sys.path.insert(0, str(SRC))
 sys.path.insert(0, str(ROOT))
 
 try:
@@ -18,13 +20,13 @@ try:
 except ImportError:
     pass
 
-from cp_explainer.cache import CachedLLMClient  # noqa: E402
-from cp_explainer.llm_client import AnthropicClient, LLMClient, MistralClient  # noqa: E402
-from cp_explainer.runner import run_explainer  # noqa: E402
+from cp_explainer.llm.cache import CachedLLMClient  # noqa: E402
+from cp_explainer.llm.llm_client import AnthropicClient, LLMClient, MistralClient  # noqa: E402
+from cp_explainer.pipeline.runner import run_explainer  # noqa: E402
 
-PROBLEMS_DIR = ROOT / "problems"
+PROBLEMS_DIR = SRC / "data"
 CACHE_DIR = ROOT / ".cache" / "llm"
-REPORT_PATH = ROOT / "benchmark_report.json"
+REPORT_PATH = ROOT / "benchmark" / "benchmark_report.json"
 
 
 def _default_provider() -> str:

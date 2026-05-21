@@ -12,7 +12,7 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
-from cp_explainer.llm_client import LLMClient
+from cp_explainer.llm.llm_client import LLMClient
 
 T = TypeVar("T", bound=BaseModel)
 

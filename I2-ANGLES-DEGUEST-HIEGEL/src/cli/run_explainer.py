@@ -8,7 +8,9 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
+SRC = ROOT / "src"
+sys.path.insert(0, str(SRC))
 sys.path.insert(0, str(ROOT))
 
 try:
@@ -17,9 +19,9 @@ try:
 except ImportError:
     pass
 
-from cp_explainer.cache import CachedLLMClient  # noqa: E402
-from cp_explainer.llm_client import AnthropicClient, LLMClient, MistralClient  # noqa: E402
-from cp_explainer.runner import run_explainer, run_template_only  # noqa: E402
+from cp_explainer.llm.cache import CachedLLMClient  # noqa: E402
+from cp_explainer.llm.llm_client import AnthropicClient, LLMClient, MistralClient  # noqa: E402
+from cp_explainer.pipeline.runner import run_explainer, run_template_only  # noqa: E402
 
 CACHE_DIR = ROOT / ".cache" / "llm"
 

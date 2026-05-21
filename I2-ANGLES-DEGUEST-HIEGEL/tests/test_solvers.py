@@ -6,12 +6,13 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-PROBLEMS_DIR = ROOT / "problems"
+SRC = ROOT / "src"
+PROBLEMS_DIR = SRC / "data"
 
 import sys
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(SRC))
 
-from cp_explainer.solver import solve
+from cp_explainer.core.solver import solve
 
 
 def _load(name: str) -> dict:
@@ -54,10 +55,8 @@ def test_assignment():
     result = solve(problem_type, params)
     assert result.status == "OPTIMAL"
     assignment = result.variables["assignment"]
-    # Chaque travailleur assigne a exactement 1 tache, chaque tache a 1 travailleur
     assert set(assignment.keys()) == set(params["workers"])
     assert set(assignment.values()) == set(params["tasks"])
-    # Cout minimal : Alice->B(2) + Bob->A(6) + Carol->C(1) + Dave->D(4) = 13
     assert result.objective_value == 13
 
 
@@ -69,11 +68,10 @@ def test_bin_packing():
     total_size = sum(it["size"] for it in params["items"])
     lb = -(-total_size // params["bin_capacity"])
     assert n_bins >= lb
-    assert n_bins == 4  # solution connue pour ces instances
+    assert n_bins == 4
 
 
 def test_constraint_analyses_populated():
-    """Tous les solveurs doivent fournir au moins une ConstraintAnalysis."""
     for name in ["knapsack", "diet", "job_shop", "assignment", "bin_packing"]:
         problem_type, params = _load(name)
         result = solve(problem_type, params)
@@ -85,7 +83,6 @@ def test_sensitivity_knapsack():
     result = solve(problem_type, params)
     assert len(result.sensitivity) > 0
     for s in result.sensitivity:
-        # Relaxer la capacite ne peut qu'ameliorer ou maintenir la valeur
         assert s.new_objective >= s.original_objective
 
 
@@ -93,7 +90,6 @@ def test_counterfactuals_knapsack():
     problem_type, params = _load("knapsack")
     result = solve(problem_type, params)
     rejected = result.variables.get("rejected_items", [])
-    # Il doit y avoir des contrefactuels pour les objets rejetes
     assert len(result.counterfactuals) == len(rejected)
 
 
@@ -114,7 +110,6 @@ def test_graph_coloring():
     assert result.status in ("OPTIMAL", "FEASIBLE")
     assert result.objective_value is not None
     coloring = result.variables["coloring"]
-    # Aucun arete ne doit avoir deux sommets de meme couleur
     for u, v in params["edges"]:
         nu = params["node_names"][u]
         nv = params["node_names"][v]
@@ -129,9 +124,7 @@ def test_n_queens():
     cols = result.variables["queen_cols"]
     n = params["n"]
     assert len(cols) == n
-    # Toutes colonnes differentes
     assert len(set(cols)) == n
-    # Aucune attaque en diagonale
     for i in range(n):
         for j in range(i + 1, n):
             assert abs(cols[i] - cols[j]) != abs(i - j)
@@ -156,14 +149,12 @@ def test_tsp():
     assert result.objective_value is not None and result.objective_value > 0
     tour = result.variables["tour"]
     cities = params["cities"]
-    # Tour complet : toutes les villes + retour au depart
     assert len(tour) == len(cities) + 1
     assert tour[0] == tour[-1]
     assert set(tour[:-1]) == set(cities)
 
 
 def test_constraint_analyses_all_problems():
-    """Tous les solveurs doivent fournir au moins une ConstraintAnalysis."""
     all_problems = [
         "knapsack", "diet", "job_shop", "assignment", "bin_packing",
         "nurse_scheduling", "graph_coloring", "n_queens",

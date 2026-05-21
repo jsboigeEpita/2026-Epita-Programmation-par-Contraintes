@@ -6,7 +6,7 @@ import json
 import time
 from pathlib import Path
 
-from cp_explainer.explainer import (
+from cp_explainer.pipeline.explainer import (
     explain_how_to_improve,
     explain_why_not,
     explain_why_optimal,
@@ -14,9 +14,9 @@ from cp_explainer.explainer import (
     template_why_not,
     template_why_optimal,
 )
-from cp_explainer.llm_client import LLMClient
-from cp_explainer.schemas import ExplainerResult
-from cp_explainer.solver import solve
+from cp_explainer.llm.llm_client import LLMClient
+from cp_explainer.core.schemas import ExplainerResult
+from cp_explainer.core.solver import solve
 
 
 def run_template_only(problem_path: str | Path) -> ExplainerResult:

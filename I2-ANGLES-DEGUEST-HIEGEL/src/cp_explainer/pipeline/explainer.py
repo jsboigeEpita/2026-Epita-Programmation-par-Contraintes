@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import json
 
-from cp_explainer.llm_client import LLMClient
-from cp_explainer.prompts import HOW_TO_IMPROVE_SYSTEM, WHY_NOT_SYSTEM, WHY_OPTIMAL_SYSTEM
-from cp_explainer.schemas import ExplanationOutput, SolverOutput
+from cp_explainer.llm.llm_client import LLMClient
+from cp_explainer.llm.prompts import HOW_TO_IMPROVE_SYSTEM, WHY_NOT_SYSTEM, WHY_OPTIMAL_SYSTEM
+from cp_explainer.core.schemas import ExplanationOutput, SolverOutput
 
 
 def _solution_summary(sol: SolverOutput) -> str:

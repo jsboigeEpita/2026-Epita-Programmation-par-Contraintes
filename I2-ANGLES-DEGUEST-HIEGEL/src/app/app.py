@@ -8,7 +8,9 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
+SRC = ROOT / "src"
+sys.path.insert(0, str(SRC))
 sys.path.insert(0, str(ROOT))
 
 try:
@@ -17,13 +19,13 @@ try:
 except ImportError:
     pass
 
-from cp_explainer.cache import CachedLLMClient
-from cp_explainer.llm_client import AnthropicClient, MistralClient
-from cp_explainer.runner import run_explainer
-from cp_explainer import prompts as cp_prompts
+from cp_explainer.llm.cache import CachedLLMClient
+from cp_explainer.llm.llm_client import AnthropicClient, MistralClient
+from cp_explainer.pipeline.runner import run_explainer
+from cp_explainer.llm import prompts as cp_prompts
 
 CACHE_DIR = ROOT / ".cache" / "llm"
-PROBLEMS_DIR = ROOT / "problems"
+PROBLEMS_DIR = SRC / "data"
 
 st.set_page_config(page_title="CP Explainer", layout="wide")
 st.title("🔍 Explicateur de solutions CP par LLM")
@@ -181,7 +183,7 @@ with tab1:
 # ---------------------------------------------------------------------------
 with tab2:
     st.header("Résultats du benchmark")
-    report_path = ROOT / "benchmark_report.json"
+    report_path = ROOT / "benchmark" / "benchmark_report.json"
 
     if not report_path.exists():
         st.warning(

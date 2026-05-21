@@ -2,16 +2,17 @@
 
 Projet I2 — Pipeline qui analyse une solution CP-SAT, extrait les informations
 structurelles (contraintes actives, marges, analyse de sensibilité) et génère
-des explications en langage naturel via un LLM (Claude).
+des explications en langage naturel via un LLM (Mistral / Claude).
 
 ## Ce que fait le projet
 
-- **Résout** 5 types de problèmes d'optimisation avec CP-SAT (ortools) :
-  knapsack, diet, job shop, assignment, bin packing.
+- **Résout** 10 types de problèmes d'optimisation avec CP-SAT (ortools) :
+  knapsack, diet, job shop, assignment, bin packing, nurse scheduling,
+  graph coloring, n-queens, production planning, TSP.
 - **Analyse** la solution : identifie les contraintes actives (binding, slack=0),
   calcule les marges, réalise une analyse de sensibilité (re-résolution avec
   contraintes assouplies) et des contrefactuels (décisions alternatives forcées).
-- **Explique** via un LLM (Claude / Mistral) en 3 types d'explication :
+- **Explique** via un LLM (Mistral / Claude) en 3 types d'explication :
   1. **Pourquoi cette solution est-elle optimale ?** — justifie l'optimalité.
   2. **Pourquoi ne peut-on pas faire mieux ?** — analyse les blocages et contrefactuels.
   3. **Comment améliorer la solution ?** — recommandations actionnables par assouplissement.
@@ -24,31 +25,33 @@ des explications en langage naturel via un LLM (Claude).
 ## Architecture
 
 ```
-cp_explainer/
-├── schemas.py      — Pydantic : SolverOutput, ExplanationOutput, ExplainerResult
-├── solver.py       — Solveurs CP-SAT (5 types) + analyse de sensibilité + contrefactuels
-├── llm_client.py   — Clients LLM (Anthropic Claude + Mistral fallback)
-├── cache.py        — Cache disque SHA256 des appels LLM
-├── prompts.py      — Templates de prompts pour les 3 types d'explication
-├── explainer.py    — Appels LLM + explications template (sans LLM)
-└── runner.py       — Orchestrateur du pipeline complet
+src/
+├── cp_explainer/
+│   ├── core/           — schemas.py (Pydantic), solver.py (10 solveurs CP-SAT)
+│   ├── llm/            — llm_client.py (Mistral + Claude), cache.py, prompts.py
+│   └── pipeline/       — explainer.py (appels LLM + templates), runner.py (orchestrateur)
+├── app/
+│   └── app.py          — Dashboard Streamlit
+├── cli/
+│   ├── run_explainer.py  — CLI : expliquer un problème
+│   └── run_benchmark.py  — Benchmark complet + rapport JSON
+└── data/               — 10 instances JSON de problèmes
 
-problems/           — 5 instances JSON (knapsack, diet, job_shop, assignment, bin_packing)
-scripts/
-├── run_explainer.py  — CLI : expliquer un problème
-├── run_benchmark.py  — Benchmark complet + rapport JSON
-└── app.py            — Dashboard Streamlit
 tests/
-└── test_solvers.py   — Tests unitaires des solveurs CP-SAT
+└── test_solvers.py     — 14 tests unitaires des solveurs CP-SAT
+
+benchmark/              — benchmark_report.json (généré par run_benchmark.py)
+slides/                 — support de présentation
+resources/              — notebooks CSP de référence
 ```
 
 ### Pipeline en 4 étapes
 
-| # | Étape             | Outil      | Sortie                                       |
-|---|-------------------|------------|----------------------------------------------|
+| # | Étape             | Outil      | Sortie                                         |
+|---|-------------------|------------|------------------------------------------------|
 | 1 | Résolution        | CP-SAT     | `SolverOutput` (variables, contraintes, slack) |
-| 2 | Sensibilité       | CP-SAT     | Re-résolutions avec contraintes assouplies   |
-| 3 | Explications LLM  | Claude     | 3 × `ExplanationOutput` (reasoning + texte)  |
+| 2 | Sensibilité       | CP-SAT     | Re-résolutions avec contraintes assouplies     |
+| 3 | Explications LLM  | Mistral    | 3 × `ExplanationOutput` (reasoning + texte)    |
 | 4 | Explications tmpl | Template   | 3 textes template (sans LLM, pour comparaison) |
 
 ## Setup
@@ -57,20 +60,21 @@ tests/
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # remplir ANTHROPIC_API_KEY
+cp .env.example .env   # remplir MISTRAL_API_KEY
 ```
 
-Créer une clé Anthropic : https://console.anthropic.com
+La clé Mistral (provider par défaut) est disponible sur https://console.mistral.ai.
+Claude peut être utilisé en ajoutant `ANTHROPIC_API_KEY` dans `.env`.
 
 ## Usage
 
 ### Expliquer un problème
 
 ```bash
-python scripts/run_explainer.py problems/knapsack.json
-python scripts/run_explainer.py problems/diet.json --save out/diet_result.json
-python scripts/run_explainer.py problems/job_shop.json --no-cache
-python scripts/run_explainer.py problems/assignment.json --provider mistral
+python src/cli/run_explainer.py src/data/knapsack.json
+python src/cli/run_explainer.py src/data/diet.json --save out/diet_result.json
+python src/cli/run_explainer.py src/data/job_shop.json --no-cache
+python src/cli/run_explainer.py src/data/assignment.json --provider mistral
 ```
 
 Le script affiche :
@@ -81,10 +85,10 @@ Le script affiche :
 ### Benchmark complet
 
 ```bash
-python scripts/run_benchmark.py
+python src/cli/run_benchmark.py
 ```
 
-Produit `benchmark_report.json` avec, pour chaque problème :
+Produit `benchmark/benchmark_report.json` avec, pour chaque problème :
 - Statut de résolution, objectif, contraintes actives
 - Métriques d'explication : couverture des contraintes actives, confiance LLM
 - Temps d'exécution total
@@ -92,7 +96,7 @@ Produit `benchmark_report.json` avec, pour chaque problème :
 ### Dashboard Streamlit
 
 ```bash
-streamlit run scripts/app.py
+streamlit run src/app/app.py
 ```
 
 Trois onglets :
