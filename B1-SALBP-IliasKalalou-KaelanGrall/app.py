@@ -11,12 +11,22 @@ from instances import Instance, Solution
 from instances.library import classic_metadata, list_classics, load_classic
 from instances.multimodel import MultiModelInstance, to_aggregated_instance, two_model_toy
 from instances.otto import AlbParseError, parse_alb
+from instances.scholl import (
+    available_cycles as scholl_available_cycles,
+    default_cycle as scholl_default_cycle,
+    known_optimum as scholl_known_optimum,
+    list_scholl,
+    load_scholl,
+    scholl_metadata,
+)
 from instances.toy import toy_instance
 from instances.validators import InstanceValidationError, validate_instance, validate_precedences
 from solvers import cpsat, plne, rpw
+from solvers.biobjective import compute_pareto_front, weighted_sum
 from solvers.multimodel import solve_mmalbp
 from visualisation.gantt import draw_gantt
 from visualisation.loads import draw_station_loads
+from visualisation.pareto import draw_pareto_front
 from visualisation.precedence import draw_precedence_graph
 
 
@@ -90,7 +100,13 @@ def _safe_parse_uploaded(uploaded, cycle_override: int | None) -> Instance | Non
 def load_instance_ui() -> tuple[Instance | None, dict | None]:
     source = st.radio(
         "Source de l'instance",
-        ["Instance jouet", "Bibliothèque classique", "Fichier Otto (.alb)", "Édition manuelle"],
+        [
+            "Instance jouet",
+            "Bibliothèque classique",
+            "Scholl/Otto préchargé (.IN2)",
+            "Fichier Otto (.alb)",
+            "Édition manuelle",
+        ],
         horizontal=False,
     )
 
@@ -115,6 +131,21 @@ def load_instance_ui() -> tuple[Instance | None, dict | None]:
             "known_optimum": meta["known_optimum"],
             "default_cycle": meta["default_cycle"],
             "valid_for_cycle": cycle == meta["default_cycle"],
+        }
+        return inst, info
+
+    if source == "Scholl/Otto préchargé (.IN2)":
+        name = st.selectbox("Instance Scholl/Otto", list_scholl())
+        meta = scholl_metadata(name)
+        st.write(f"{meta['n_tasks']} tâches, {meta['n_precedences']} précédences")
+        cycles = meta["available_cycles"] or [meta["default_cycle"]]
+        cycle = st.selectbox("Cycle time (valeurs de littérature)", cycles, index=len(cycles) // 2)
+        opt = scholl_known_optimum(name, cycle)
+        inst = load_scholl(name, cycle_time=cycle)
+        info = {
+            "known_optimum": opt,
+            "default_cycle": meta["default_cycle"],
+            "valid_for_cycle": True,
         }
         return inst, info
 
@@ -298,24 +329,43 @@ def page_compare() -> None:
 
 
 def page_benchmark() -> None:
-    st.write("Lancement automatique des 3 solveurs sur les instances classiques de la bibliothèque.")
+    st.write("Lancement automatique des 3 solveurs sur les instances de la littérature SALBP.")
     with st.sidebar:
         st.header("Benchmark")
-        selected = st.multiselect(
-            "Instances à benchmarker",
-            list_classics(),
-            default=list_classics()[:4],
+        catalog = st.radio(
+            "Catalogue",
+            ["Bibliothèque interne (7 classiques)", "Scholl/Otto (25 instances)"],
         )
-        time_limit = st.slider("Temps limite par solveur (s)", 1, 60, 5)
+        if catalog == "Bibliothèque interne (7 classiques)":
+            available = list_classics()
+            default_sel = available[:4]
+        else:
+            available = list_scholl()
+            default_sel = ["MERTENS", "JACKSON", "MITCHELL", "ROSZIEG", "SAWYER30", "GUNTHER"]
+            default_sel = [n for n in default_sel if n in available]
+        selected = st.multiselect("Instances à benchmarker", available, default=default_sel)
+        run_plne = st.checkbox("Inclure PLNE (plus lent sur grandes instances)", value=True)
+        time_limit = st.slider("Temps limite par solveur (s)", 1, 60, 10)
         run = st.button("Lancer le benchmark", type="primary", use_container_width=True)
 
     if run and selected:
-        instances_to_run = []
-        for name in selected:
-            meta = classic_metadata(name)
-            instances_to_run.append((load_classic(name), meta["known_optimum"]))
+        instances_to_run: list[tuple[Instance, int | None]] = []
+        if catalog == "Bibliothèque interne (7 classiques)":
+            for name in selected:
+                meta = classic_metadata(name)
+                instances_to_run.append((load_classic(name), meta["known_optimum"]))
+        else:
+            for name in selected:
+                inst = load_scholl(name)
+                opt = scholl_known_optimum(name, inst.cycle_time)
+                instances_to_run.append((inst, opt))
         with st.spinner(f"Benchmark sur {len(instances_to_run)} instances..."):
-            rows = run_benchmark(instances_to_run, time_limit_cpsat=time_limit, time_limit_plne=time_limit)
+            rows = run_benchmark(
+                instances_to_run,
+                time_limit_cpsat=time_limit,
+                time_limit_plne=time_limit,
+                run_plne=run_plne,
+            )
         st.subheader("Résultats")
         df = pd.DataFrame([r.to_dict() for r in rows])
         st.dataframe(df, use_container_width=True, hide_index=True)
@@ -384,11 +434,79 @@ def page_multimodel() -> None:
         st.pyplot(draw_gantt(solution_view, agg))
 
 
+def page_biobjective() -> None:
+    st.write(
+        "Front de Pareto entre nombre de stations et cycle time minimal. "
+        "Pour chaque m candidat, on résout SALBP-2 pour obtenir le cycle optimal."
+    )
+    with st.sidebar:
+        st.header("Instance")
+        instance, info = load_instance_ui()
+        if instance is None:
+            st.stop()
+        st.header("Paramètres")
+        extra = st.slider("Stations supplémentaires à explorer", 1, 8, 4)
+        time_limit = st.slider("Temps limite par point (s)", 1, 30, 8)
+        st.header("Optimisation pondérée")
+        alpha = st.slider("α (poids stations)", 0.0, 5.0, 1.0, 0.1)
+        beta = st.slider("β (poids cycle)", 0.0, 2.0, 0.1, 0.05)
+        run = st.button("Calculer", type="primary", use_container_width=True)
+
+    _show_instance_summary(instance, info)
+
+    if run:
+        with st.spinner(f"Construction du front de Pareto ({extra + 1} points)..."):
+            front = compute_pareto_front(
+                instance,
+                extra_stations=extra,
+                time_limit_per_point=time_limit,
+            )
+
+        if not front.points:
+            st.error("Aucun point Pareto calculé.")
+            return
+
+        st.subheader("Front de Pareto")
+        st.pyplot(draw_pareto_front(front, cycle_imposed=instance.cycle_time))
+        rows = [
+            {
+                "m (stations)": p.n_stations,
+                "C* (cycle min)": p.cycle_time,
+                "Optimal": "Oui" if p.optimal else "Non",
+                "Temps (ms)": f"{p.time_ms:.1f}",
+            }
+            for p in front.points
+        ]
+        st.dataframe(rows, use_container_width=True, hide_index=True)
+        st.caption(
+            f"Temps total : {front.total_time_ms:.0f} ms — {len(front.points)} point(s)"
+        )
+
+        st.subheader("Solution par somme pondérée")
+        st.caption(
+            f"Minimisation de  α·m + β·max_charge   avec α = {alpha:.2f}, β = {beta:.2f}"
+        )
+        with st.spinner("Résolution pondérée..."):
+            result = weighted_sum(
+                instance, alpha=alpha, beta=beta, time_limit=time_limit
+            )
+        if result is None:
+            st.warning("Aucune solution pondérée trouvée.")
+        else:
+            m, max_load, _, opt, t = result
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Stations", m)
+            c2.metric("Charge max", max_load)
+            c3.metric("Optimal", "Oui" if opt else "Non")
+            c4.metric("Temps", f"{t:.0f} ms")
+
+
 PAGES = {
     "Solveur unique": page_single_solver,
     "Comparaison côte-à-côte": page_compare,
     "Benchmark classiques": page_benchmark,
     "Multi-modèles (MMALBP)": page_multimodel,
+    "Bi-objectif (Pareto)": page_biobjective,
 }
 
 mode = st.sidebar.selectbox("Mode", list(PAGES.keys()))
