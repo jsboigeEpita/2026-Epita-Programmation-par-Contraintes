@@ -1,0 +1,459 @@
+"""Génération dynamique de données de ville via le LLM. Le LLM connaît toutes les attractions touristiques du monde."""
+from __future__ import annotations
+
+import json
+import logging
+import re
+from typing import Optional
+
+from pydantic import BaseModel, Field, ValidationError
+
+from llm_client import (
+    chat_with_fallback, QWEN_NO_THINK, _extract_json_blob, parse_json_salvage,
+)
+
+logger = logging.getLogger(__name__)
+
+def _norm(name: str) -> str:
+    """Normalise un nom d'activité pour la déduplication : minuscules, sans accents, sans ponctuation."""
+    import unicodedata
+    name = name.lower().strip()
+    name = "".join(c for c in unicodedata.normalize("NFD", name) if unicodedata.category(c) != "Mn")
+    name = re.sub(r"[^\w\s]", " ", name)
+    return re.sub(r"\s+", " ", name).strip()
+
+VALID_CATEGORIES = {"culture", "gastro", "nature", "shopping", "nightlife"}
+
+class LLMActivity(BaseModel):
+    id: str
+    name: str
+    category: str
+    duration_hours: float = Field(ge=0.25, le=8.0)
+    cost_euros: int = Field(ge=0)
+    opening_hour: int = Field(ge=0, le=23)
+    closing_hour: int = Field(ge=1, le=24)
+    latitude: float = Field(ge=-90.0, le=90.0)
+    longitude: float = Field(ge=-180.0, le=180.0)
+    priority_score: int = Field(ge=1, le=10)
+    confidence: float = Field(ge=0.0, le=1.0, default=0.85)
+    address: str = ""
+    nearest_stop: str = ""
+    transit_options: list = Field(default_factory=list)
+    transit_exit: str = ""
+
+    def clean_category(self) -> str:
+        return self.category if self.category in VALID_CATEGORIES else "culture"
+
+class LLMHotel(BaseModel):
+    name: str
+    address: str = ""
+    price_per_night: int = Field(ge=0)
+    stars: int = Field(ge=0, le=5, default=3)
+    latitude: float = Field(ge=-90.0, le=90.0)
+    longitude: float = Field(ge=-180.0, le=180.0)
+    description: str = ""
+
+class LLMCityData(BaseModel):
+    city: dict
+    activities: list[LLMActivity]
+    hotels: list[LLMHotel] = Field(default_factory=list)
+
+CITY_ACTIVITIES_PROMPT = """\
+You are a travel data expert. Generate tourist data for: {city_name}
+
+The user is planning a trip of {num_days} days, so generate {n_activities} activities
+to give the planner a comfortable buffer (≥ 4 per day + extras for refinement).
+
+Return ONLY a valid JSON object. No markdown, no explanations.
+
+Structure:
+{{
+  "city": {{"name":"...","country":"<2-letter ISO>","latitude":<lat>,"longitude":<lon>,"population":<int>}},
+  "activities": [ {{"id":"slug","name":"<French>","category":"<culture|gastro|nature|shopping|nightlife>","duration_hours":<float>,"cost_euros":<int>,"opening_hour":<int>,"closing_hour":<int>,"latitude":<lat>,"longitude":<lon>,"priority_score":<1-10>,"confidence":<0.80-0.95>,"address":"<exact street address>","nearest_stop":"<official stop name>","transit_options":[{{"type":"<metro|bus|tram|rer|train|funiculaire>","line":"<number or letter>"}}],"transit_exit":"<exit name or empty>"}}, ... ],
+  "hotels": [ {{"name":"<real hotel>","address":"<full address>","price_per_night":<int>,"stars":<1-5>,"latitude":<lat>,"longitude":<lon>,"description":"<French, <12 words>"}}, ... ]
+}}
+
+RULES:
+- Generate exactly {n_activities} activities, diverse across the 5 categories — at least 4 per planned day plus a buffer for refinement.
+- Mix proportions: ~40% culture (including a few iconic priority 9-10), ~20% gastro, ~20% nature, ~10% shopping, ~10% nightlife (adjust to what the city actually offers).
+- Activity names in French. id = unique ASCII slug. GPS 4+ decimals. Prices in euros.
+
+REALISTIC duration_hours (use these typical visit times from real tourist averages):
+- Major museum (Louvre, Met, British Museum, Prado): 3.0–4.0
+- Standard museum / gallery: 1.5–2.5
+- Iconic monument with visit (Eiffel Tower up, Colosseum inside): 2.0–3.0
+- Quick photo-stop monument (Trevi, Brandenburg Gate): 0.5–1.0
+- Cathedral / church visit: 0.5–1.5 (1.5 only for major ones like Sagrada Familia)
+- Restaurant / food tour / cooking class: 1.5–2.5
+- Market / food market visit: 1.0–1.5
+- Park / garden stroll: 1.0–2.0
+- Day trip outside city (e.g., Versailles, Pompeii): 4.0–6.0
+- Neighborhood walk: 1.5–2.5
+- Bar / nightclub session: 2.0–3.0
+- Shopping district: 1.5–2.5
+Pick the appropriate value for each specific activity — do NOT default to 1.5.
+
+REALISTIC opening_hour / closing_hour (use real opening hours, not 8-22 by default):
+- Museums: typically open 9-10, close 17-18
+- Restaurants: open 12 or 19, close 14 or 23 (lunch + dinner)
+- Bars / clubs: open 18-21, close 24
+- Parks: open 6-8, close 20-22
+- Markets: open 6-9, close 14-16
+- Outdoor monuments (Eiffel base, Trevi): open 0, close 24 (always accessible)
+
+- Exactly 3 REAL hotels in the city, covering 3 price tiers. Use ACTUAL booking prices (what Booking.com / Hotels.com shows today):
+  * Budget hotel (2-3★): real price typically 60-130€/night for major European cities
+  * Mid-range hotel (3-4★): real price typically 140-280€/night
+  * Premium hotel (4-5★): real price typically 290-600€/night
+  CRITICAL: Do NOT include ultra-luxury palaces (Ritz, Plaza Athénée, George V, Four Seasons, etc.) — their real price is 1000-5000€/night and would bust any normal budget. Use good 4-5★ hotels at realistic prices instead.
+  CRITICAL: price_per_night must reflect the actual nightly rate for 1 room, not total stay cost.
+- address: FULL address with street number (e.g. "5 Avenue Anatole France, 75007 Paris" or "99 Rue de Rivoli, 75001 Paris"). MANDATORY street number. Never just a street name without number.
+- nearest_stop: official name of the nearest public transport stop (any mode: metro, bus, tram, RER, train, funiculaire). Empty string if truly none.
+- transit_options: ALL transport options at nearest_stop. Each entry: {{"type": "<metro|bus|tram|rer|train|funiculaire>", "line": "<number or letter>"}}. Examples: [{{"type":"metro","line":"6"}},{{"type":"metro","line":"9"}}] for Trocadéro. Empty list only if no public transport within 800m.
+- transit_exit: specific exit/direction if helpful (e.g. "Sortie Tour Eiffel"), else empty string.
+- Be CONCISE: no extra fields, no commentary. Output the JSON and stop.
+"""
+
+def _call_llm_for_city(
+    city_name: str,
+    num_days: int = 5,
+    max_retries: int = 1,
+) -> Optional[dict]:
+    """Appelle le LLM (primaire + fallback) et retourne le dict JSON brut, ou None en cas d'échec total."""
+    n_activities = max(16, min(32, num_days * 4 + 4))
+    prompt = CITY_ACTIVITIES_PROMPT.format(
+        city_name=city_name,
+        num_days=num_days,
+        n_activities=n_activities,
+    )
+
+    last_err = None
+    for attempt in range(max_retries + 1):
+        try:
+            resp = chat_with_fallback(
+                timeout=240.0,
+                messages=[
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.2,
+                max_tokens=6000,
+                response_format={"type": "json_object"},
+                extra_body=QWEN_NO_THINK,
+            )
+            raw = resp.choices[0].message.content or ""
+            blob = _extract_json_blob(raw)
+            data = parse_json_salvage(blob)
+            return data
+        except (json.JSONDecodeError, TypeError) as e:
+            last_err = f"parse error (attempt {attempt}): {e}"
+            logger.warning("[LLMCity] %s", last_err)
+        except Exception as e:
+            last_err = f"api error (attempt {attempt}): {e}"
+            logger.warning("[LLMCity] %s", last_err)
+
+    logger.error("[LLMCity] Échec après %d tentatives pour '%s': %s",
+                 max_retries + 1, city_name, last_err)
+    return None
+
+def _validate_and_clean(raw: dict, city_name: str) -> Optional[dict]:
+    """Valide le JSON LLM et retourne un dict propre pour le solveur."""
+    try:
+        city_info = raw.get("city", {})
+        if not city_info.get("latitude") or not city_info.get("longitude"):
+            logger.error("[LLMCity] Coordonnées ville manquantes pour '%s'", city_name)
+            return None
+
+        raw_acts = raw.get("activities", [])
+        if not raw_acts:
+            logger.error("[LLMCity] Aucune activité générée pour '%s'", city_name)
+            return None
+
+        activities = []
+        seen_ids: set[str] = set()
+        seen_names: set[str] = set()
+
+        for item in raw_acts:
+            if not isinstance(item, dict):
+                logger.debug("[LLMCity] Item non-dict ignoré: %r", item)
+                continue
+            try:
+                act = LLMActivity(**item)
+
+                act_id = act.id
+                if act_id in seen_ids:
+                    act_id = f"{act_id}_{len(seen_ids)}"
+                seen_ids.add(act_id)
+
+                norm_name = _norm(act.name)
+                if norm_name in seen_names:
+                    logger.debug("[LLMCity] Doublon de nom ignoré: '%s'", act.name)
+                    continue
+                if any(norm_name.startswith(s[:6]) and abs(len(norm_name) - len(s)) < 15
+                       for s in seen_names):
+                    logger.debug("[LLMCity] Nom trop proche d'un existant, ignoré: '%s'", act.name)
+                    continue
+                seen_names.add(norm_name)
+
+                activities.append({
+                    "id": act_id,
+                    "name": act.name,
+                    "category": act.clean_category(),
+                    "duration_hours": act.duration_hours,
+                    "cost_euros": act.cost_euros,
+                    "opening_hour": act.opening_hour,
+                    "closing_hour": act.closing_hour,
+                    "latitude": act.latitude,
+                    "longitude": act.longitude,
+                    "priority_score": act.priority_score,
+                    "zone": "",
+                    "confidence": act.confidence,
+                    "address": act.address or "",
+                    "nearest_stop": act.nearest_stop or "",
+                    "transit_options": [
+                        {"type": str(o.get("type","")).lower(), "line": str(o.get("line",""))}
+                        for o in (act.transit_options or [])
+                        if isinstance(o, dict) and o.get("type")
+                    ],
+                    "transit_exit": act.transit_exit or "",
+                    "data_source_detail": "llm",
+                })
+            except (ValidationError, TypeError, AttributeError) as e:
+                name = item.get("name", "?") if isinstance(item, dict) else repr(item)[:40]
+                logger.debug("[LLMCity] Activité invalide ignorée: %s — %s", name, e)
+
+        if len(activities) < 5:
+            logger.error("[LLMCity] Trop peu d'activités valides (%d) pour '%s'",
+                         len(activities), city_name)
+            return None
+
+        hotels = []
+        for item in raw.get("hotels", []) or []:
+            if not isinstance(item, dict):
+                logger.debug("[LLMCity] Hôtel non-dict ignoré: %r", item)
+                continue
+            try:
+                h = LLMHotel(**item)
+                hotels.append({
+                    "name": h.name,
+                    "address": h.address,
+                    "price_per_night": h.price_per_night,
+                    "stars": h.stars,
+                    "latitude": h.latitude,
+                    "longitude": h.longitude,
+                    "description": h.description,
+                })
+            except (ValidationError, TypeError, AttributeError) as e:
+                name = item.get("name", "?") if isinstance(item, dict) else repr(item)[:40]
+                logger.debug("[LLMCity] Hôtel invalide ignoré: %s — %s", name, e)
+
+        return {
+            "city": {
+                "name": city_info.get("name", city_name),
+                "country": city_info.get("country", ""),
+                "latitude": float(city_info["latitude"]),
+                "longitude": float(city_info["longitude"]),
+                "population": int(city_info.get("population", 0)),
+            },
+            "activities": activities,
+            "hotels": hotels,
+        }
+
+    except Exception as e:
+        logger.error("[LLMCity] Validation échouée pour '%s': %s", city_name, e)
+        return None
+
+def _assign_zones(activities: list[dict], city_lat: float, city_lon: float) -> None:
+    for act in activities:
+        dlat = act["latitude"] - city_lat
+        dlon = act["longitude"] - city_lon
+        if dlat >= 0 and dlon >= 0:
+            act["zone"] = "nord-est"
+        elif dlat >= 0 and dlon < 0:
+            act["zone"] = "nord-ouest"
+        elif dlat < 0 and dlon >= 0:
+            act["zone"] = "sud-est"
+        else:
+            act["zone"] = "sud-ouest"
+
+_OSRM_SERVERS = {
+    "foot": "https://routing.openstreetmap.de/routed-foot",
+    "car": "http://router.project-osrm.org",
+    "bike": "https://routing.openstreetmap.de/routed-bike",
+}
+
+def _osrm_travel_matrix(
+    coordinates: list[tuple[float, float]],
+    mode: str = "foot",
+) -> Optional[list[list[int]]]:
+    """Matrice de temps de trajet OSRM (minutes) entre paires de coordonnees."""
+    import requests
+    if len(coordinates) < 2:
+        return None
+    base = _OSRM_SERVERS.get(mode, _OSRM_SERVERS["foot"])
+    coords_str = ";".join(f"{lon},{lat}" for lat, lon in coordinates)
+    url = f"{base}/table/v1/driving/{coords_str}"
+    try:
+        resp = requests.get(url, params={"annotations": "duration"}, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        if data.get("code") == "Ok" and data.get("durations"):
+            return [
+                [max(1, round(cell / 60)) if cell is not None else 30 for cell in row]
+                for row in data["durations"]
+            ]
+    except Exception as e:
+        logger.error("[OSRM] Matrix error: %s", e)
+    return None
+
+def _compute_travel_matrix(
+    activities: list[dict],
+    transport_mode: str = "foot",
+) -> Optional[list[list[int]]]:
+    """Matrice OSRM sans fallback : echec OSRM => ville rejetee."""
+    coords = [(a["latitude"], a["longitude"]) for a in activities]
+    matrix = _osrm_travel_matrix(coords, transport_mode)
+    if not matrix:
+        logger.error("[LLMCity] OSRM indisponible — pas de fallback, ville rejetée")
+        return None
+    return matrix
+
+_SINGLE_ACT_PROMPT = """\
+You are a travel data expert. The user wants to ADD a specific activity to their
+trip in {city_name} that wasn't in the initial pool. Generate ONE activity entry
+in the same JSON schema as the city pool.
+
+Activity name (verbatim as user wrote it) : "{act_name}"
+
+Return ONLY this JSON (no markdown):
+{{"id":"<ascii_slug>","name":"<canonical French name>","category":"<culture|gastro|nature|shopping|nightlife>","duration_hours":<float>,"cost_euros":<int>,"opening_hour":<int>,"closing_hour":<int>,"latitude":<lat>,"longitude":<lon>,"priority_score":<1-10>,"confidence":<0-1>,"address":"<full address>"}}
+
+REALISTIC durations (museum 1.5-3h, monument 0.5-2h, park 1-2h, restaurant 1.5-2.5h, day trip 4-6h).
+REALISTIC hours (museum 9-18, park 6-22, restaurant 12-14/19-23, bar 18-24).
+GPS 4+ decimals. If the place doesn't seem to exist in {city_name}, still produce
+the best plausible activity matching the name.
+"""
+
+def generate_single_activity(act_name: str, city_name: str) -> Optional[dict]:
+    """Genere une activite specifique demandee par l'utilisateur via le LLM."""
+    try:
+        resp = chat_with_fallback(
+            timeout=60.0,
+            messages=[{"role": "user",
+                       "content": _SINGLE_ACT_PROMPT.format(
+                           city_name=city_name, act_name=act_name)}],
+            temperature=0.2,
+            max_tokens=600,
+            response_format={"type": "json_object"},
+            extra_body=QWEN_NO_THINK,
+        )
+        raw = resp.choices[0].message.content or ""
+        data = parse_json_salvage(_extract_json_blob(raw))
+        act = LLMActivity(**data)
+        return {
+            "id": act.id,
+            "name": act.name,
+            "category": act.clean_category(),
+            "duration_hours": act.duration_hours,
+            "cost_euros": act.cost_euros,
+            "opening_hour": act.opening_hour,
+            "closing_hour": act.closing_hour,
+            "latitude": act.latitude,
+            "longitude": act.longitude,
+            "priority_score": act.priority_score,
+            "zone": "",
+            "confidence": act.confidence,
+            "address": act.address or "",
+            "nearest_stop": "",
+            "transit_options": [],
+            "transit_exit": "",
+            "data_source_detail": "llm-on-demand",
+        }
+    except Exception as e:
+        logger.warning("[LLMCity] generate_single_activity('%s') KO: %s", act_name, e)
+        return None
+
+def extend_city_data_with_activities(
+    city_data: dict, names: list[str], transport_mode: str = "foot",
+) -> tuple[dict, list[str]]:
+    """Ajoute les activites demandees au pool, recompute la matrice OSRM.
+    Renvoie (city_data_etendu, liste_des_ajoutees)."""
+    if not names:
+        return city_data, []
+    city_name = (city_data.get("city") or {}).get("name") or ""
+    added: list[dict] = []
+    for n in names:
+        act = generate_single_activity(n, city_name)
+        if act:
+            existing_ids = {a["id"] for a in city_data["activities"]}
+            base_id = act["id"]
+            i = 1
+            while act["id"] in existing_ids:
+                act["id"] = f"{base_id}_{i}"
+                i += 1
+            added.append(act)
+
+    if not added:
+        return city_data, []
+
+    new_activities = city_data["activities"] + added
+    new_matrix = _compute_travel_matrix(new_activities, transport_mode)
+    if not new_matrix:
+        logger.warning("[LLMCity] extension OSRM KO — on garde le pool initial")
+        return city_data, []
+
+    city_lat = city_data["city"]["latitude"]
+    city_lon = city_data["city"]["longitude"]
+    _assign_zones(added, city_lat, city_lon)
+
+    extended = dict(city_data)
+    extended["activities"] = new_activities
+    extended["travel_matrix"] = new_matrix
+    return extended, [a["name"] for a in added]
+
+def generate_city_data(
+    city_name: str,
+    transport_mode: str = "foot",
+    num_days: int = 5,
+) -> Optional[dict]:
+    """Genere en direct (LLM + OSRM) les donnees completes d'une ville."""
+    logger.info("[LLMCity] Génération LLM pour '%s'…", city_name)
+
+    raw = _call_llm_for_city(city_name, num_days=num_days)
+    if not raw:
+        return None
+
+    data = _validate_and_clean(raw, city_name)
+    if not data:
+        return None
+
+    city_lat = data["city"]["latitude"]
+    city_lon = data["city"]["longitude"]
+
+    try:
+        from opentripmap_client import verify_activities
+        data["activities"], data["otm_stats"] = verify_activities(
+            data["activities"], city_name, city_lat, city_lon,
+        )
+    except Exception as e:
+        logger.warning("[LLMCity] Verification OTM ignoree : %s", e)
+        data["otm_stats"] = {"verified": 0, "total": len(data["activities"]),
+                             "skipped": True}
+
+    _assign_zones(data["activities"], city_lat, city_lon)
+
+    matrix = _compute_travel_matrix(data["activities"], transport_mode)
+    if not matrix:
+        return None
+
+    data["travel_matrix"] = matrix
+    data["transport_mode"] = transport_mode
+    data["data_source"] = "llm+otm+osrm"
+
+    confs = [a.get("confidence", 0.0) for a in data["activities"]]
+    data["confidence_stats"] = {
+        "average": round(sum(confs) / len(confs), 2) if confs else 0.0,
+        "high_confidence_count": sum(1 for c in confs if c >= 0.80),
+        "total": len(data["activities"]),
+    }
+
+    return data
