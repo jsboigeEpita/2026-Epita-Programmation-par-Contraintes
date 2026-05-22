@@ -1,0 +1,27 @@
+[project]
+name = "d4-economic-dispatch"
+version = "0.1.0"
+description = "CP-SAT models for Economic Dispatch, Unit Commitment, and Stochastic UC with renewables."
+authors = [
+    { name = "Martin Couturier" },
+    { name = "Arthur Philippe" },
+    { name = "Xavier Ghostine" },
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "ortools>=9.10",
+    "numpy>=1.24",
+    "matplotlib>=3.7",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+dev = ["jupyter>=1.0"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["src*"]
