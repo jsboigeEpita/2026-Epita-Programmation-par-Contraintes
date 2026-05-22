@@ -1,0 +1,6 @@
+{
+  "type": "n_queens",
+  "parameters": {
+    "n": 8
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "job_shop",
+  "type": "job_shop",
+  "description": "Job-shop scheduling 3×3 : ordonnancer des tâches sur des machines pour minimiser le makespan.",
+  "parameters": {
+    "n_machines": 3,
+    "machine_names": {"0": "Machine A", "1": "Machine B", "2": "Machine C"},
+    "jobs": [
+      {
+        "name": "Job Alfa",
+        "tasks": [
+          {"machine": 0, "duration": 10},
+          {"machine": 1, "duration": 5},
+          {"machine": 2, "duration": 20}
+        ]
+      },
+      {
+        "name": "Job Beta",
+        "tasks": [
+          {"machine": 1, "duration": 10},
+          {"machine": 0, "duration": 10},
+          {"machine": 2, "duration": 10}
+        ]
+      },
+      {
+        "name": "Job Gamma",
+        "tasks": [
+          {"machine": 2, "duration": 5},
+          {"machine": 0, "duration": 15},
+          {"machine": 1, "duration": 10}
+        ]
+      }
+    ]
+  }
+}
