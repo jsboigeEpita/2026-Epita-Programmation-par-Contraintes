@@ -1,0 +1,443 @@
+{
+  "schema": "Each case is a (message, expected_constraints) pair, grouped by ambiguity category. Expected values use the same flat-dict format produced by llm_client.extract_constraints.",
+  "cases": [
+    {
+      "id": "simple-01",
+      "category": "simple",
+      "message": "5 jours à Rome avec un budget de 2000 euros, on adore la culture et la gastronomie",
+      "expected": {
+        "destination": "Rome",
+        "num_days": 5,
+        "total_budget": 2000,
+        "preferred_categories": ["culture", "gastro"]
+      }
+    },
+    {
+      "id": "simple-02",
+      "category": "simple",
+      "message": "Lisbonne 3 jours 1500€",
+      "expected": {
+        "destination": "Lisbonne",
+        "num_days": 3,
+        "total_budget": 1500
+      }
+    },
+    {
+      "id": "simple-03",
+      "category": "simple",
+      "message": "On voudrait aller à Tokyo pour une semaine avec 3500 euros",
+      "expected": {
+        "destination": "Tokyo",
+        "num_days": 7,
+        "total_budget": 3500
+      }
+    },
+    {
+      "id": "simple-04",
+      "category": "simple",
+      "message": "Madrid, 4 jours, budget 2000€, on est 2",
+      "expected": {
+        "destination": "Madrid",
+        "num_days": 4,
+        "total_budget": 2000,
+        "num_travelers": 2
+      }
+    },
+    {
+      "id": "vague-01",
+      "category": "vague",
+      "message": "Voyage à Paris pour une semaine, budget confortable",
+      "expected": {
+        "destination": "Paris",
+        "num_days": 7
+      }
+    },
+    {
+      "id": "vague-02",
+      "category": "vague",
+      "message": "Quelques jours à Berlin avec environ 800 euros",
+      "expected": {
+        "destination": "Berlin",
+        "total_budget": 800
+      }
+    },
+    {
+      "id": "vague-03",
+      "category": "vague",
+      "message": "On veut un séjour pas trop cher à Marrakech, plutôt court",
+      "expected": {
+        "destination": "Marrakech"
+      }
+    },
+    {
+      "id": "negation-01",
+      "category": "negation",
+      "message": "Marrakech 5 jours 1200€, surtout pas de shopping",
+      "expected": {
+        "destination": "Marrakech",
+        "num_days": 5,
+        "total_budget": 1200,
+        "avoided_categories": ["shopping"]
+      }
+    },
+    {
+      "id": "negation-02",
+      "category": "negation",
+      "message": "Tokyo 4 jours 3000€, on déteste la nightlife et le shopping",
+      "expected": {
+        "destination": "Tokyo",
+        "num_days": 4,
+        "total_budget": 3000,
+        "avoided_categories": ["nightlife", "shopping"]
+      }
+    },
+    {
+      "id": "conditional-01",
+      "category": "conditional",
+      "message": "Paris 4 jours 2000€, je veux faire le Louvre le jour 2",
+      "expected": {
+        "destination": "Paris",
+        "num_days": 4,
+        "total_budget": 2000,
+        "must_visit": ["louvre"],
+        "must_visit_on_day": {"louvre": 2}
+      }
+    },
+    {
+      "id": "conditional-02",
+      "category": "conditional",
+      "message": "Rome 5 jours 1500€, je veux absolument voir le Colisée et le Vatican",
+      "expected": {
+        "destination": "Rome",
+        "num_days": 5,
+        "total_budget": 1500,
+        "must_visit": ["colosseum", "vatican"]
+      }
+    },
+    {
+      "id": "implicit-01",
+      "category": "implicit",
+      "message": "Lisbonne 5 jours 1500€, on est fatigués donc rythme tranquille",
+      "expected": {
+        "destination": "Lisbonne",
+        "num_days": 5,
+        "total_budget": 1500,
+        "preferred_pace": "relaxed"
+      }
+    },
+    {
+      "id": "implicit-02",
+      "category": "implicit",
+      "message": "Berlin 3 jours 1200€, on veut tout voir, à fond !",
+      "expected": {
+        "destination": "Berlin",
+        "num_days": 3,
+        "total_budget": 1200,
+        "preferred_pace": "intense"
+      }
+    },
+    {
+      "id": "transport-01",
+      "category": "preference",
+      "message": "Amsterdam 4 jours 1500€, à vélo svp",
+      "expected": {
+        "destination": "Amsterdam",
+        "num_days": 4,
+        "total_budget": 1500,
+        "transport_mode": "bike"
+      }
+    },
+    {
+      "id": "transport-02",
+      "category": "preference",
+      "message": "Los Angeles 5 jours 3000€, on va louer une voiture",
+      "expected": {
+        "destination": "Los Angeles",
+        "num_days": 5,
+        "total_budget": 3000,
+        "transport_mode": "car"
+      }
+    },
+    {
+      "id": "hours-01",
+      "category": "preference",
+      "message": "Vienne 3 jours 1200€, on commence à 10h et on finit à 22h",
+      "expected": {
+        "destination": "Vienne",
+        "num_days": 3,
+        "total_budget": 1200,
+        "day_start_hour": 10,
+        "day_end_hour": 22
+      }
+    },
+    {
+      "id": "minimal-01",
+      "category": "minimal",
+      "message": "Rome",
+      "expected": {
+        "destination": "Rome"
+      }
+    },
+    {
+      "id": "empty-01",
+      "category": "minimal",
+      "message": "Bonjour !",
+      "expected": {}
+    },
+    {
+      "id": "mixed-01",
+      "category": "complex",
+      "message": "Tokyo 5 jours 2500€, on aime la culture et la gastro mais pas le shopping ni la nightlife",
+      "expected": {
+        "destination": "Tokyo",
+        "num_days": 5,
+        "total_budget": 2500,
+        "preferred_categories": ["culture", "gastro"],
+        "avoided_categories": ["shopping", "nightlife"]
+      }
+    },
+    {
+      "id": "complex-01",
+      "category": "complex",
+      "message": "Barcelone, 6 jours, 3500€ pour 3 personnes, hôtel max 150€/nuit, on aime culture",
+      "expected": {
+        "destination": "Barcelone",
+        "num_days": 6,
+        "total_budget": 3500,
+        "num_travelers": 3,
+        "hotel_per_night": 150,
+        "preferred_categories": ["culture"]
+      }
+    },
+    {
+      "id": "adversarial-01",
+      "category": "adversarial",
+      "message": "Une dizaine de jours à Naples, je dirais 2k de budget, on ne refuse rien",
+      "expected": {
+        "destination": "Naples",
+        "num_days": 10,
+        "total_budget": 2000
+      }
+    },
+    {
+      "id": "adversarial-02",
+      "category": "adversarial",
+      "message": "Florence du 3 au 8 mars, budget 1200 euros, ah et on est 2",
+      "expected": {
+        "destination": "Florence",
+        "num_days": 6,
+        "total_budget": 1200,
+        "num_travelers": 2,
+        "end_date": "2026-03-08",
+        "start_date": "2026-03-03"
+      }
+    },
+    {
+      "id": "adversarial-03",
+      "category": "adversarial",
+      "message": "Athènes pendant deux semaines avec mille cinq cents euros",
+      "expected": {
+        "destination": "Athènes",
+        "num_days": 14,
+        "total_budget": 1500
+      }
+    },
+    {
+      "id": "adversarial-04",
+      "category": "adversarial",
+      "message": "Bon en fait on annule le shopping et on ajoute plus de gastro à Tokyo",
+      "expected": {
+        "destination": "Tokyo",
+        "avoided_categories": ["shopping"],
+        "preferred_categories": ["gastro"]
+      }
+    },
+    {
+      "id": "adversarial-05",
+      "category": "adversarial",
+      "message": "Séoul 5 jours 2500€, surtout pas trop tôt le matin, on dormira",
+      "expected": {
+        "destination": "Séoul",
+        "num_days": 5,
+        "total_budget": 2500,
+        "day_start_hour": 11
+      }
+    },
+    {
+      "id": "adversarial-06",
+      "category": "adversarial",
+      "message": "Trois mille cinq cents euros pour aller à Athènes pendant six jours, on est deux",
+      "expected": {
+        "destination": "Athènes",
+        "num_days": 6,
+        "total_budget": 3500,
+        "num_travelers": 2
+      }
+    },
+    {
+      "id": "adversarial-07",
+      "category": "adversarial",
+      "message": "On part à Vienne, je dirais cinq jours, ah non plutôt sept jours finalement, avec 2800€",
+      "expected": {
+        "destination": "Vienne",
+        "num_days": 7,
+        "total_budget": 2800
+      }
+    },
+    {
+      "id": "adversarial-08",
+      "category": "adversarial",
+      "message": "Bruxelles 3 jours, 1200 euros environ, en gros entre 1100 et 1300",
+      "expected": {
+        "destination": "Bruxelles",
+        "num_days": 3,
+        "total_budget": 1200
+      }
+    },
+    {
+      "id": "adversarial-09",
+      "category": "adversarial",
+      "message": "Trip to Edinburgh, 4 days, budget 1800 euros, we love whisky tastings and history",
+      "expected": {
+        "destination": "Edinburgh",
+        "num_days": 4,
+        "total_budget": 1800,
+        "preferred_categories": ["gastro", "culture"]
+      }
+    },
+    {
+      "id": "adversarial-10",
+      "category": "adversarial",
+      "message": "Helsinki, 5 jours, 2k€, on est un couple, on aime tout sauf le shopping",
+      "expected": {
+        "destination": "Helsinki",
+        "num_days": 5,
+        "total_budget": 2000,
+        "num_travelers": 2,
+        "avoided_categories": ["shopping"]
+      }
+    },
+    {
+      "id": "complex-02",
+      "category": "complex",
+      "message": "Vienne 4 jours du 18 au 21 juin 2026, on est 2 avec 2200€, on veut absolument l'opéra de Vienne le jour 1 et le château de Schönbrunn le jour 3, on adore la musique mais on évite les musées modernes, et on commence pas avant 10h",
+      "expected": {
+        "destination": "Vienne",
+        "num_days": 4,
+        "total_budget": 2200,
+        "num_travelers": 2,
+        "start_date": "2026-06-18",
+        "end_date": "2026-06-21",
+        "must_visit": ["opéra de vienne", "château de schönbrunn"],
+        "must_visit_on_day": {"opéra de vienne": 1, "château de schönbrunn": 3},
+        "preferred_categories": ["culture"],
+        "day_start_hour": 10
+      }
+    },
+    {
+      "id": "complex-03",
+      "category": "complex",
+      "message": "Marrakech 5 jours du 10 au 14 mai 2026, 1500€ pour 2, le matin on veut visiter les souks et les palais, l'après-midi rien de fatigant, le soir on aime sortir",
+      "expected": {
+        "destination": "Marrakech",
+        "num_days": 5,
+        "total_budget": 1500,
+        "num_travelers": 2,
+        "start_date": "2026-05-10",
+        "end_date": "2026-05-14",
+        "preferred_categories": ["culture", "shopping", "nightlife"],
+        "morning_preference": "culture"
+      }
+    },
+    {
+      "id": "conditional-03",
+      "category": "conditional",
+      "message": "Paris 6 jours du 1 au 6 juillet 2026 pour 2, 3000€, le Louvre le jour 2 et le musée d'Orsay le jour 4, et on veut finir tôt le dimanche, vers 17h",
+      "expected": {
+        "destination": "Paris",
+        "num_days": 6,
+        "total_budget": 3000,
+        "num_travelers": 2,
+        "start_date": "2026-07-01",
+        "end_date": "2026-07-06",
+        "must_visit": ["louvre", "musée d'orsay"],
+        "must_visit_on_day": {"louvre": 2, "musée d'orsay": 4},
+        "day_specific_end_hour": {"5": 17}
+      }
+    },
+    {
+      "id": "implicit-03",
+      "category": "implicit",
+      "message": "Lune de miel à Santorin pour une semaine, 4000€, on aime la gastronomie et les couchers de soleil",
+      "expected": {
+        "destination": "Santorini",
+        "num_days": 7,
+        "total_budget": 4000,
+        "num_travelers": 2,
+        "preferred_categories": ["gastro", "nature"]
+      }
+    },
+    {
+      "id": "implicit-04",
+      "category": "implicit",
+      "message": "Voyage en famille à Disneyland Paris, 3 jours avec 2 enfants, budget 1500€",
+      "expected": {
+        "destination": "Disneyland Paris",
+        "num_days": 3,
+        "total_budget": 1500,
+        "num_travelers": 4
+      }
+    },
+    {
+      "id": "implicit-05",
+      "category": "implicit",
+      "message": "Week-end du 14 juin 2026 à Bruges, 800€ pour 2",
+      "expected": {
+        "destination": "Bruges",
+        "num_days": 2,
+        "total_budget": 800,
+        "num_travelers": 2,
+        "start_date": "2026-06-13",
+        "end_date": "2026-06-14"
+      }
+    },
+    {
+      "id": "tricky-01",
+      "category": "tricky",
+      "message": "Comme tout le monde j'adore les musées (mais bon en vrai, on déteste), on part 4 jours à Berlin avec 1800€",
+      "expected": {
+        "destination": "Berlin",
+        "num_days": 4,
+        "total_budget": 1800,
+        "avoided_categories": ["culture"]
+      }
+    },
+    {
+      "id": "tricky-02",
+      "category": "tricky",
+      "message": "Voyage à Athènes 5 jours pour 2 personnes, on a 2500€, on aimerait éviter de marcher trop, idéalement maximum 3 activités par jour",
+      "expected": {
+        "destination": "Athènes",
+        "num_days": 5,
+        "num_travelers": 2,
+        "total_budget": 2500,
+        "preferred_pace": "relaxed",
+        "max_activities_per_day": 3
+      }
+    },
+    {
+      "id": "tricky-03",
+      "category": "tricky",
+      "message": "Budapest, 3 jours, 1200€ pour deux, on aime les bains thermaux et la cuisine locale, et on veut absolument voir le Parlement, mais pas envie de boîtes de nuit",
+      "expected": {
+        "destination": "Budapest",
+        "num_days": 3,
+        "total_budget": 1200,
+        "num_travelers": 2,
+        "preferred_categories": ["nature", "gastro"],
+        "avoided_categories": ["nightlife"],
+        "must_visit": ["parlement"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+[project]
+name = "supply-chain-network-design"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.10.9",
+    "ortools>=9.15.6755",
+    "pulp>=3.3.1",
+]

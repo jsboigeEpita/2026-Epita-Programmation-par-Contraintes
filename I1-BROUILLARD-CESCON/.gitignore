@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Artefacts générés par les benchmarks (recréés par les scripts)
+benchmarks/report.html
+benchmarks/report_nl_vs_form.html
+
+# Frontend
+planner-ui/node_modules/
+planner-ui/dist/
+planner-ui/.vite/
+
+# OS
+.DS_Store
+Thumbs.db

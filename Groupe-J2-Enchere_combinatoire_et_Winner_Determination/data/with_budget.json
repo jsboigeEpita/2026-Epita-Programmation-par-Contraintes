@@ -1,0 +1,16 @@
+{
+  "name": "with_budget",
+  "items": ["A", "B", "C", "D", "E", "F"],
+  "bidders": ["Alice", "Bob", "Carol", "David"],
+  "bids": [
+    {"id": 0, "bidder": "Alice", "items": ["A", "B"],           "price": 30},
+    {"id": 1, "bidder": "Alice", "items": ["C", "D"],           "price": 28},
+    {"id": 2, "bidder": "Bob",   "items": ["B", "C"],           "price": 25},
+    {"id": 3, "bidder": "Bob",   "items": ["E", "F"],           "price": 22},
+    {"id": 4, "bidder": "Carol", "items": ["A", "D", "E"],      "price": 40},
+    {"id": 5, "bidder": "David", "items": ["A", "B", "C", "D"], "price": 55},
+    {"id": 6, "bidder": "David", "items": ["E", "F"],           "price": 18}
+  ],
+  "budget": {"global": 50, "per_bidder": {"Alice": 30}},
+  "xor_groups": [[0, 1], [2, 3], [5, 6]]
+}

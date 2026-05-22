@@ -1,0 +1,14 @@
+[project]
+name = "a3-ordonnancement-blocs-operatoires"
+version = "0.1.0"
+description = "Ordonnancement de blocs opératoires par programmation par contraintes (CP-SAT)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ortools>=9.10",
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+    "pandas>=2.2",
+    "jupyter>=1.0",
+    "ipykernel>=6.29",
+]

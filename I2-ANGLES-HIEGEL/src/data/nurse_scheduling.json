@@ -1,0 +1,11 @@
+{
+  "type": "nurse_scheduling",
+  "parameters": {
+    "nurses": ["Alice", "Bob", "Carol", "Dave", "Eve"],
+    "n_days": 7,
+    "shifts_per_day": 3,
+    "min_nurses_per_shift": 1,
+    "max_shifts_per_nurse": 5,
+    "shift_names": ["Matin", "Après-midi", "Nuit"]
+  }
+}

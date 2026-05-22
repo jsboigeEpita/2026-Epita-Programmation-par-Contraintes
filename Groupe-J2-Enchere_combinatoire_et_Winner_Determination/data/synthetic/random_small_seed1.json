@@ -1,0 +1,239 @@
+{
+  "name": "random_small_seed1",
+  "items": [
+    "i0",
+    "i1",
+    "i2",
+    "i3",
+    "i4",
+    "i5",
+    "i6",
+    "i7",
+    "i8",
+    "i9"
+  ],
+  "bidders": [
+    "b0",
+    "b1",
+    "b2",
+    "b3",
+    "b4"
+  ],
+  "bids": [
+    {
+      "id": 0,
+      "bidder": "b3",
+      "items": [
+        "i0"
+      ],
+      "price": 22.09
+    },
+    {
+      "id": 1,
+      "bidder": "b3",
+      "items": [
+        "i1",
+        "i3",
+        "i4"
+      ],
+      "price": 243.34
+    },
+    {
+      "id": 2,
+      "bidder": "b2",
+      "items": [
+        "i0",
+        "i6",
+        "i8"
+      ],
+      "price": 152.86
+    },
+    {
+      "id": 3,
+      "bidder": "b1",
+      "items": [
+        "i0",
+        "i3",
+        "i6"
+      ],
+      "price": 173.17
+    },
+    {
+      "id": 4,
+      "bidder": "b3",
+      "items": [
+        "i3",
+        "i5",
+        "i6",
+        "i8"
+      ],
+      "price": 272.8
+    },
+    {
+      "id": 5,
+      "bidder": "b3",
+      "items": [
+        "i0",
+        "i4"
+      ],
+      "price": 92.02
+    },
+    {
+      "id": 6,
+      "bidder": "b3",
+      "items": [
+        "i1",
+        "i2",
+        "i4"
+      ],
+      "price": 307.44
+    },
+    {
+      "id": 7,
+      "bidder": "b0",
+      "items": [
+        "i5"
+      ],
+      "price": 50.45
+    },
+    {
+      "id": 8,
+      "bidder": "b4",
+      "items": [
+        "i3",
+        "i4",
+        "i8"
+      ],
+      "price": 148.39
+    },
+    {
+      "id": 9,
+      "bidder": "b4",
+      "items": [
+        "i7",
+        "i8"
+      ],
+      "price": 119.32
+    },
+    {
+      "id": 10,
+      "bidder": "b3",
+      "items": [
+        "i3",
+        "i6"
+      ],
+      "price": 121.92
+    },
+    {
+      "id": 11,
+      "bidder": "b3",
+      "items": [
+        "i2",
+        "i5"
+      ],
+      "price": 155.03
+    },
+    {
+      "id": 12,
+      "bidder": "b4",
+      "items": [
+        "i1",
+        "i5",
+        "i7",
+        "i9"
+      ],
+      "price": 368.42
+    },
+    {
+      "id": 13,
+      "bidder": "b4",
+      "items": [
+        "i1"
+      ],
+      "price": 86.27
+    },
+    {
+      "id": 14,
+      "bidder": "b1",
+      "items": [
+        "i0",
+        "i7"
+      ],
+      "price": 123.69
+    },
+    {
+      "id": 15,
+      "bidder": "b3",
+      "items": [
+        "i0",
+        "i4"
+      ],
+      "price": 92.02
+    },
+    {
+      "id": 16,
+      "bidder": "b4",
+      "items": [
+        "i2",
+        "i9"
+      ],
+      "price": 109.55
+    },
+    {
+      "id": 17,
+      "bidder": "b4",
+      "items": [
+        "i0",
+        "i3"
+      ],
+      "price": 66.06
+    },
+    {
+      "id": 18,
+      "bidder": "b1",
+      "items": [
+        "i3"
+      ],
+      "price": 32.96
+    },
+    {
+      "id": 19,
+      "bidder": "b3",
+      "items": [
+        "i5",
+        "i8"
+      ],
+      "price": 82.68
+    }
+  ],
+  "budget": {
+    "global": null,
+    "per_bidder": {}
+  },
+  "xor_groups": [
+    [
+      0,
+      1,
+      4,
+      5,
+      6,
+      10,
+      11,
+      15,
+      19
+    ],
+    [
+      3,
+      14,
+      18
+    ],
+    [
+      8,
+      9,
+      12,
+      13,
+      16,
+      17
+    ]
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "production_planning",
+  "parameters": {
+    "products": [
+      {"name": "Chaise", "profit": 45, "wood": 3, "labor": 2, "paint": 1},
+      {"name": "Table", "profit": 80, "wood": 7, "labor": 4, "paint": 2},
+      {"name": "Armoire", "profit": 120, "wood": 10, "labor": 6, "paint": 3},
+      {"name": "Étagère", "profit": 30, "wood": 2, "labor": 1, "paint": 1},
+      {"name": "Bureau", "profit": 95, "wood": 8, "labor": 5, "paint": 2}
+    ],
+    "resources": {
+      "wood": 60,
+      "labor": 40,
+      "paint": 20
+    },
+    "max_units_per_product": 5
+  }
+}

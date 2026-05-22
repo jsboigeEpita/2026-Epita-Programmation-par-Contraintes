@@ -1,0 +1,56 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Environnements virtuels ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Solveurs ---
+*.lp
+*.mps
+*.sol
+*.log
+
+# Course-private files (not for submission)
+evaluation.md
+subject.md
+resume.md
+.claude/
+*.original.md
+slides/*.key
+slides/*.pptx
+
+# Course-private files (not for submission)
+evaluation.md
+subject.md
+resume.md
+.claude/
+*.original.md
+slides/*.key
+slides/*.pptx
+
+# Editor temp files

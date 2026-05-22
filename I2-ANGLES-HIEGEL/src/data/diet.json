@@ -1,0 +1,24 @@
+{
+  "name": "diet",
+  "type": "diet",
+  "description": "Planification nutritionnelle : choisir des portions d'aliments pour satisfaire les besoins nutritionnels au coût minimal.",
+  "parameters": {
+    "max_servings_per_food": 5,
+    "foods": [
+      {"name": "Riz (100g)",     "cost": 0.5,  "calories": 130, "protein": 3,  "fat": 0,  "carbs": 28},
+      {"name": "Poulet (100g)",  "cost": 2.0,  "calories": 165, "protein": 31, "fat": 4,  "carbs": 0},
+      {"name": "Brocoli (100g)", "cost": 0.8,  "calories": 55,  "protein": 4,  "fat": 0,  "carbs": 11},
+      {"name": "Oeufs (1 oeuf)", "cost": 0.3,  "calories": 78,  "protein": 6,  "fat": 5,  "carbs": 1},
+      {"name": "Lait (200ml)",   "cost": 0.6,  "calories": 150, "protein": 8,  "fat": 8,  "carbs": 12},
+      {"name": "Pain (1 tranche)","cost": 0.4, "calories": 70,  "protein": 2,  "fat": 1,  "carbs": 13}
+    ],
+    "requirements": {
+      "min_calories": 2000,
+      "max_calories": 2500,
+      "min_protein": 50,
+      "max_fat": 70,
+      "min_carbs": 200,
+      "max_carbs": 350
+    }
+  }
+}
