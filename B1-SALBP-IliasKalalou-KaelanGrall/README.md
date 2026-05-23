@@ -21,7 +21,6 @@ Structure
     B1-SALBP-IliasKalalou-KaelanGrall/
     ├── app.py                    Application Streamlit (5 modes)
     ├── benchmark.py              Module de benchmark batch
-    ├── SALBP.ipynb               Notebook explicatif
     ├── instances/
     │   ├── __init__.py           Dataclasses Instance et Solution
     │   ├── toy.py                Instance jouet 11 tâches
