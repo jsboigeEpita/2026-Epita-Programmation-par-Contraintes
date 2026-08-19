@@ -1747,5 +1747,11 @@ Les sujets suivants ont ete traites dans des editions precedentes (EPITA 2025, E
 
 ---
 
-*Derniere mise a jour : Avril 2026*
+## Licence
+
+Ce depot est distribue sous licence [MIT](LICENSE). Toutes les contributions (code, notebooks, slides, rapports) des etudiants et de l'equipe pedagogique du cours EPITA SCIA - Programmation par Contraintes 2026 sont couvertes par cette licence.
+
+---
+
+*Derniere mise a jour : Aout 2026*
 *Contact : Equipe pedagogique Programmation par Contraintes, EPITA SCIA*
